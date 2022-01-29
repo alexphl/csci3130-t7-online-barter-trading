@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "487307491612",
+    "firebase_url": "https://online-barter-trading-bc337-default-rtdb.firebaseio.com",
+    "project_id": "online-barter-trading-bc337",
+    "storage_bucket": "online-barter-trading-bc337.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:487307491612:android:d61c2dbb75c75a21c8a2d9",
+        "android_client_info": {
+          "package_name": "com.example.onlinebartertrading"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "487307491612-4otolr3q3je4oftf0u52a6nucs19iap6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSX7vB992yfx7sDt5XM0FsjQkCBp31Kz4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "487307491612-4otolr3q3je4oftf0u52a6nucs19iap6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
