@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Online Barter Trading</string>
+    <string name="emailHint">Email</string>
+    <string name="emailConfirmHint">Confirm Email</string>
+    <string name="passwordHint">Password</string>
+    <string name="nextButton">Next</string>
+    <string name="confirmPassword_hint">Confirm Password</string>
 </resources>
