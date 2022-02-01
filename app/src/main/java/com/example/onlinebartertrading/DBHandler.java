@@ -1,9 +1,5 @@
 package com.example.onlinebartertrading;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.os.Bundle;
-
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -14,16 +10,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class RegisterActivity extends AppCompatActivity {
+public class DBHandler {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
-    }
-
-
-    private String hashString(String password) throws NoSuchAlgorithmException {
+    public String hashString(String password) throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance("SHA-512");
         byte[] hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
         BigInteger bigInteger = new BigInteger(1, hash);
@@ -40,9 +29,5 @@ public class RegisterActivity extends AppCompatActivity {
         userData.put("email", "EMAIL_HERE");
         dbRef.push().setValue(userData);
     }
-
-
-
-
 
 }
