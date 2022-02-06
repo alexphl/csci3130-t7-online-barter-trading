@@ -72,4 +72,20 @@ public class LoginEspressoTest {
         onView(withId(R.id.loginBttn)).perform(click());
         onView(withId(R.id.loginStatus)).check(matches(withText(R.string.INVALID_EMAIL)));
     }
+
+    @Test
+    public void checkIfPasswordIsAppropriate() {
+        onView(withId(R.id.emailField).perform(typeText("testemail@gmail.com")));
+        onView(withId(R.id.passwordField).perform(typeText("testingPassword")));
+        onView(withId(R.id.loginBttn)).perform(click());
+        onView(withId(R.id.loginStatus)).check(matches(withText(R.string.DO_NOTHING)));
+    }
+
+    @Test
+    public void checkIfPasswordIsInappropriate() {
+        onView(withId(R.id.emailField).perform(typeText("testemail@gmail.com")));
+        onView(withId(R.id.passwordField).perform(typeText("test")));
+        onView(withId(R.id.loginBttn)).perform(click());
+        onView(withId(R.id.loginStatus)).check(matches(withText(R.string.INVALID_PASSWORD)));
+    }
 }
