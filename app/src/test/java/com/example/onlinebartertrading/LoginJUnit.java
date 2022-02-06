@@ -31,12 +31,6 @@ public class LoginJUnit {
     }
 
     @Test
-    public void checkIfPasswordFieldIsEmpty() {
-        assertTrue(AuthActivity.isEmptyPassword(""));
-        assertFalse(AuthActivity.isEmptyPassword("testingPassword"));
-    }
-
-    @Test
     public void checkIfEmailIsAppropriate() {
         assertTrue(AuthActivity.isValidEmail("testingemail@gmail.com"));
     }
@@ -46,13 +40,5 @@ public class LoginJUnit {
         assertTrue(AuthActivity.isValidEmail("testingemail.gmail.com"));
     }
 
-    @Test
-    public void checkIfPasswordIsAppropriate() {
-        assertTrue(AuthActivity.isValidPassword("testingemail@gmail.com"));
-    }
 
-    @Test
-    public void checkIfPasswordIsInappropriate() {
-        assertTrue(AuthActivity.isValidPassword("testingemail.gmail.com"));
-    }
 }
