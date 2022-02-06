@@ -65,4 +65,11 @@ public class LoginEspressoTest {
         onView(withId(R.id.loginStatus)).check(matches(withText(R.string.DO_NOTHING)));
     }
 
+    @Test
+    public void checkIfEmailIsInappropriate() {
+        onView(withId(R.id.emailField).perform(typeText("testemail.gmail.com")));
+        onView(withId(R.id.passwordField).perform(typeText("testingPassword")));
+        onView(withId(R.id.loginBttn)).perform(click());
+        onView(withId(R.id.loginStatus)).check(matches(withText(R.string.INVALID_EMAIL)));
+    }
 }
