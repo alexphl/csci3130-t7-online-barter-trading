@@ -49,4 +49,12 @@ public class LoginEspressoTest {
         onView(withId(R.id.passwordField).check(matches(withText(R.string.VALID_PASSWORD))));
     }
 
+    @Test
+    public void checkIfEmailFieldIsEmpty() {
+        onView(withId(R.id.emailField).perform(typeText("")));
+        onView(withId(R.id.emailField).perform(typeText("testemail@gmail.com")));
+        onView(withId(R.id.loginBttn)).perform(click());
+        onView(withId(R.id.loginStatus)).check(matches(withText(R.string.EMPTY_FIELD)));
+    }
+
 }

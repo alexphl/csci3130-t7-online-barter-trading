@@ -7,4 +7,5 @@
     <string name="confirmPassword_hint">Confirm Password</string>
     <string name="VALID_EMAIL">Email Successful</string>
     <string name="VALID_PASSWORD">Email Successful</string>
+    <string name="EMPTY_FIELD">Field is empty</string>
 </resources>
