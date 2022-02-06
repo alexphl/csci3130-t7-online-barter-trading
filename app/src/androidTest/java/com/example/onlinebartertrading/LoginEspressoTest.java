@@ -52,6 +52,7 @@ public class LoginEspressoTest {
     @Test
     public void checkIfEmailFieldIsEmpty() {
         onView(withId(R.id.emailField).perform(typeText("")));
+<<<<<<< HEAD
         onView(withId(R.id.passwordField).perform(typeText("testingPassword")));
         onView(withId(R.id.loginBttn)).perform(click());
         onView(withId(R.id.loginStatus)).check(matches(withText(R.string.EMPTY_EMAIL)));
@@ -67,10 +68,11 @@ public class LoginEspressoTest {
 
     @Test
     public void checkIfEmailIsAppropriate() {
+=======
+>>>>>>> parent of 27a815b (Fixed previous Espresso Test and added test to determine if login email is valid or not)
         onView(withId(R.id.emailField).perform(typeText("testemail@gmail.com")));
-        onView(withId(R.id.passwordField).perform(typeText("testingPassword")));
         onView(withId(R.id.loginBttn)).perform(click());
-        onView(withId(R.id.loginStatus)).check(matches(withText(R.string.DO_NOTHING)));
+        onView(withId(R.id.loginStatus)).check(matches(withText(R.string.EMPTY_FIELD)));
     }
 
 }
