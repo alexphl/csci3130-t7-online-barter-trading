@@ -1,20 +1,13 @@
 package com.example.onlinebartertrading;
 
-import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static org.junit.Assert.*;
-
 import android.content.Context;
-
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
-import androidx.test.platform.app.InstrumentationRegistry;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.runner.RunWith;
+import androidx.test.espresso.*;
+import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -36,6 +29,7 @@ public class LoginEspressoTest {
     public static void tearDown() {
         System.gc();
     }
+<<<<<<< HEAD
 
     @Test
     public void useAppContext() {
@@ -75,4 +69,6 @@ public class LoginEspressoTest {
         onView(withId(R.id.loginStatus)).check(matches(withText(R.string.EMPTY_FIELD)));
     }
 
+=======
+>>>>>>> parent of ca2ad90 (Added Espresso Test to check if the login page is visible)
 }
