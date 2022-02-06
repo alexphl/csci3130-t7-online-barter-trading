@@ -5,4 +5,6 @@
     <string name="passwordHint">Password</string>
     <string name="nextButton">Next</string>
     <string name="confirmPassword_hint">Confirm Password</string>
+    <string name="VALID_EMAIL">Email Successful</string>
+    <string name="VALID_PASSWORD">Email Successful</string>
 </resources>
