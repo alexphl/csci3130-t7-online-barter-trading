@@ -10,10 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OnlineBarterTrading">
         <activity
-            android:name=".makePostActivity"
-            android:exported="false" />
+            android:name=".MakePostActivity"
+            android:exported="true" />
         <activity
-            android:name=".RegisterActivity"
+            android:name=".AuthActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
