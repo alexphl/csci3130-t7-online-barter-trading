@@ -17,15 +17,15 @@ import java.util.UUID;
 
 public class DBHandler {
 
-    private DatabaseReference dbRef;
+    private static DatabaseReference dbRef;
 
-    protected void initializeDatabase() {
+    protected static void initializeDatabase() {
         dbRef = FirebaseDatabase
                 .getInstance(FirebaseConstants.FIREBASE_URL)
                 .getReference();
     }
 
-    public String hashString(String password) throws NoSuchAlgorithmException {
+    public static String hashString(String password) throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance("SHA-512");
         byte[] hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
         BigInteger bigInteger = new BigInteger(1, hash);
@@ -33,7 +33,15 @@ public class DBHandler {
         return bigInteger.toString(16);
     }
 
-    private void addUserData() {
+    public static boolean registerUser() {
+        return false;
+    }
+
+    public static boolean userExists(String uuid) {
+        return false;
+    }
+
+    private void addUserData(String fName, String lName, String email) {
         String uuid = UUID.randomUUID().toString();
         DatabaseReference userRef = dbRef.child(FirebaseConstants.USERS_COLLECTION).child(uuid);
         HashMap<String, String> userData = new HashMap<>();
@@ -43,11 +51,30 @@ public class DBHandler {
         userRef.push().setValue(userData);
     }
 
-    public String getUserEmail(String uuid) {
-        return null;
+    // TODO
+    public static String getUserEmail(String uuid) {
+        String extractedEmail = "";
+        DatabaseReference emailRef = dbRef
+                .child(FirebaseConstants.USERS_COLLECTION)
+                .child(uuid)
+                .child("email");
+
+        emailRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //extractedEmail = snapshot.getValue(String.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        return extractedEmail;
     }
 
-    public String getUserName(String uuid) {
+    public static String getUserName(String uuid) {
         return null;
     }
 
