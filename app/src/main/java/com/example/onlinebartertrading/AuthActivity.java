@@ -17,4 +17,10 @@ public class AuthActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
     }
+
+    protected boolean isValidEmailAddress(String emailAddress) {
+        return emailAddress != null && emailAddress.matches(".*@.*[\\.].*$");
+    }
+
+
 }
