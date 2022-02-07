@@ -42,7 +42,7 @@ public class DBHandler {
     }
 
     private void addUserData(String fName, String lName, String email) {
-        String uuid = UUID.randomUUID().toString();
+        String uuid = UUID.nameUUIDFromBytes(email.getBytes()).toString();
         DatabaseReference userRef = dbRef.child(FirebaseConstants.USERS_COLLECTION).child(uuid);
         HashMap<String, String> userData = new HashMap<>();
         userData.put("first_name", "FIRSTNAME_HERE");
