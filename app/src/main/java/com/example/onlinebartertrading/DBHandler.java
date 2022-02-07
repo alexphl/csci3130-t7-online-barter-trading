@@ -17,13 +17,9 @@ import java.util.UUID;
 
 public class DBHandler {
 
-    private static DatabaseReference dbRef;
-
-    protected static void initializeDatabase() {
-        dbRef = FirebaseDatabase
+    private static final DatabaseReference dbRef = FirebaseDatabase
                 .getInstance(FirebaseConstants.FIREBASE_URL)
                 .getReference();
-    }
 
     public static String hashString(String password) throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance("SHA-512");
@@ -33,25 +29,41 @@ public class DBHandler {
         return bigInteger.toString(16);
     }
 
-    public static boolean registerUser() {
-        return false;
+    // Returns true if successful
+    public static boolean registerUser(String fName, String lName, String email, String pword) {
+        // Check if user exists
+        if (userExists(UUID.nameUUIDFromBytes(email.getBytes()).toString())) return false;
+
+        // Hash password
+        String pwordHash="";
+        try {
+            pwordHash = hashString(pword);
+        } catch (Exception NoSuchAlgorithmException) {
+            return false;
+        }
+
+        return addUserData(fName, lName, email, pwordHash);
     }
 
+    // TODO
     public static boolean userExists(String uuid) {
         return false;
     }
 
-    private void addUserData(String fName, String lName, String email) {
+    private static boolean addUserData(String fName, String lName, String email, String pwordHash) {
         String uuid = UUID.nameUUIDFromBytes(email.getBytes()).toString();
         DatabaseReference userRef = dbRef.child(FirebaseConstants.USERS_COLLECTION).child(uuid);
         HashMap<String, String> userData = new HashMap<>();
-        userData.put("first_name", "FIRSTNAME_HERE");
-        userData.put("last_name", "LASTNAME_HERE");
-        userData.put("email", "EMAIL_HERE");
-        userRef.push().setValue(userData);
+        userData.put("first_name", fName);
+        userData.put("last_name", lName);
+        userData.put("email", email);
+        userData.put("pwordHash", pwordHash);
+        userRef.setValue(userData);
+        return true;
     }
 
     // TODO
+    // This don't work yet
     public static String getUserEmail(String uuid) {
         String extractedEmail = "";
         DatabaseReference emailRef = dbRef
@@ -74,6 +86,7 @@ public class DBHandler {
         return extractedEmail;
     }
 
+    //Todo
     public static String getUserName(String uuid) {
         return null;
     }
