@@ -9,6 +9,7 @@ import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static com.example.onlinebartertrading.MakePostActivity.maxDescLength;
 import static com.example.onlinebartertrading.MakePostActivity.maxTitleLength;
 import static org.junit.Assert.assertEquals;
 
@@ -47,6 +48,7 @@ public class makePostEspressoTest {
     public void checkIfMakePostIsVisible(){
         onView(withId(R.id.postTitle)).check(matches(withText(R.string.EMPTY_STRING)));
         onView(withId(R.id.postDesc)).check(matches(withText(R.string.EMPTY_STRING)));
+        onView(withId(R.id.postValue)).check(matches(withText(R.string.EMPTY_STRING)));
     }
 
     @Test
@@ -64,8 +66,8 @@ public class makePostEspressoTest {
         for (int i=0; i<maxTitleLength+1; i++){
             longTitle+="1";
         }
-        onView(withId(R.id.postTitle)).perform(typeText(longTitle));
-        onView(withId(R.id.postDesc)).perform(typeText("Test description"));
+        onView(withId(R.id.postTitle)).perform(typeText("valid title"));
+        onView(withId(R.id.postDesc)).perform(typeText(longTitle));
         onView(withId(R.id.postValue)).perform(typeText("123"));
         onView(withId(R.id.makePostButton)).perform(click());
         onView(withId(R.id.statusLabel)).check(matches(withText(R.string.INVALID_TITLE)));
@@ -78,6 +80,28 @@ public class makePostEspressoTest {
         onView(withId(R.id.postValue)).perform(typeText("123"));
         onView(withId(R.id.makePostButton)).perform(click());
         onView(withId(R.id.statusLabel)).check(matches(withText(R.string.EMPTY_STRING)));
+    }
+
+    @Test
+    public void checkIfDescIsEmpty() {
+        onView(withId(R.id.postTitle)).perform(typeText("Valid title"));
+        onView(withId(R.id.postDesc)).perform(typeText(""));
+        onView(withId(R.id.postValue)).perform(typeText("123"));
+        onView(withId(R.id.makePostButton)).perform(click());
+        onView(withId(R.id.statusLabel)).check(matches(withText(R.string.EMPTY_DESC)));
+    }
+
+    @Test
+    public void checkIfDescIsTooLong() {
+        String longTitle = "";
+        for (int i=0; i<maxDescLength+1; i++){
+            longTitle+="1";
+        }
+        onView(withId(R.id.postTitle)).perform(typeText("valid title"));
+        onView(withId(R.id.postDesc)).perform(typeText("Test description"));
+        onView(withId(R.id.postValue)).perform(typeText("123"));
+        onView(withId(R.id.makePostButton)).perform(click());
+        onView(withId(R.id.statusLabel)).check(matches(withText(R.string.INVALID_TITLE)));
     }
 
 

@@ -10,6 +10,8 @@
     <string name="EMPTY_FIELD">Field is empty</string>
     <string name="EMPTY_STRING"></string>
     <string name="INVALID_TITLE">Invalid Title</string>
+    <string name="EMPTY_DESC">ERROR: Please enter a description</string>
+    <string name="LONG_DESC">ERROR: Description is too long</string>
 =======
 >>>>>>> parent of ca2ad90 (Added Espresso Test to check if the login page is visible)
 </resources>
