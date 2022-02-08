@@ -66,8 +66,8 @@ public class makePostEspressoTest {
         for (int i=0; i<maxTitleLength+1; i++){
             longTitle+="1";
         }
-        onView(withId(R.id.postTitle)).perform(typeText("valid title"));
-        onView(withId(R.id.postDesc)).perform(typeText(longTitle));
+        onView(withId(R.id.postTitle)).perform(typeText(longTitle));
+        onView(withId(R.id.postDesc)).perform(typeText("valid desc"));
         onView(withId(R.id.postValue)).perform(typeText("123"));
         onView(withId(R.id.makePostButton)).perform(click());
         onView(withId(R.id.statusLabel)).check(matches(withText(R.string.INVALID_TITLE)));
@@ -98,10 +98,10 @@ public class makePostEspressoTest {
             longTitle+="1";
         }
         onView(withId(R.id.postTitle)).perform(typeText("valid title"));
-        onView(withId(R.id.postDesc)).perform(typeText("Test description"));
+        onView(withId(R.id.postDesc)).perform(typeText(longTitle));
         onView(withId(R.id.postValue)).perform(typeText("123"));
         onView(withId(R.id.makePostButton)).perform(click());
-        onView(withId(R.id.statusLabel)).check(matches(withText(R.string.INVALID_TITLE)));
+        onView(withId(R.id.statusLabel)).check(matches(withText(R.string.LONG_DESC)));
     }
 
 

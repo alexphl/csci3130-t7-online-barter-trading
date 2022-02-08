@@ -9,7 +9,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 public class MakePostActivity extends AppCompatActivity implements View.OnClickListener {
-    public static int maxTitleLength = 50;
+    public static final int maxTitleLength = 50;
+    public static final int maxDescLength = 180;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,25 +30,49 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
         return titleBox.getText().toString().trim();
     }
 
+    protected  String getDesc(){
+        EditText descBox = findViewById(R.id.postDesc);
+        return descBox.getText().toString().trim();
+    }
+
     protected Boolean validTitleDesc(String title){
         if (title.equals("")) {
             return false;
         }
-        if (title.length()>50){
+        if (title.length()>maxTitleLength){
+            return false;
+        }
+        return true;
+    }
+
+    protected Boolean isEmptyDesc(String desc){
+        if (desc.equals("")){
+            return true;
+        }
+        return false;
+    }
+
+    protected Boolean isValidDesc(String desc){
+        if (desc.length()>maxDescLength){
             return false;
         }
         return true;
     }
 
 
-
-
     @Override
     public void onClick(View view) {
         String title = getTitleDesc();
+        String desc = getDesc();
         String errorMessage = "";
         if (!validTitleDesc(title)){
             errorMessage = getResources().getString(R.string.INVALID_TITLE).trim();
+        }
+        if (isEmptyDesc(desc)){
+            errorMessage = getResources().getString(R.string.EMPTY_DESC).trim();
+        }
+        if (!isValidDesc(desc)){
+            errorMessage = getResources().getString(R.string.LONG_DESC).trim();
         }
 
         setStatusMessage(errorMessage);
