@@ -5,10 +5,11 @@
     <string name="passwordHint">Password</string>
     <string name="nextButton">Next</string>
     <string name="confirmPassword_hint">Confirm Password</string>
-<<<<<<< HEAD
     <string name="VALID_EMAIL">Email Successful</string>
     <string name="VALID_PASSWORD">Email Successful</string>
     <string name="EMPTY_FIELD">Field is empty</string>
+    <string name="EMPTY_STRING"></string>
+    <string name="INVALID_TITLE">Invalid Title</string>
 =======
 >>>>>>> parent of ca2ad90 (Added Espresso Test to check if the login page is visible)
 </resources>

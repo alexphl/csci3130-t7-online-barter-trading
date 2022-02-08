@@ -16,8 +16,8 @@ import static org.junit.Assert.*;
 public class ExampleUnitTest {
     static MakePostActivity makePostActivity; //= new MakePostActivity();
 
-
-    /**@BeforeClass
+/**
+    @BeforeClass
     public static void setup() {
         makePostActivity = new MakePostActivity();
     }
@@ -26,7 +26,7 @@ public class ExampleUnitTest {
     public static void tearDown() {
         System.gc();
     }
-        */
+*/
 
 
     @Test

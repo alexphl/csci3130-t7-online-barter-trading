@@ -47,7 +47,7 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
         String title = getTitleDesc();
         String errorMessage = "";
         if (!validTitleDesc(title)){
-            errorMessage = "Invalid Title";
+            errorMessage = getResources().getString(R.string.INVALID_TITLE).trim();
         }
 
         setStatusMessage(errorMessage);
