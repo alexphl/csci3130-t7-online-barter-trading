@@ -11,6 +11,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.example.onlinebartertrading.MakePostActivity.maxDescLength;
 import static com.example.onlinebartertrading.MakePostActivity.maxTitleLength;
+import static com.example.onlinebartertrading.MakePostActivity.maxValue;
 import static org.junit.Assert.assertEquals;
 
 
@@ -104,5 +105,23 @@ public class makePostEspressoTest {
         onView(withId(R.id.statusLabel)).check(matches(withText(R.string.LONG_DESC)));
     }
 
-
+    @Test
+    public void checkIfValueIsZero(){
+        onView(withId(R.id.postTitle)).perform(typeText("valid title"));
+        onView(withId(R.id.postDesc)).perform(typeText("valid description"));
+        onView(withId(R.id.postValue)).perform(typeText("0"));
+        onView(withId(R.id.makePostButton)).perform(click());
+        onView(withId(R.id.statusLabel)).check(matches(withText(R.string.INVALID_VALUE)));
     }
+
+    @Test
+    public void checkIfValueIsTooBig(){
+        onView(withId(R.id.postTitle)).perform(typeText("valid title"));
+        onView(withId(R.id.postDesc)).perform(typeText("valid description"));
+        onView(withId(R.id.postValue)).perform(typeText(String.valueOf(maxValue+1)));
+        onView(withId(R.id.makePostButton)).perform(click());
+        onView(withId(R.id.statusLabel)).check(matches(withText(R.string.INVALID_VALUE)));
+    }
+
+
+}
