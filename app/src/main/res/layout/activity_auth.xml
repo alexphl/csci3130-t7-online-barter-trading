@@ -6,11 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".AuthActivity">
 
-    <fragment
-    android:name="com.example.onlinebartertrading.SignupFormFragment"
-    android:id="@+id/signupFragment"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/authTabs"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        tools:ignore="MissingConstraints">
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="47dp" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
