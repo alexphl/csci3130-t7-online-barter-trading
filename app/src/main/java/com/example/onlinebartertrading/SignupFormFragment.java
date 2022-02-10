@@ -8,11 +8,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 public class SignupFormFragment extends Fragment implements View.OnClickListener {
 
-    EditText nameField, emailField, emailRepField, pwordField, pwordRepField;
+    EditText fnameField, lnameField, emailField, pwordField, pwordRepField;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -22,10 +23,10 @@ public class SignupFormFragment extends Fragment implements View.OnClickListener
     // This event is triggered soon after onCreateView().
     // Any view setup should occur here.  E.g., view lookups and attaching view listeners.
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        nameField = requireView().findViewById(R.id.nameField);
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        fnameField = requireView().findViewById(R.id.fnameField);
+        lnameField = requireView().findViewById(R.id.lnameField);
         emailField = requireView().findViewById(R.id.emailField);
-        emailRepField = requireView().findViewById(R.id.emailConfirmField);
         pwordField = requireView().findViewById(R.id.passwordField);
         pwordRepField = requireView().findViewById(R.id.passwordConfirmField);
 
@@ -41,19 +42,14 @@ public class SignupFormFragment extends Fragment implements View.OnClickListener
             setStatusMessage("Invalid email"); return;
         }
 
-        String emailRep = emailRepField.getText().toString().trim();
-        if (!email.equals(emailRep)) {
-            setStatusMessage("Emails don't match"); return;
-        }
-
         String pword = pwordField.getText().toString().trim();
         String pwordRep = pwordRepField.getText().toString().trim();
         if (!pword.equals(pwordRep)) {
             setStatusMessage("Passwords don't match"); return;
         }
 
-        String fName = nameField.getText().toString().trim();
-        String lName = nameField.getText().toString().trim();
+        String fName = fnameField.getText().toString().trim();
+        String lName = lnameField.getText().toString().trim();
 
         DBHandler.registerUser(fName, lName, email, pword);
     }
