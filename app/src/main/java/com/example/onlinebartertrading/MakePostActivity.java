@@ -11,6 +11,7 @@ import android.widget.TextView;
 public class MakePostActivity extends AppCompatActivity implements View.OnClickListener {
     public static final int maxTitleLength = 50;
     public static final int maxDescLength = 180;
+    public static final int maxValue = 1000000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,11 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
     protected  String getDesc(){
         EditText descBox = findViewById(R.id.postDesc);
         return descBox.getText().toString().trim();
+    }
+
+    protected float getValue(){
+        EditText valueBox = findViewById(R.id.postValue);
+        return Float.parseFloat(valueBox.getText().toString().trim());
     }
 
     protected Boolean validTitleDesc(String title){
@@ -59,11 +65,19 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
         return true;
     }
 
+    protected Boolean isValidValue(float value){
+        if (value>maxValue || value<1){
+            return false;
+        }
+        return true;
+    }
+
 
     @Override
     public void onClick(View view) {
         String title = getTitleDesc();
         String desc = getDesc();
+        float value = getValue();
         String errorMessage = "";
         if (!validTitleDesc(title)){
             errorMessage = getResources().getString(R.string.INVALID_TITLE).trim();
@@ -73,6 +87,9 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
         }
         if (!isValidDesc(desc)){
             errorMessage = getResources().getString(R.string.LONG_DESC).trim();
+        }
+        if (!isValidValue(value)){
+            errorMessage = getResources().getString((R.string.INVALID_VALUE));
         }
 
         setStatusMessage(errorMessage);
