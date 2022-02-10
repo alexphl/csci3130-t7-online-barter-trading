@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 public class SignupFormFragment extends Fragment implements View.OnClickListener {
 
     EditText fnameField, lnameField, emailField, pwordField, pwordRepField;
+    DBHandler dbHandler;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -29,6 +30,8 @@ public class SignupFormFragment extends Fragment implements View.OnClickListener
         emailField = requireView().findViewById(R.id.emailField);
         pwordField = requireView().findViewById(R.id.passwordField);
         pwordRepField = requireView().findViewById(R.id.passwordConfirmField);
+
+        dbHandler = new DBHandler();
 
         //attach an event handler to the button
         Button formSubmitButton = requireView().findViewById(R.id.signupSubmitButton);
@@ -51,7 +54,7 @@ public class SignupFormFragment extends Fragment implements View.OnClickListener
         String fName = fnameField.getText().toString().trim();
         String lName = lnameField.getText().toString().trim();
 
-        DBHandler.registerUser(fName, lName, email, pword);
+        dbHandler.registerUser(fName, lName, email, pword);
     }
 
     protected void setStatusMessage(String message) {
