@@ -6,6 +6,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 import static org.junit.Assert.*;
 
@@ -17,6 +19,7 @@ import java.security.NoSuchAlgorithmException;
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
+@RunWith(JUnit4.class)
 public class SignupUnitTests {
     private static SignupFormFragment signupFragment;
 
