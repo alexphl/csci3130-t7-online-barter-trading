@@ -26,7 +26,7 @@ public class AuthActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
 
-        panes = (TabLayout) findViewById(R.id.authTabs);
+        panes = findViewById(R.id.authTabs);
 
         ViewPager2 viewPager = findViewById(R.id.viewPager);
         FragmentStateAdapter pagerAdapter = new ScreenSlidePagerAdapter(this);
@@ -40,11 +40,6 @@ public class AuthActivity extends AppCompatActivity {
                 tab.setText("Log In");
             }
         }).attach();
-    }
-
-
-    protected boolean isValidEmailAddress(String emailAddress) {
-        return emailAddress != null && emailAddress.matches(".*@.*[\\.].*$");
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStateAdapter {
