@@ -98,6 +98,10 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
         }
 
         setStatusMessage(errorMessage);
+        if (errorMessage.equals("")){
+            PostDetails newPost = new PostDetails(title,desc,value);
+            myDatabase.child("posts").setValue(newPost);
+        }
 
     }
 }

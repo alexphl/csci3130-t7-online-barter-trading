@@ -14,19 +14,6 @@ import static org.junit.Assert.*;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 public class ExampleUnitTest {
-    static MakePostActivity makePostActivity; //= new MakePostActivity();
-
-/**
-    @BeforeClass
-    public static void setup() {
-        makePostActivity = new MakePostActivity();
-    }
-
-    @AfterClass
-    public static void tearDown() {
-        System.gc();
-    }
-*/
 
 
     @Test
@@ -35,22 +22,4 @@ public class ExampleUnitTest {
     }
 
 
-    @Test
-    public void checkIfTitleIsEmpty(){
-        assertFalse(makePostActivity.validTitleDesc(""));
-    }
-
-    @Test
-    public void checkIfTitlePostIsToLong(){
-        String testString = "";
-        for (int i=0; i<maxTitleLength+1;i++){
-            testString+="1";
-        }
-        assertFalse(makePostActivity.validTitleDesc(testString));
-    }
-
-    @Test
-    public void checkIfValidTitlePost(){
-        assertTrue(makePostActivity.validTitleDesc("This is a valid title"));
-    }
 }
