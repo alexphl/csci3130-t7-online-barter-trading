@@ -49,11 +49,12 @@ public class DBHandler {
      */
     public void retrieveUsers() {
         DatabaseReference usersRef = dbRef.child(FirebaseConstants.USERS_COLLECTION);
-        users.clear();
 
         usersRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                users.clear();
+                
                 for(DataSnapshot children: snapshot.getChildren()) {
                     String email = children.child("email").getValue(String.class);
                     String passwordHash = children.child("pwordHash").getValue(String.class);
