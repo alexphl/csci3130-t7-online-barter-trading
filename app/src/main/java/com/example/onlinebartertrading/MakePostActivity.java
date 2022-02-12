@@ -8,10 +8,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class MakePostActivity extends AppCompatActivity implements View.OnClickListener {
     public static final int maxTitleLength = 50;
     public static final int maxDescLength = 180;
     public static final int maxValue = 1000000;
+    private DatabaseReference myDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +23,7 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_make_post);
         Button postButton = findViewById(R.id.makePostButton);
         postButton.setOnClickListener(this);
+        myDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
     protected void setStatusMessage(String message){
@@ -93,5 +98,6 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
         }
 
         setStatusMessage(errorMessage);
+
     }
 }
