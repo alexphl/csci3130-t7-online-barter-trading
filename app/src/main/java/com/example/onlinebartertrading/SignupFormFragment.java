@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 public class SignupFormFragment extends Fragment implements View.OnClickListener {
 
     EditText fnameField, lnameField, emailField, pwordField, pwordRepField;
+    TextView statusLabel;
     DBHandler dbHandler;
 
     @Override
@@ -31,6 +32,8 @@ public class SignupFormFragment extends Fragment implements View.OnClickListener
         pwordField = requireView().findViewById(R.id.passwordField);
         pwordRepField = requireView().findViewById(R.id.passwordConfirmField);
 
+        statusLabel = requireView().findViewById(R.id.statusLabel);
+
         dbHandler = new DBHandler();
 
         //attach an event handler to the button
@@ -40,30 +43,46 @@ public class SignupFormFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onClick(View view) {
+
+        String fName = fnameField.getText().toString().trim();
+        String lName = lnameField.getText().toString().trim();
+        if(isEmptyName(fName, lName)) {
+            setStatusMessage("Name cannot be empty"); return;
+        }
+
         String email = emailField.getText().toString().trim();
+
+        if (email.isEmpty()) {
+            setStatusMessage("Email cannot be empty"); return;
+        }
+
         if (!isValidEmailAddress(email)) {
             setStatusMessage("Invalid email"); return;
         }
 
         String pword = pwordField.getText().toString().trim();
         String pwordRep = pwordRepField.getText().toString().trim();
+
+        if(pword.isEmpty()) {
+            setStatusMessage("Password cannot be empty"); return;
+        }
         if (!pword.equals(pwordRep)) {
             setStatusMessage("Passwords don't match"); return;
         }
-
-        String fName = fnameField.getText().toString().trim();
-        String lName = lnameField.getText().toString().trim();
 
         dbHandler.registerUser(fName, lName, email, pword);
     }
 
     protected void setStatusMessage(String message) {
-        TextView statusLabel = requireView().findViewById(R.id.statusLabel);
         statusLabel.setText(message.trim());
     }
 
     protected boolean isValidEmailAddress(String emailAddress) {
-        return emailAddress != null && emailAddress.matches(".*@.*[\\.].*$");
+        return emailAddress.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
+    }
+
+    protected boolean isEmptyName(String fName, String lName) {
+        return fName.isEmpty() || lName.isEmpty();
     }
 
 }
