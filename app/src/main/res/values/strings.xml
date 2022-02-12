@@ -13,4 +13,13 @@
     <string name="invalidEmail">Invalid email</string>
     <string name="emptyPassword">Password cannot be empty</string>
     <string name="diffPassword">Passwords don\'t match</string>
+
+    <string name="VALID_EMAIL">Email Successful</string>
+    <string name="VALID_PASSWORD">Email Successful</string>
+    <string name="EMPTY_FIELD">Field is empty</string>
+    <string name="INVALID_EMAIL">Email not Successful</string>
+    <string name="INVALID_PASSWORD">Password not Successful</string>
+    <string name="EMPTY_EMAIL">Email Field is empty</string>
+    <string name="EMPTY_PASSWORD">Password Field is empty</string>
+    <string name="DO_NOTHING">Successful so do nothing</string>
 </resources>
