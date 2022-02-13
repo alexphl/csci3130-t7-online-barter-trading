@@ -36,7 +36,7 @@ public class LoginEspressoTest {
     }
 
     @Rule
-    public ActivityScenarioRule<LoginActivity> myRule = new ActivityScenarioRule<>(LoginActivity.class);
+    public ActivityScenarioRule<AuthActivity> myRule = new ActivityScenarioRule<>(AuthActivity.class);
 
     @BeforeClass
     public static void setup() {

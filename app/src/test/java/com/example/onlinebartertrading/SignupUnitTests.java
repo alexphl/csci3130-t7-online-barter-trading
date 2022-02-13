@@ -46,6 +46,9 @@ public class SignupUnitTests {
         assertFalse(signupFragment.isValidEmailAddress("email"));
     }
 
-
-
+    @Test
+    public void checkIfFragSlide() {
+        assertTrue(signupFragment.isValidEmailAddress("email@test.com"));
+        assertFalse(signupFragment.isValidEmailAddress("email"));
+    }
 }
