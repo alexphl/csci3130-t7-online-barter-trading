@@ -29,7 +29,7 @@ public class Editor extends ArrayAdapter<String> {
     }
 
 
-//show item's view
+//getView() is a method that run several times, every time your program inflate a row in your list it will be running. The parent is your custom adapter that you inflate a row into it. convertView is the GUI(view) of the row in the Position position in your adapter.
     @Override
     public View getView(int position,  View convertView, ViewGroup parent) {
         View view = convertView;
