@@ -52,6 +52,9 @@ public class DBHandler {
      * @return password hash
      */
     public static String hashString(String password) throws NoSuchAlgorithmException {
+        if(password.isEmpty()) {
+            return "";
+        }
         MessageDigest digest = MessageDigest.getInstance("SHA-512");
         byte[] hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
         BigInteger bigInteger = new BigInteger(1, hash);

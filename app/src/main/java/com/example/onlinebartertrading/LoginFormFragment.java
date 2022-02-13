@@ -128,9 +128,6 @@ public class LoginFormFragment extends Fragment implements View.OnClickListener 
         if (isEmptyEmail(emailAddress)) {
             errorMessage = getResources().getString(R.string.EMPTY_EMAIL).trim();
         }
-        else if (isEmptyPassword(passwordHash)) {
-            errorMessage = getResources().getString(R.string.EMPTY_PASSWORD).trim();
-        }
         else if (!DB_HANDLER.userExists(emailAddress)) {
             errorMessage = getResources().getString(R.string.INVALID_EMAIL).trim();
         }
@@ -141,6 +138,10 @@ public class LoginFormFragment extends Fragment implements View.OnClickListener 
             errorMessage = "";
             //switch2PostsWindow(emailAddress);
         }
+        if (isEmptyPassword(passwordHash)) {
+            errorMessage = getResources().getString(R.string.EMPTY_PASSWORD).trim();
+        }
+        System.out.println("Hash " + passwordHash + "Error " + errorMessage);
 
         setStatusMessage(errorMessage);
     }
