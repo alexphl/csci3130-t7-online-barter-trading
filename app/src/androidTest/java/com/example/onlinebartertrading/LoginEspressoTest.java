@@ -15,6 +15,7 @@ import org.junit.runner.RunWith;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.swipeLeft;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -48,16 +49,10 @@ public class LoginEspressoTest {
         System.gc();
     }
 
-    /*** User Acceptance Test - I**/
-    @Test
-    public void checkIfLoginPageIsVisible() {
-        onView(withId(R.id.emailField)).check(matches(withText("")));
-        onView(withId(R.id.passwordField)).check(matches(withText("")));
-    }
-
     /*** User Acceptance Test - II**/
     @Test
     public void checkIfEmailFieldIsEmpty() {
+        onView(withId(R.id.viewPager)).perform(swipeLeft());
         onView(withId(R.id.emailField)).perform(typeText(""));
         onView(withId(R.id.passwordField)).perform(typeText("testingPassword"));
         onView(withId(R.id.loginButton)).perform(click());
@@ -67,6 +62,7 @@ public class LoginEspressoTest {
     /*** User Acceptance Test - III**/
     @Test
     public void checkIfPasswordFieldIsEmpty() {
+        onView(withId(R.id.viewPager)).perform(swipeLeft());
         onView(withId(R.id.emailField)).perform(typeText("testemail@gmail.com"));
         onView(withId(R.id.passwordField)).perform(typeText(""));
         onView(withId(R.id.loginButton)).perform(click());
@@ -76,6 +72,7 @@ public class LoginEspressoTest {
     /*** User Acceptance Test - IV**/
     @Test
     public void checkIfEmailDoesNotMatch() {
+        onView(withId(R.id.viewPager)).perform(swipeLeft());
         onView(withId(R.id.emailField)).perform(typeText("alex@email.comm"));
         onView(withId(R.id.passwordField)).perform(typeText("a"));
         onView(withId(R.id.loginButton)).perform(click());
@@ -85,6 +82,7 @@ public class LoginEspressoTest {
     /*** User Acceptance Test - V**/
     @Test
     public void checkIfPasswordMatches() {
+        onView(withId(R.id.viewPager)).perform(swipeLeft());
         onView(withId(R.id.emailField)).perform(typeText("alex@email.com"));
         onView(withId(R.id.passwordField)).perform(typeText("a"));
         onView(withId(R.id.loginButton)).perform(click());
@@ -94,6 +92,7 @@ public class LoginEspressoTest {
     /*** User Acceptance Test - VI**/
     @Test
     public void checkIfPasswordDoesNotMatch() {
+        onView(withId(R.id.viewPager)).perform(swipeLeft());
         onView(withId(R.id.emailField)).perform(typeText("alex@email.com"));
         onView(withId(R.id.passwordField)).perform(typeText("aa"));
         onView(withId(R.id.loginButton)).perform(click());
