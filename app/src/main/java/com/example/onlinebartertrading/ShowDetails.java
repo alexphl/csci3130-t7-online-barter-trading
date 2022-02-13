@@ -36,7 +36,7 @@ public class ShowDetails extends AppCompatActivity {
     DatabaseReference reference;
 
 
-
+// below code to get the data from the database then Use the Editor class so showing them in the showdetail page
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
