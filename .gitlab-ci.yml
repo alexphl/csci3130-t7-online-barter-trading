@@ -51,11 +51,7 @@ unit_tests:
     paths:
       - app/build/reports/tests/
   tags:
-<<<<<<< Updated upstream
      - dalfcs_docker_autoscale
-
-=======
-    - dalfcs_docker_autoscale
 
 espresso_tests:
   stage: test
@@ -68,4 +64,3 @@ espresso_tests:
       - app/build/reports/tests/
   tags:
     - dalfcs_docker_autoscale
->>>>>>> Stashed changes
