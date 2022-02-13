@@ -28,9 +28,11 @@ public class Editor extends ArrayAdapter<String> {
 
     }
 
+/**
+*getView
+*The parent is your custom adapter that you inflate a row into it. convertView is the GUI(view) of the row in the Position position in your adapter.
+**/
 
-//getView() is a method that run several times, every time your program inflate a row in your list it will be running.
-// The parent is your custom adapter that you inflate a row into it. convertView is the GUI(view) of the row in the Position position in your adapter.
     @Override
     public View getView(int position,  View convertView, ViewGroup parent) {
         View view = convertView;
@@ -41,7 +43,11 @@ public class Editor extends ArrayAdapter<String> {
         }else
         {
 
-            // The LayoutInflater takes layout XML-files and creates different View-objects from its contents.
+/**
+*The LayoutInflater takes layout XML-files and creates different View-objects from its contents.
+**/
+
+            
             LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = layoutInflater.inflate(R.layout.activity_listview, parent, false);
             nameSet = new NameSet(view);
