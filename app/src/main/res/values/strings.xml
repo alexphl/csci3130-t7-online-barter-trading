@@ -22,4 +22,10 @@
     <string name="EMPTY_EMAIL">Email Field is empty</string>
     <string name="EMPTY_PASSWORD">Password Field is empty</string>
     <string name="DO_NOTHING">Successful so do nothing</string>
+    
+    <string name="EMPTY_STRING"></string>
+    <string name="INVALID_TITLE">Invalid Title</string>
+    <string name="EMPTY_DESC">ERROR: Please enter a description</string>
+    <string name="LONG_DESC">ERROR: Description is too long</string>
+    <string name="INVALID_VALUE">ERROR: Enter a proper value</string>
 </resources>
