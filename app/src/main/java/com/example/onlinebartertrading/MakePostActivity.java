@@ -2,6 +2,7 @@ package com.example.onlinebartertrading;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -80,6 +81,15 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
         return true;
     }
 
+    protected void switch2ShowDetail(String title, String desc, float value) {
+        Intent intent = new Intent(MakePostActivity.this, ShowDetails.class);
+        intent.putExtra("title",title);
+        intent.putExtra("desc",desc);
+        intent.putExtra("value",value);
+        startActivity(intent);
+    }
+
+
 
     @Override
     public void onClick(View view) {
@@ -104,8 +114,8 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
         if (errorMessage.equals("")){
             PostDetails newPost = new PostDetails(title,desc,value);
             myDatabase.child("posts").child("Details"+title).setValue(newPost);
-
         }
+        switch2ShowDetail(title,desc,value);
 
     }
 }

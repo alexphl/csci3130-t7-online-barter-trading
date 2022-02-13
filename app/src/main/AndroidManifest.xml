@@ -13,6 +13,9 @@
             android:name=".MakePostActivity"
             android:exported="true" />
         <activity
+            android:name=".ShowDetails"
+            android:exported="true" />
+        <activity
             android:name=".AuthActivity"
             android:exported="true">
             <intent-filter>
