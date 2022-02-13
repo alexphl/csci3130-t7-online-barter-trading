@@ -42,22 +42,23 @@ public class ShowDetails extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         setContentView(R.layout.activity_listmain);
 
-
-
+        //listview layout
         listGoods = findViewById(R.id.listView);
 
         reference = FirebaseDatabase.getInstance().getReference().child("posts");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+                //get data from firebase
                 for(DataSnapshot snapshot : datasnapshot.getChildren())
                 {
-
+                    //title getter
                     String tit = snapshot.child("title").getValue().toString();
+                   //get description
                     String de = snapshot.child("desc").getValue().toString();
+                    //value of good
                     String val = snapshot.child("value").getValue().toString();
 
                     name.add(tit);
