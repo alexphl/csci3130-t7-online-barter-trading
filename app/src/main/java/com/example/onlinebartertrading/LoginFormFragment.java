@@ -14,16 +14,27 @@ import androidx.fragment.app.Fragment;
 
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * This is the Login form Fragment
+ * that is included as part of AuthActivity.
+ */
 public class LoginFormFragment extends Fragment implements View.OnClickListener {
 
     public static String LOGGED_USER_ID = "com.example.onlinebartertrading.userID";
     public DBHandler DB_HANDLER;
 
+    /**
+     * Obligatory Fragment inflater.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.login_form_fragment, container, false);
     }
 
+    /**
+     * This event is triggered soon after onCreateView().
+     * View setup occurs here.
+     */
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         DB_HANDLER = new DBHandler();
@@ -33,13 +44,17 @@ public class LoginFormFragment extends Fragment implements View.OnClickListener 
         loginButton.setOnClickListener(this);
     }
 
-    // Gets password from edit field
+    /**
+     * Email field getter
+     */
     protected String getEmailAddress() {
         EditText emailBox = requireView().findViewById(R.id.emailField);
         return emailBox.getText().toString().trim();
     }
 
-    // Gets password from edit field
+    /**
+     * Password field getter
+     */
     protected String getPassword() {
         EditText passwordBox = requireView().findViewById(R.id.passwordField);
         return passwordBox.getText().toString().trim();
@@ -72,12 +87,16 @@ public class LoginFormFragment extends Fragment implements View.OnClickListener 
         statusLabel.setText(message.trim());
     }
 
-    // Checks if email field is empty
+    /**
+     * @return true if param string is empty
+     */
     protected boolean isEmptyEmail(String email) {
         return email.isEmpty();
     }
 
-    // Check if password field is empty
+    /**
+     * @return true if param string is empty
+     */
     protected boolean isEmptyPassword(String password) {
         return password.isEmpty();
     }
@@ -92,6 +111,13 @@ public class LoginFormFragment extends Fragment implements View.OnClickListener 
         startActivity(switchActivity);
     }*/
 
+    /**
+     * "Login" button processor.
+     *  This will do the following:
+     *      Validate user input for email and password fields
+     *      Check if the user exists
+     *      Switch to the Posts Activity
+     */
     @Override
     public void onClick(View view) {
         String emailAddress = getEmailAddress();
