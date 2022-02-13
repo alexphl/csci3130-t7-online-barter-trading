@@ -16,11 +16,18 @@ import android.telephony.SignalStrength;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+/**
+ * Authentication activity
+ * Implements LoginForm and SignupForm Fragments
+ */
 public class AuthActivity extends AppCompatActivity {
 
     TabLayout panes;
 
-
+    /**
+     * View setup
+     * Implements TabLayout
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +49,9 @@ public class AuthActivity extends AppCompatActivity {
         }).attach();
     }
 
+    /**
+     * Adapter to implements Fragments into Tab Layout
+     */
     private class ScreenSlidePagerAdapter extends FragmentStateAdapter {
         public ScreenSlidePagerAdapter(FragmentActivity fa) {
             super(fa);
