@@ -1,5 +1,6 @@
 package com.example.onlinebartertrading;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,16 +33,23 @@ public class LoginFormFragment extends Fragment implements View.OnClickListener 
         loginButton.setOnClickListener(this);
     }
 
+    // Gets password from edit field
     protected String getEmailAddress() {
         EditText emailBox = requireView().findViewById(R.id.emailField);
         return emailBox.getText().toString().trim();
     }
 
+    // Gets password from edit field
     protected String getPassword() {
         EditText passwordBox = requireView().findViewById(R.id.passwordField);
         return passwordBox.getText().toString().trim();
     }
 
+    /**
+     * Hashes password and returns the hash
+     * @param password to hash
+     * @return the hashed password
+     */
     protected String getPasswordHash(String password) {
         String passwordHash = "";
 
@@ -55,24 +63,34 @@ public class LoginFormFragment extends Fragment implements View.OnClickListener 
         return passwordHash;
     }
 
+    /**
+     * Sets status message
+     * @param message to set
+     */
     protected void setStatusMessage(String message) {
         TextView statusLabel = requireView().findViewById(R.id.loginStatus);
         statusLabel.setText(message.trim());
     }
 
+    // Checks if email field is empty
     protected boolean isEmptyEmail(String email) {
         return email.isEmpty();
     }
 
+    // Check if password field is empty
     protected boolean isEmptyPassword(String password) {
         return password.isEmpty();
     }
 
-    /*protected void switch2PostsWindow(String email) {
-        Intent switchActivity = new Intent(this, PostsActivity.class);
+    /**
+     * Switches to post once login successful
+     * @param email to pass to next activity
+     */
+    protected void switch2PostsWindow(String email) {
+        Intent switchActivity = new Intent(this, MakePostActivity.class);
         switchActivity.putExtra(LOGGED_USER_ID, email);
         startActivity(switchActivity);
-    }*/
+    }
 
     @Override
     public void onClick(View view) {
@@ -95,7 +113,7 @@ public class LoginFormFragment extends Fragment implements View.OnClickListener 
         }
         else {
             errorMessage = "";
-            //switch2PostsWindow(emailAddress);
+            switch2PostsWindow(emailAddress);
         }
 
         setStatusMessage(errorMessage);
