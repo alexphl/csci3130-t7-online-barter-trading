@@ -1,5 +1,8 @@
 package com.example.onlinebartertrading;
 
+/**
+ * Includes constants with references to reusable Firebase strings
+ */
 public class FirebaseConstants {
 
     private FirebaseConstants(){
