@@ -106,7 +106,7 @@ public class SignupEspressoTests {
         onView(withId(R.id.signupSubmitButton)).perform(click());
         onView(withId(R.id.statusLabel)).check(matches(withText(R.string.diffPassword)));
     }
-    
+
     /*** User Acceptance Test - V**/
     @Test
     public void checkIfFragSlide() {
