@@ -18,7 +18,7 @@ public class Editor extends ArrayAdapter<String> {
     ArrayList<String> detail = new ArrayList<>();
     ArrayList<String> value = new ArrayList<>();
 
-
+    
     public Editor(ShowDetails context, ArrayList<String> name, ArrayList<String> detail, ArrayList<String> value) {
         super(context, R.layout.activity_listview, R.id.textview2, name);
         this.context = context;
@@ -29,6 +29,7 @@ public class Editor extends ArrayAdapter<String> {
     }
 
 
+//show item's view
     @Override
     public View getView(int position,  View convertView, ViewGroup parent) {
         View view = convertView;
@@ -38,6 +39,8 @@ public class Editor extends ArrayAdapter<String> {
             nameSet = (NameSet) view.getTag();
         }else
         {
+
+            // The LayoutInflater takes layout XML-files and creates different View-objects from its contents.
             LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = layoutInflater.inflate(R.layout.activity_listview, parent, false);
             nameSet = new NameSet(view);
