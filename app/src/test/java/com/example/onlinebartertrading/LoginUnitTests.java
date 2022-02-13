@@ -15,12 +15,12 @@ import java.security.NoSuchAlgorithmException;
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
-public class JUnitTest {
-    static LoginActivity loginActivity;
+public class LoginUnitTests {
+    static LoginFormFragment loginActivity;
 
     @BeforeClass
     public static void setup() {
-        loginActivity = new LoginActivity();
+        loginActivity = new LoginFormFragment();
     }
 
     @AfterClass
