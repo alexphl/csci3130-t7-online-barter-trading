@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">Online Barter Trading</string>
-<<<<<<< HEAD
-=======
     <string name="emailHint">Email</string>
     <string name="passwordHint">Password</string>
     <string name="confirmPassword_hint">Confirm Password</string>
@@ -24,5 +22,4 @@
     <string name="EMPTY_EMAIL">Email Field is empty</string>
     <string name="EMPTY_PASSWORD">Password Field is empty</string>
     <string name="DO_NOTHING">Successful so do nothing</string>
->>>>>>> dev-signup
 </resources>
