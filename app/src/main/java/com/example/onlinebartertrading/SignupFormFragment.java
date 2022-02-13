@@ -84,5 +84,4 @@ public class SignupFormFragment extends Fragment implements View.OnClickListener
     protected boolean isEmptyName(String fName, String lName) {
         return fName.isEmpty() || lName.isEmpty();
     }
-
 }

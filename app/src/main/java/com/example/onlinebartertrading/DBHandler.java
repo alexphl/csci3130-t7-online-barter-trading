@@ -18,12 +18,18 @@ import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 
+/**
+ * This is our database worker class
+ * It is a bootstrap for all database functions
+ */
 public class DBHandler {
 
     private final DatabaseReference dbRef;
-    private String extractedEmail;
     private final HashMap<String, String> users;
 
+    /**
+     * Initializes a reference to our main database.
+     */
     public DBHandler() {
         dbRef = FirebaseDatabase
                 .getInstance(FirebaseConstants.FIREBASE_URL)
@@ -31,11 +37,20 @@ public class DBHandler {
         users = new HashMap<>();
     }
 
+    /**
+     * Support dependency injection for DatabaseReference
+     * Useful for mock database testing
+     */
     public DBHandler(DatabaseReference dbRef) {
         this.dbRef = dbRef;
         users = new HashMap<>();
     }
 
+    /**
+     * Hashes the input password with SHA-512 and returns the hash
+     * @param password to hash
+     * @return password hash
+     */
     public static String hashString(String password) throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance("SHA-512");
         byte[] hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
@@ -69,7 +84,16 @@ public class DBHandler {
         });
     }
 
-    // Returns true if successful
+    /**
+     * Bootstrap to add new user data to the database
+     * Checks if user exists and hashes the password
+     * @return true if successful
+     *
+     * @param fName first name submitted by the user
+     * @param lName last name
+     * @param email email
+     * @param pword password
+     */
     public boolean registerUser(String fName, String lName, String email, String pword) {
         // Check if user exists
         retrieveUsers(); // Calling in case no call outside class
@@ -86,6 +110,15 @@ public class DBHandler {
         return addUserData(fName, lName, email, pwordHash);
     }
 
+    /**
+     * Adds user data to the database
+     * @return true if successful
+     *
+     * @param fName first name submitted by the user
+     * @param lName last name
+     * @param email email
+     * @param pwordHash password hash
+     */
     private boolean addUserData(String fName, String lName, String email, String pwordHash) {
         String uuid = UUID.nameUUIDFromBytes(email.getBytes()).toString();
         DatabaseReference userRef = dbRef.child(FirebaseConstants.USERS_COLLECTION).child(uuid);
