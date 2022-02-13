@@ -26,8 +26,11 @@ public class ShowDetails extends AppCompatActivity {
 
     ListView listGoods;
 
-    ArrayList<String> name = new ArrayList<>();
+    /**
+    *all the lists for saving data from firebase
+    **/
 
+    ArrayList<String> name = new ArrayList<>();
 
     ArrayList<String> detail = new ArrayList<>();
 
@@ -36,7 +39,7 @@ public class ShowDetails extends AppCompatActivity {
     DatabaseReference reference;
 
 
-// below code to get the data from the database then Use the Editor class so showing them in the showdetail page
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,21 +47,31 @@ public class ShowDetails extends AppCompatActivity {
 
         setContentView(R.layout.activity_listmain);
 
-        //listview layout
+/**
+*listview layout
+**/
         listGoods = findViewById(R.id.listView);
 
         reference = FirebaseDatabase.getInstance().getReference().child("posts");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot datasnapshot) {
-                //get data from firebase
+            /**
+            *get data from firebase
+            **/
+                
                 for(DataSnapshot snapshot : datasnapshot.getChildren())
                 {
-                    //title getter
+                    /**
+            *title getter
+            *descrption getter
+            *value of goods
+            **/
+                    
                     String tit = snapshot.child("title").getValue().toString();
-                   //get description
+                   
                     String de = snapshot.child("desc").getValue().toString();
-                    //value of good
+                  
                     String val = snapshot.child("value").getValue().toString();
 
                     name.add(tit);
@@ -66,6 +79,10 @@ public class ShowDetails extends AppCompatActivity {
                     value.add(val);
 
                 }
+
+                /**
+            *Send to adapter and make data in each layout
+            **/
                 Editor editor = new Editor(ShowDetails.this, name, detail, value);
                 listGoods.setAdapter(editor);
             }
