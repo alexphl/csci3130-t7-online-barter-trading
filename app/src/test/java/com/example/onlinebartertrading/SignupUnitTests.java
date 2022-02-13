@@ -11,6 +11,8 @@ import org.junit.runners.JUnit4;
 
 import static org.junit.Assert.*;
 
+import androidx.viewpager.widget.ViewPager;
+
 import java.lang.annotation.Target;
 import java.security.NoSuchAlgorithmException;
 
@@ -42,12 +44,6 @@ public class SignupUnitTests {
 
     @Test
     public void checkIfEmailIsValid() {
-        assertTrue(signupFragment.isValidEmailAddress("email@test.com"));
-        assertFalse(signupFragment.isValidEmailAddress("email"));
-    }
-
-    @Test
-    public void checkIfFragSlide() {
         assertTrue(signupFragment.isValidEmailAddress("email@test.com"));
         assertFalse(signupFragment.isValidEmailAddress("email"));
     }
