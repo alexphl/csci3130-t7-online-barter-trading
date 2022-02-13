@@ -1,3 +1,28 @@
 <resources>
     <string name="app_name">Online Barter Trading</string>
+<<<<<<< HEAD
+=======
+    <string name="emailHint">Email</string>
+    <string name="passwordHint">Password</string>
+    <string name="confirmPassword_hint">Confirm Password</string>
+    <string name="firstName_hint">First Name</string>
+    <string name="lastName_hint">Last Name</string>
+    <string name="buttonText">Create Account</string>
+    <string name="signupTab">Sign Up</string>
+    <string name="loginTab">Log In</string>
+    <string name="emptyName">Name cannot be empty</string>
+    <string name="emptyEmail">Email cannot be empty</string>
+    <string name="invalidEmail">Invalid email</string>
+    <string name="emptyPassword">Password cannot be empty</string>
+    <string name="diffPassword">Passwords don\'t match</string>
+
+    <string name="VALID_EMAIL">Email Successful</string>
+    <string name="VALID_PASSWORD">Email Successful</string>
+    <string name="EMPTY_FIELD">Field is empty</string>
+    <string name="INVALID_EMAIL">Email not Successful</string>
+    <string name="INVALID_PASSWORD">Password not Successful</string>
+    <string name="EMPTY_EMAIL">Email Field is empty</string>
+    <string name="EMPTY_PASSWORD">Password Field is empty</string>
+    <string name="DO_NOTHING">Successful so do nothing</string>
+>>>>>>> dev-signup
 </resources>
