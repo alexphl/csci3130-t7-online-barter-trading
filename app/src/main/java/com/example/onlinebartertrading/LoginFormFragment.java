@@ -82,15 +82,15 @@ public class LoginFormFragment extends Fragment implements View.OnClickListener 
         return password.isEmpty();
     }
 
-    /**
+    /*/**
      * Switches to post once login successful
      * @param email to pass to next activity
-     */
+
     protected void switch2PostsWindow(String email) {
         Intent switchActivity = new Intent(this, MakePostActivity.class);
         switchActivity.putExtra(LOGGED_USER_ID, email);
         startActivity(switchActivity);
-    }
+    }*/
 
     @Override
     public void onClick(View view) {
@@ -113,7 +113,7 @@ public class LoginFormFragment extends Fragment implements View.OnClickListener 
         }
         else {
             errorMessage = "";
-            switch2PostsWindow(emailAddress);
+            //switch2PostsWindow(emailAddress);
         }
 
         setStatusMessage(errorMessage);
