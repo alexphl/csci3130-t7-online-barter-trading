@@ -22,78 +22,55 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+/**
+ * This class represents the details activity
+ * which appears when a user enters a product post
+ **/
 public class ShowDetails extends AppCompatActivity {
 
     ListView listGoods;
-
-    /**
-    *all the lists for saving data from firebase
-    **/
-
     ArrayList<String> name = new ArrayList<>();
-
     ArrayList<String> detail = new ArrayList<>();
-
     ArrayList<String> value = new ArrayList<>();
-
     DatabaseReference reference;
 
-
-
-
+    /**
+     * View setup and value listeners
+     **/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //listview layout
         setContentView(R.layout.activity_listmain);
-
-/**
-*listview layout
-**/
         listGoods = findViewById(R.id.listView);
-
         reference = FirebaseDatabase.getInstance().getReference().child("posts");
         reference.addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(@NonNull DataSnapshot datasnapshot) {
-            /**
-            *get data from firebase
-            **/
-                
-                for(DataSnapshot snapshot : datasnapshot.getChildren())
-                {
-                    /**
-            *title getter
-            *descrption getter
-            *value of goods
-            **/
-                    
+            //get data from firebase
+
+                for(DataSnapshot snapshot : datasnapshot.getChildren()) {
                     String tit = snapshot.child("title").getValue().toString();
-                   
                     String de = snapshot.child("desc").getValue().toString();
-                  
                     String val = snapshot.child("value").getValue().toString();
 
                     name.add(tit);
                     detail.add(de);
                     value.add(val);
-
                 }
 
-                /**
-            *Send to adapter and make data in each layout
-            **/
+                //Send to adapter and make data in each layout
                 Editor editor = new Editor(ShowDetails.this, name, detail, value);
                 listGoods.setAdapter(editor);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                // TODO: handle this exception
             }
         });
 
     }
-
-
 }
