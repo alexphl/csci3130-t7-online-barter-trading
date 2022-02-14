@@ -16,6 +16,7 @@ import com.google.firebase.database.FirebaseDatabase;
  * Represents the Activity a user sees when making an item posts
  */
 public class MakePostActivity extends AppCompatActivity implements View.OnClickListener {
+
     public static final int maxTitleLength = 50;
     public static final int maxDescLength = 180;
     public static final int maxValue = 1000000;
@@ -114,8 +115,8 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
         if (errorMessage.equals("")){
             PostDetails newPost = new PostDetails(title,desc,value);
             myDatabase.child("posts").child("Details"+title).setValue(newPost);
+            switch2ShowDetail(title,desc,value);
         }
-        switch2ShowDetail(title,desc,value);
 
     }
 }
