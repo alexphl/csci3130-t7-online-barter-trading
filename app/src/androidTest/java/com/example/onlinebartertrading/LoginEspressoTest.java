@@ -53,8 +53,8 @@ public class LoginEspressoTest {
     @Test
     public void checkIfEmailFieldIsEmpty() {
         onView(withId(R.id.viewPager)).perform(swipeLeft());
-        onView(withId(R.id.emailField)).perform(typeText(""));
-        onView(withId(R.id.passwordField)).perform(typeText("testingPassword"));
+        onView(withId(R.id.emailFieldL)).perform(typeText(""));
+        onView(withId(R.id.passwordFieldL)).perform(typeText("testingPassword"));
         onView(withId(R.id.loginButton)).perform(click());
         onView(withId(R.id.loginStatus)).check(matches(withText(R.string.EMPTY_EMAIL)));
     }
@@ -63,8 +63,8 @@ public class LoginEspressoTest {
     @Test
     public void checkIfPasswordFieldIsEmpty() {
         onView(withId(R.id.viewPager)).perform(swipeLeft());
-        onView(withId(R.id.emailField)).perform(typeText("testemail@gmail.com"));
-        onView(withId(R.id.passwordField)).perform(typeText(""));
+        onView(withId(R.id.emailFieldL)).perform(typeText("testemail@gmail.com"));
+        onView(withId(R.id.passwordFieldL)).perform(typeText(""));
         onView(withId(R.id.loginButton)).perform(click());
         onView(withId(R.id.loginStatus)).check(matches(withText(R.string.EMPTY_PASSWORD)));
     }
@@ -73,8 +73,8 @@ public class LoginEspressoTest {
     @Test
     public void checkIfEmailDoesNotMatch() {
         onView(withId(R.id.viewPager)).perform(swipeLeft());
-        onView(withId(R.id.emailField)).perform(typeText("alex@email.comm"));
-        onView(withId(R.id.passwordField)).perform(typeText("a"));
+        onView(withId(R.id.emailFieldL)).perform(typeText("alex@email.comm"));
+        onView(withId(R.id.passwordFieldL)).perform(typeText("a"));
         onView(withId(R.id.loginButton)).perform(click());
         onView(withId(R.id.loginStatus)).check(matches(withText(R.string.INVALID_EMAIL)));
     }
@@ -83,8 +83,8 @@ public class LoginEspressoTest {
     @Test
     public void checkIfPasswordMatches() {
         onView(withId(R.id.viewPager)).perform(swipeLeft());
-        onView(withId(R.id.emailField)).perform(typeText("alex@email.com"));
-        onView(withId(R.id.passwordField)).perform(typeText("a"));
+        onView(withId(R.id.emailFieldL)).perform(typeText("alex@email.com"));
+        onView(withId(R.id.passwordFieldL)).perform(typeText("a"));
         onView(withId(R.id.loginButton)).perform(click());
         onView(withId(R.id.loginStatus)).check(matches(withText("")));
     }
@@ -93,8 +93,8 @@ public class LoginEspressoTest {
     @Test
     public void checkIfPasswordDoesNotMatch() {
         onView(withId(R.id.viewPager)).perform(swipeLeft());
-        onView(withId(R.id.emailField)).perform(typeText("alex@email.com"));
-        onView(withId(R.id.passwordField)).perform(typeText("aa"));
+        onView(withId(R.id.emailFieldL)).perform(typeText("alex@email.com"));
+        onView(withId(R.id.passwordFieldL)).perform(typeText("aa"));
         onView(withId(R.id.loginButton)).perform(click());
         onView(withId(R.id.loginStatus)).check(matches(withText(R.string.INVALID_PASSWORD)));
     }

@@ -48,7 +48,7 @@ public class LoginFormFragment extends Fragment implements View.OnClickListener 
      * Email field getter
      */
     protected String getEmailAddress() {
-        EditText emailBox = requireView().findViewById(R.id.emailField);
+        EditText emailBox = requireView().findViewById(R.id.emailFieldL);
         return emailBox.getText().toString().trim();
     }
 
@@ -56,7 +56,7 @@ public class LoginFormFragment extends Fragment implements View.OnClickListener 
      * Password field getter
      */
     protected String getPassword() {
-        EditText passwordBox = requireView().findViewById(R.id.passwordField);
+        EditText passwordBox = requireView().findViewById(R.id.passwordFieldL);
         return passwordBox.getText().toString().trim();
     }
 
