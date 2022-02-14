@@ -12,15 +12,18 @@ import android.widget.TextView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-
-
+/**
+ * Represents the Activity a user sees when making an item posts
+ */
 public class MakePostActivity extends AppCompatActivity implements View.OnClickListener {
     public static final int maxTitleLength = 50;
     public static final int maxDescLength = 180;
     public static final int maxValue = 1000000;
     private DatabaseReference myDatabase;
 
-
+    /**
+     * Preliminary setup
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,11 +33,19 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
         myDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
+    /**
+     * Sets status label text
+     * @param message string to set status to
+     */
     protected void setStatusMessage(String message){
         TextView statusLabel = findViewById(R.id.statusLabel);
         statusLabel.setText(message.trim());
     }
 
+    /**
+     * Below are the getter methods
+     * Don't warrant their own descriptions
+     */
     protected String getTitleDesc(){
         EditText titleBox = findViewById(R.id.postTitle);
         return titleBox.getText().toString().trim();
@@ -50,37 +61,24 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
         return Float.parseFloat(valueBox.getText().toString().trim());
     }
 
+    /**
+     * Below are the validator methods
+     * Don't warrant their own descriptions
+     */
     protected Boolean validTitleDesc(String title){
-        if (title.equals("")) {
-            return false;
-        }
-        if (title.length()>maxTitleLength){
-            return false;
-        }
-        return true;
+        return !title.equals("") && title.length() <= maxTitleLength;
     }
+    protected Boolean isEmptyDesc(String desc) {return desc.equals("");}
+    protected Boolean isValidDesc(String desc) {return desc.length() <= maxDescLength;}
+    protected Boolean isValidValue(float value) {return !(value > maxValue) && !(value < 1);}
 
-    protected Boolean isEmptyDesc(String desc){
-        if (desc.equals("")){
-            return true;
-        }
-        return false;
-    }
-
-    protected Boolean isValidDesc(String desc){
-        if (desc.length()>maxDescLength){
-            return false;
-        }
-        return true;
-    }
-
-    protected Boolean isValidValue(float value){
-        if (value>maxValue || value<1){
-            return false;
-        }
-        return true;
-    }
-
+    /**
+     * Switches to ShowDetail Activity.
+     * Creates an Intent with the following params:
+     * @param desc      user provided description
+     * @param title     user provided title
+     * @param value     user provided value
+     */
     protected void switch2ShowDetail(String title, String desc, float value) {
         Intent intent = new Intent(MakePostActivity.this, ShowDetails.class);
         intent.putExtra("title",title);
@@ -89,8 +87,10 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
         startActivity(intent);
     }
 
-
-
+    /**
+     * "Post" button processor
+     * Validates the description and value fields
+     */
     @Override
     public void onClick(View view) {
         String title = getTitleDesc();
