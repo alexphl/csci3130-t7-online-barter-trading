@@ -4,31 +4,57 @@ package com.example.onlinebartertrading;
  * Class to represent post details
  */
 public class PostDetails {
+
+    private String posterEmail;
     private String title;
     private String desc;
-    float value;
+    private double latitude;
+    private double longitude;
+    private String category;
+    private String localArea;
+    private double monetaryValue;
 
     /**
      * @param givenTitle    user provided title
      * @param givenDesc     user provided description
      * @param givenValue    user provided valuation of product
      */
-    public PostDetails (String givenTitle, String givenDesc, float givenValue) {
-        title = givenTitle;
-        desc = givenDesc;
-        value = givenValue;
+    public PostDetails (String email, String givenTitle, String givenDesc, double givenValue, String category, double latitude, double longitude, String localArea) {
+        this.posterEmail = email;
+        this.title = givenTitle;
+        this.desc = givenDesc;
+        this.monetaryValue = givenValue;
+        this.category = category;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.localArea = localArea;
     }
 
     /**
      * Value Getters
      */
-    public float getValue() {
-        return value;
+    public String getPosterEmail() {
+        return posterEmail;
     }
     public String getDesc(){
         return desc;
     }
     public String getTitle(){
         return title;
+    }
+    public double getLatitude() {
+        return latitude;
+    }
+    public String getCategory() {
+        return category;
+    }
+    public String getArea() {
+        return localArea;
+    }
+    public double getValue() {
+        return monetaryValue;
+    }
+    public double getLongitude() {
+        return longitude;
     }
 }

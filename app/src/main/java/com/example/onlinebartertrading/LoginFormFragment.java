@@ -20,7 +20,7 @@ import java.security.NoSuchAlgorithmException;
  */
 public class LoginFormFragment extends Fragment implements View.OnClickListener {
 
-    public static String LOGGED_USER_ID = "com.example.onlinebartertrading.userID";
+    public static String LOGGED_USER_ID = "userID";
     public DBHandler DB_HANDLER;
 
     /**

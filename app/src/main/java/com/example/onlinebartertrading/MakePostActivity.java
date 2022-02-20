@@ -20,6 +20,10 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
     public static final int maxTitleLength = 50;
     public static final int maxDescLength = 180;
     public static final int maxValue = 1000000;
+    private static final double[] location1 = {44.63761546397678, -63.58739939828512};
+    private static final double[] location2 = {44.66004142421364, -63.74106611737466};
+    private static final String area = "HRM";
+    private String userEmail;
     private DatabaseReference myDatabase;
 
     /**
@@ -30,6 +34,7 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_make_post);
         Button postButton = findViewById(R.id.makePostButton);
+        userEmail = getIntent().getStringExtra("userID");
         postButton.setOnClickListener(this);
         myDatabase = FirebaseDatabase.getInstance().getReference();
     }
@@ -59,7 +64,7 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
 
     protected float getValue(){
         EditText valueBox = findViewById(R.id.postValue);
-        return Float.parseFloat(valueBox.getText().toString().trim());
+        return valueBox.getText().toString().isEmpty() ? -1 : Float.parseFloat(valueBox.getText().toString().trim());
     }
 
     /**
@@ -97,6 +102,10 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
         String title = getTitleDesc();
         String desc = getDesc();
         float value = getValue();
+
+        String category = "Furnishing";
+        double[] location = (int) (Math.random() * 2) == 0 ? location1 : location2;
+
         String errorMessage = "";
         if (!validTitleDesc(title)){
             errorMessage = getResources().getString(R.string.INVALID_TITLE).trim();
@@ -107,16 +116,19 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
         if (!isValidDesc(desc)){
             errorMessage = getResources().getString(R.string.LONG_DESC).trim();
         }
-        if (!isValidValue(value)){
+        if (!isValidValue(value) || value == -1){
             errorMessage = getResources().getString((R.string.INVALID_VALUE));
         }
 
         setStatusMessage(errorMessage);
         if (errorMessage.equals("")){
-            PostDetails newPost = new PostDetails(title,desc,value);
-            myDatabase.child("posts").child("Details"+title).setValue(newPost);
+            String time = Long.toString(System.currentTimeMillis());
+            PostDetails newPost = new PostDetails(userEmail, title, desc, value, category, location[0], location[1], area);
+            myDatabase.child("posts").child(time).setValue(newPost);
             switch2ShowDetail(title,desc,value);
         }
 
     }
 }
+
+
