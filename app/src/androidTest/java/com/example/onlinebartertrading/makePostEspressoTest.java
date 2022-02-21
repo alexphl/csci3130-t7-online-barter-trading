@@ -80,7 +80,7 @@ public class makePostEspressoTest {
         onView(withId(R.id.postDesc)).perform(typeText("Test description"));
         onView(withId(R.id.postValue)).perform(typeText("123"));
         onView(withId(R.id.makePostButton)).perform(click());
-        intended(hasComponent(ShowDetails.class.getName()));
+        intended(hasComponent(ShowDetailsActivity.class.getName()));
 
     }
 

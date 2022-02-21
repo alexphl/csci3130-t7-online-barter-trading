@@ -3,7 +3,7 @@ package com.example.onlinebartertrading;
 /**
  * Class to represent post details
  */
-public class PostDetails {
+public class Post {
 
     private String posterEmail;
     private String title;
@@ -19,7 +19,7 @@ public class PostDetails {
      * @param givenDesc     user provided description
      * @param givenValue    user provided valuation of product
      */
-    public PostDetails (String email, String givenTitle, String givenDesc, double givenValue, String category, double latitude, double longitude, String localArea) {
+    public Post(String email, String givenTitle, String givenDesc, double givenValue, String category, double latitude, double longitude, String localArea) {
         this.posterEmail = email;
         this.title = givenTitle;
         this.desc = givenDesc;

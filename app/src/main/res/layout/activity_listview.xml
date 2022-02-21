@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/itemName"
         android:layout_width="137dp"
         android:layout_height="119dp"
         android:layout_margin="10dp"
@@ -21,7 +21,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/itemValue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Value of good"
@@ -31,7 +31,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/textview2"
+            android:id="@+id/itemDetail"
             android:text="Detail"
             android:textSize="13sp"
             />
