@@ -86,7 +86,7 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
      * @param value     user provided value
      */
     protected void switch2ShowDetail(String title, String desc, float value) {
-        Intent intent = new Intent(MakePostActivity.this, ShowDetails.class);
+        Intent intent = new Intent(MakePostActivity.this, ShowDetailsActivity.class);
         intent.putExtra("title",title);
         intent.putExtra("desc",desc);
         intent.putExtra("value",value);

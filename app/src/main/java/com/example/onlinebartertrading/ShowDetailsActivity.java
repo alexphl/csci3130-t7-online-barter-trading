@@ -3,15 +3,8 @@ package com.example.onlinebartertrading;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 
 import com.google.firebase.database.DataSnapshot;
@@ -26,7 +19,7 @@ import java.util.ArrayList;
  * This class represents the details activity
  * which appears when a user enters a product post
  **/
-public class ShowDetails extends AppCompatActivity {
+public class ShowDetailsActivity extends AppCompatActivity {
 
     ListView listGoods;
     ArrayList<String> name = new ArrayList<>();
@@ -62,7 +55,7 @@ public class ShowDetails extends AppCompatActivity {
                 }
 
                 //Send to adapter and make data in each layout
-                Editor editor = new Editor(ShowDetails.this, name, detail, value);
+                Editor editor = new Editor(ShowDetailsActivity.this, name, detail, value);
                 listGoods.setAdapter(editor);
             }
 

@@ -6,10 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,7 +26,7 @@ public class Editor extends ArrayAdapter<String> {
      * @param detail    User provided details
      * @param value     User provided item valuation
      */
-    public Editor(ShowDetails context, ArrayList<String> name, ArrayList<String> detail, ArrayList<String> value) {
+    public Editor(ShowDetailsActivity context, ArrayList<String> name, ArrayList<String> detail, ArrayList<String> value) {
         super(context, R.layout.activity_listview, R.id.itemDetail, name);
         this.context = context;
         this.name = name;
