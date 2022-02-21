@@ -5,12 +5,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * Post editing interface
@@ -28,7 +31,7 @@ public class Editor extends ArrayAdapter<String> {
      * @param value     User provided item valuation
      */
     public Editor(ShowDetails context, ArrayList<String> name, ArrayList<String> detail, ArrayList<String> value) {
-        super(context, R.layout.activity_listview, R.id.textview2, name);
+        super(context, R.layout.activity_listview, R.id.itemDetail, name);
         this.context = context;
         this.name = name;
         this.detail = detail;
@@ -42,20 +45,25 @@ public class Editor extends ArrayAdapter<String> {
     @Override
     public View getView(int position,  View convertView, ViewGroup parent) {
         View view = convertView;
-        NameSet nameSet;
+        HashMap<String, TextView> nameSet;
         if(view != null) {
-            nameSet = (NameSet) view.getTag();
+            nameSet = (HashMap<String, TextView>) view.getTag();
         } else {
             //The LayoutInflater takes layout XML-files and creates different View-objects from its contents.
             LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = layoutInflater.inflate(R.layout.activity_listview, parent, false);
-            nameSet = new NameSet(view);
+            nameSet = new HashMap<>();
+
+            nameSet.put("name", view.findViewById(R.id.itemName));
+            nameSet.put("value", view.findViewById(R.id.itemValue));
+            nameSet.put("detail", view.findViewById(R.id.itemDetail));
+
             view.setTag(nameSet);
         }
 
-        nameSet.name.setText(name.get(position));
-        nameSet.detail.setText(detail.get(position));
-        nameSet.value.setText("$" + value.get(position));
+        Objects.requireNonNull(nameSet.get("name")).setText(name.get(position));
+        Objects.requireNonNull(nameSet.get("detail")).setText(detail.get(position));
+        Objects.requireNonNull(nameSet.get("value")).setText("$" + value.get(position));
 
         return view;
     }
