@@ -5,137 +5,147 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".preferenceActivity">
+
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
+        android:layout_width="601dp"
+        android:layout_height="960dp"
         android:orientation="vertical"
+        android:padding="16dp"
         tools:ignore="MissingConstraints">
+
         <com.google.android.material.chip.ChipGroup
-            android:layout_height="wrap_content"
+            android:id="@+id/allChips"
             android:layout_width="match_parent"
-            android:id="@+id/allChips">
+            android:layout_height="wrap_content">
+
             <com.google.android.material.chip.Chip
                 android:id="@+id/carChip"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cars"
-                style = "@style/Widget.MaterialComponents.Chip.Filter"/>
+                android:text="Cars" />
+
             <com.google.android.material.chip.Chip
                 android:id="@+id/buildingChip"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Building Supplies"
-                style = "@style/Widget.MaterialComponents.Chip.Filter"/>
+                android:text="Building Supplies" />
+
             <com.google.android.material.chip.Chip
                 android:id="@+id/computerChip"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Computers"
-                style = "@style/Widget.MaterialComponents.Chip.Filter"/>
+                android:text="Computers" />
+
             <com.google.android.material.chip.Chip
                 android:id="@+id/gameChip"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Games"
-                style = "@style/Widget.MaterialComponents.Chip.Filter"/>
+                android:text="Games" />
+
             <com.google.android.material.chip.Chip
                 android:id="@+id/petChip"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Pet Supplies"
-                style = "@style/Widget.MaterialComponents.Chip.Filter"/>
+                android:text="Pet Supplies" />
+
             <com.google.android.material.chip.Chip
                 android:id="@+id/sportChip"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sport Supplies"
-                style = "@style/Widget.MaterialComponents.Chip.Filter"/>
+                android:text="Sport Supplies" />
+
             <com.google.android.material.chip.Chip
                 android:id="@+id/furnitureChip"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Furniture"
-                style = "@style/Widget.MaterialComponents.Chip.Filter"/>
+                android:text="Furniture" />
 
         </com.google.android.material.chip.ChipGroup>
 
         <TextView
+            android:id="@+id/value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:id="@+id/value"
-            android:text="Enter the minimum and maximum value">
-        </TextView>
+            android:text="Enter the minimum and maximum value"
+            android:textSize="16dp"></TextView>
 
         <EditText
+            android:id="@+id/minValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="Enter minimum value."
-            android:textSize="16dp"
             android:inputType="number"
-            android:id="@+id/minValue">
-        </EditText>
+            android:textSize="16dp"></EditText>
 
         <EditText
+            android:id="@+id/maxValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="Enter maximum value."
-            android:textSize="16dp"
             android:inputType="number"
-            android:id="@+id/maxValue">
-        </EditText>
+            android:textSize="16dp"></EditText>
 
         <TextView
+            android:id="@+id/distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:id="@+id/distance"
-            android:text="Choose a distance">
-        </TextView>
+            android:text="Choose a distance"
+            android:textSize="16dp"></TextView>
 
         <com.google.android.material.chip.ChipGroup
-            android:layout_height="wrap_content"
+            android:id="@+id/distanceChips"
             android:layout_width="match_parent"
-            android:id="@+id/distanceChips">
+            android:layout_height="wrap_content">
+
             <com.google.android.material.chip.Chip
                 android:id="@+id/tenDist"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="<10km"
-                style = "@style/Widget.MaterialComponents.Chip.Choice"/>
+                android:text="0-10km" />
+
             <com.google.android.material.chip.Chip
                 android:id="@+id/twentyFiveDist"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="<25km"
-                style = "@style/Widget.MaterialComponents.Chip.Choice"/>
+                android:text="11-25km" />
+
             <com.google.android.material.chip.Chip
                 android:id="@+id/fiftyDist"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="<50km"
-                style = "@style/Widget.MaterialComponents.Chip.Choice"/>
+                android:text="26-50km" />
+
             <com.google.android.material.chip.Chip
                 android:id="@+id/hundredDist"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="<100km"
-                style = "@style/Widget.MaterialComponents.Chip.Choice"/>
+                android:text="51-100km" />
+
             <com.google.android.material.chip.Chip
                 android:id="@+id/twoHundredDist"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="<200km"
-                style = "@style/Widget.MaterialComponents.Chip.Choice"/>
+                android:text="101-200km" />
+
             <com.google.android.material.chip.Chip
                 android:id="@+id/twoHundredPlusDist"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=">200km"
-                style = "@style/Widget.MaterialComponents.Chip.Choice"/>
+                android:text="200km+" />
         </com.google.android.material.chip.ChipGroup>
-
 
 
     </LinearLayout>
