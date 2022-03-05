@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OnlineBarterTrading">
         <activity
-            android:name=".preferenceActivity"
+            android:name=".PreferenceActivity"
             android:exported="false" />
         <activity
             android:name=".AuthActivity"

@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class preferenceActivity extends AppCompatActivity {
+public class PreferenceActivity extends AppCompatActivity {
+    //km
+    public static final int MAX_DISTANCE = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
