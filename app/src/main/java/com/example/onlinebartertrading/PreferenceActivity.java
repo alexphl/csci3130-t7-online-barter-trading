@@ -50,10 +50,30 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
         return minValue;
     }
 
+    protected int getMaxValue(){
+        EditText minTextBox = findViewById(R.id.maxValue);
+        int maxValue;
+        try {
+            maxValue = Integer.parseInt(minTextBox.getText().toString().trim());
+        }
+        catch (Exception e){
+            //invalid integer so return error value
+            maxValue = -2;
+        }
+        return maxValue;
+    }
+
 
 
     protected boolean isValidMinValue(int value){
         if (value>=0 && value<MakePostActivity.maxValue){
+            return true;
+        }
+        return false;
+    }
+
+    protected boolean isValidMaxValue(int value){
+        if (value>=1 && value<MakePostActivity.maxValue){
             return true;
         }
         return false;
@@ -65,10 +85,15 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View view) {
         List<Integer> selectedTags = getPreferences();
         int minValue = getMinValue();
+        int maxValue = getMaxValue();
         String errorMessage = "";
 
         if (!isValidMinValue(minValue)){
             errorMessage =  getResources().getString(R.string.EMPTY_FIELD);
+        }
+
+        if (!isValidMaxValue(maxValue)){
+            errorMessage = getResources().getString(R.string.EMPTY_FIELD);
         }
 
         setStatusMessage(errorMessage);
