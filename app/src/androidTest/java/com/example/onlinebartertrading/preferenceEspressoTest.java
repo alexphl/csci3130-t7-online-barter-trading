@@ -1,6 +1,8 @@
 package com.example.onlinebartertrading;
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -37,5 +39,16 @@ public class preferenceEspressoTest {
     public void checkIfPreferenceIsVisible() {
         onView(withId(R.id.carChip)).check(matches(isDisplayed()));
     }
+
+    @Test
+    public void checkIfMinValueIsEmpty() {
+        onView(withId(R.id.minValue)).perform(typeText(""));
+        onView(withId(R.id.maxValue)).perform(typeText("100"));
+        onView(withId(R.id.carChip)).perform(click());
+        onView(withId(R.id.twentyFiveDist)).perform(click());
+        onView(withId(R.id.preferenceButton)).perform(click());
+        onView(withId(R.id.prefStatusLabel)).check(matches(withText(R.string.EMPTY_FIELD)));
+    }
+
 }
 

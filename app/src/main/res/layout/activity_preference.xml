@@ -16,7 +16,8 @@
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/allChips"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:singleLine="true">
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/carChip"
@@ -102,7 +103,8 @@
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/distanceChips"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:singleLine="true">
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/tenDist"
@@ -147,6 +149,21 @@
                 android:text="200km+" />
         </com.google.android.material.chip.ChipGroup>
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:id="@+id/preferenceButton"
+            android:text="Search">
+        </Button>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:id="@+id/prefStatusLabel"
+            android:text="">
+        </TextView>
 
     </LinearLayout>
 

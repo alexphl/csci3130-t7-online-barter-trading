@@ -1,9 +1,10 @@
 package com.example.onlinebartertrading;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PreferenceClass {
-    private ArrayList<String> tags;
+    private List<Integer> tags;
     private int minValue;
     private int maxValue;
     private int distance;
@@ -14,7 +15,7 @@ public class PreferenceClass {
         distance = PreferenceActivity.MAX_DISTANCE;
     }
 
-    public ArrayList<String> getTags() {
+    public List<Integer> getTags() {
         return tags;
     }
 
@@ -42,7 +43,7 @@ public class PreferenceClass {
         this.minValue = minValue;
     }
 
-    public void setTags(ArrayList<String> tags) {
+    public void setTags(List<Integer> tags) {
         this.tags = tags;
     }
 }
