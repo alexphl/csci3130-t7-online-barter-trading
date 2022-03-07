@@ -58,5 +58,14 @@ public class preferenceEspressoTest {
         onView(withId(R.id.prefStatusLabel)).check(matches(withText(R.string.EMPTY_FIELD)));
     }
 
+    @Test
+    public void minLessThanMax(){
+        onView(withId(R.id.minValue)).perform(typeText("100"));
+        onView(withId(R.id.maxValue)).perform(typeText("10"));
+        onView(withId(R.id.twentyFiveDist)).perform(click());
+        onView(withId(R.id.preferenceButton)).perform(click());
+        onView(withId(R.id.prefStatusLabel)).check(matches(withText(R.string.MIN_LESS_MAX)));
+    }
+
 }
 

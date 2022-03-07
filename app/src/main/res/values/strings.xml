@@ -28,4 +28,6 @@
     <string name="EMPTY_DESC">ERROR: Please enter a description</string>
     <string name="LONG_DESC">ERROR: Description is too long</string>
     <string name="INVALID_VALUE">ERROR: Enter a proper value</string>
+
+    <string name="MIN_LESS_MAX">Minimum value should be larger than max</string>
 </resources>

@@ -104,14 +104,17 @@
             android:id="@+id/distanceChips"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:singleLine="true">
+            app:singleLine="true"
+            app:singleSelection="true"
+            app:selectionRequired="true">
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/tenDist"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0-10km" />
+                android:text="0-10km"
+                android:checked="true"/>
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/twentyFiveDist"

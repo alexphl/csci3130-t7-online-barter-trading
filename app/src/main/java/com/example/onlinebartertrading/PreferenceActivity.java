@@ -63,7 +63,27 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
         return maxValue;
     }
 
-
+    protected int getDistance(){
+        ChipGroup pref = findViewById(R.id.allChips);
+        int checkedChip = pref.getCheckedChipId();
+        int maxDistance = MAX_DISTANCE;
+        if (checkedChip == R.id.tenDist){
+            maxDistance = 10;
+        }
+        else if (checkedChip == R.id.twentyFiveDist){
+            maxDistance = 25;
+        }
+        else if (checkedChip == R.id.fiftyDist){
+            maxDistance = 50;
+        }
+        else if (checkedChip == R.id.hundredDist){
+            maxDistance = 100;
+        }
+        else if (checkedChip == R.id.twoHundredDist){
+            maxDistance = 200;
+        }
+        return maxDistance;
+    }
 
     protected boolean isValidMinValue(int value){
         if (value>=0 && value<MakePostActivity.maxValue){
@@ -79,6 +99,13 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
         return false;
     }
 
+    protected boolean minIsLessThanMax(int min, int max){
+        if (min<= max){
+            return false;
+        }
+        return true;
+    }
+
 
 
     @Override
@@ -86,6 +113,7 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
         List<Integer> selectedTags = getPreferences();
         int minValue = getMinValue();
         int maxValue = getMaxValue();
+        int maxDistance = getDistance();
         String errorMessage = "";
 
         if (!isValidMinValue(minValue)){
@@ -96,6 +124,20 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
             errorMessage = getResources().getString(R.string.EMPTY_FIELD);
         }
 
+        if (!minIsLessThanMax(minValue,maxValue)){
+            errorMessage = getResources().getString(R.string.MIN_LESS_MAX);
+        }
+
         setStatusMessage(errorMessage);
+
+        if (errorMessage.equals("")){
+            PreferenceClass userPref = new PreferenceClass();
+            userPref.setDistance(maxDistance);
+            userPref.setMaxValue(maxValue);
+            userPref.setMinValue(minValue);
+            userPref.setTags(selectedTags);
+
+            //switch to new activity
+        }
     }
 }
