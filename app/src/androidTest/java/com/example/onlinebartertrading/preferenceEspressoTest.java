@@ -42,7 +42,6 @@ public class preferenceEspressoTest {
 
     @Test
     public void checkIfMinValueIsEmpty() {
-        onView(withId(R.id.minValue)).perform(typeText(""));
         onView(withId(R.id.maxValue)).perform(typeText("100"));
         onView(withId(R.id.carChip)).perform(click());
         onView(withId(R.id.twentyFiveDist)).perform(click());

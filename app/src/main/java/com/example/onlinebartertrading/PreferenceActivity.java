@@ -39,7 +39,14 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
 
     protected int getMinValue(){
         EditText minTextBox = findViewById(R.id.minValue);
-        int minValue = Integer.parseInt(minTextBox.getText().toString().trim());
+        int minValue;
+        try {
+            minValue = Integer.parseInt(minTextBox.getText().toString().trim());
+        }
+        catch (Exception e){
+            //invalid integer so return error value
+            minValue = -1;
+        }
         return minValue;
     }
 
