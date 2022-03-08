@@ -17,12 +17,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class PreferenceActivity extends AppCompatActivity implements View.OnClickListener {
     //km
     public static final int MAX_DISTANCE = 1000;
+    private DatabaseReference userRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,10 +38,22 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
         enterButton.setOnClickListener(this);
     }
 
+    protected void initializeUserDBRef() {
+        Intent intent = getIntent();
+        String email = intent.getStringExtra("email");
+
+        DatabaseReference dbRef = FirebaseDatabase
+                .getInstance(FirebaseConstants.FIREBASE_URL)
+                .getReference();
+
+        String uuid = UUID.nameUUIDFromBytes(email.getBytes()).toString();
+        userRef = dbRef.child(FirebaseConstants.USERS_COLLECTION).child(uuid);
+    }
+
     // Checks if user has saved preferences and sets them if true
     protected void setPreferences() {
 
-        DatabaseReference userRef = initializeUserDBRef();
+        initializeUserDBRef();
 
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -56,20 +71,6 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
                 System.out.println("DATABASE ERROR: " + error.getMessage());
             }
         });
-    }
-
-    protected DatabaseReference initializeUserDBRef() {
-        Intent intent = getIntent();
-        String email = intent.getStringExtra("email");
-
-        DatabaseReference dbRef = FirebaseDatabase
-                .getInstance(FirebaseConstants.FIREBASE_URL)
-                .getReference();
-
-        String uuid = UUID.nameUUIDFromBytes(email.getBytes()).toString();
-        DatabaseReference userRef = dbRef.child(FirebaseConstants.USERS_COLLECTION).child(uuid);
-
-        return userRef;
     }
 
     protected void setStatusMessage(String message){
@@ -177,9 +178,14 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
         setStatusMessage(errorMessage);
 
         if (errorMessage.equals("")){
+
+            // Saves preferences to DB for specific user
+            Map<String, PreferenceClass> preferences = new HashMap<>();
             PreferenceClass userPref =
                     new PreferenceClass(selectedTags, minValue, maxValue, maxDistance);
+            preferences.put("preferences", userPref);
 
+            userRef.setValue(preferences);
 
             //switch to new activity
         }
