@@ -5,10 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
@@ -17,9 +13,9 @@ import java.util.ArrayList;
  **/
 public class Editor extends ArrayAdapter<String> {
     Context context;
-    ArrayList<String> name = new ArrayList<>();
-    ArrayList<String> detail = new ArrayList<>();
-    ArrayList<String> value = new ArrayList<>();
+    ArrayList<String> name;
+    ArrayList<String> detail;
+    ArrayList<String> value;
 
     /**
      * @param context
@@ -58,5 +54,10 @@ public class Editor extends ArrayAdapter<String> {
         nameSet.value.setText("$" + value.get(position));
 
         return view;
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
     }
 }
