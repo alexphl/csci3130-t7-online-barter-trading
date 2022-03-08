@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
 import java.util.List;
@@ -15,11 +16,20 @@ import java.util.List;
 public class PreferenceActivity extends AppCompatActivity implements View.OnClickListener {
     //km
     public static final int MAX_DISTANCE = 1000;
+    public static String areaText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preference);
+
+        //get area from intent
+        areaText = "stub area";
+        //set the area
+        TextView localAreaText = (TextView) findViewById(R.id.localArea);
+        localAreaText.setText(areaText);
+        Chip areaChip = (Chip) findViewById(R.id.localTrue);
+        areaChip.setText(areaText);
 
         Button enterButton = findViewById(R.id.preferenceButton);
         enterButton.setOnClickListener(this);
@@ -101,9 +111,9 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
 
     protected boolean minIsLessThanMax(int min, int max){
         if (min<= max){
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
 
@@ -120,11 +130,11 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
             errorMessage =  getResources().getString(R.string.EMPTY_FIELD);
         }
 
-        if (!isValidMaxValue(maxValue)){
+        else if (!isValidMaxValue(maxValue)){
             errorMessage = getResources().getString(R.string.EMPTY_FIELD);
         }
 
-        if (!minIsLessThanMax(minValue,maxValue)){
+        else if (!minIsLessThanMax(minValue,maxValue)){
             errorMessage = getResources().getString(R.string.MIN_LESS_MAX);
         }
 
@@ -136,6 +146,7 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
             userPref.setMaxValue(maxValue);
             userPref.setMinValue(minValue);
             userPref.setTags(selectedTags);
+            userPref.setLocalArea(areaText);
 
             //switch to new activity
         }

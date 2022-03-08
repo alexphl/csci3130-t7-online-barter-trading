@@ -8,11 +8,13 @@ public class PreferenceClass {
     private int minValue;
     private int maxValue;
     private int distance;
+    private String localArea;
     public PreferenceClass(){
         tags = new ArrayList<>();
         minValue = 0;
         maxValue = MakePostActivity.maxValue;
         distance = PreferenceActivity.MAX_DISTANCE;
+        localArea = "ALL";
     }
 
     public List<Integer> getTags() {
@@ -31,6 +33,8 @@ public class PreferenceClass {
         return minValue;
     }
 
+    public String getLocalArea(){ return localArea;}
+
     public void setDistance(int distance) {
         this.distance = distance;
     }
@@ -45,5 +49,9 @@ public class PreferenceClass {
 
     public void setTags(List<Integer> tags) {
         this.tags = tags;
+    }
+
+    public void setLocalArea(String localArea) {
+        this.localArea = localArea;
     }
 }
