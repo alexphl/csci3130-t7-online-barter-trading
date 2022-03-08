@@ -39,14 +39,20 @@ import java.util.Iterator;
 public class ShowDetails extends AppCompatActivity implements View.OnClickListener {
 
     ListView listGoods;
+    /*
+    These lists hold the posts that are needed to be displayed. These are passed to Editor.java to add the the ArrayAdaptor.
+     */
     ArrayList<String> name = new ArrayList<>();
     ArrayList<String> detail = new ArrayList<>();
     ArrayList<String> value = new ArrayList<>();
     Button showButton;
     Editor editor;
+    /*
+    This holds the posts after applying filter and keyword search.
+     */
     ArrayList<DataSnapshot> values;
     DatabaseReference reference;
-    String searchKeyword = "chair";
+    String searchKeyword = "";
 
     int numPosts = 0;
 
@@ -65,6 +71,7 @@ public class ShowDetails extends AppCompatActivity implements View.OnClickListen
         showButton = findViewById(R.id.btn);
         showButton.setOnClickListener(this);
 
+        //Swipe down to refresh lets the user automatically show any new posts that are made by other users.
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swiperefresh);
         swipeRefreshLayout.setOnRefreshListener(
                 () -> {
@@ -88,6 +95,7 @@ public class ShowDetails extends AppCompatActivity implements View.OnClickListen
                 //get data from firebase
                 Iterator<DataSnapshot> snapshots = datasnapshot.getChildren().iterator();
                 ArrayList<DataSnapshot> list = new ArrayList<>();
+                //Get all values from iterator
                 snapshots.forEachRemaining(list::add);
                 values = applyFilters(list);
                 extractPosts();
@@ -102,6 +110,11 @@ public class ShowDetails extends AppCompatActivity implements View.OnClickListen
 
     }
 
+    /**
+     * Specify the settings of the options menu
+     * @param menu - the object for the options menu.
+     * @return a boolean representing successful creation of the options menu
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -113,7 +126,7 @@ public class ShowDetails extends AppCompatActivity implements View.OnClickListen
         MenuItem search = menu.findItem(R.id.search);
 
         MenuItem filter = menu.findItem(R.id.setting);
-
+        //Behaviour for when filter button is clicked. The user will be taken to the preferences activity.
         filter.setOnMenuItemClickListener(item -> {
          Intent intent = new Intent(getBaseContext(), MakePostActivity.class);
 //             intent.putExtra();
@@ -122,6 +135,7 @@ public class ShowDetails extends AppCompatActivity implements View.OnClickListen
         });
         filter.setVisible(false);
 
+        //Behavior when the ActionBar is expanded. The filter button is made visible or invisible depending on this configuration.
         search.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
@@ -147,16 +161,26 @@ public class ShowDetails extends AppCompatActivity implements View.OnClickListen
         return true;
     }
 
+    /**
+     * Retrieve search keyword from intent
+     * @param intent
+     * @return the search keyword entered by the user.
+     */
     private String getSearchQuery(Intent intent) {
-
+        //Search query is added to the Intent with the ACTION_SEARCH action on Searchable.
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
-            System.out.println(query);
             return query.trim();
         }
+        //Defaults to an empty string which will display all posts.
         return "";
     }
 
+    /**
+     * Apply filters to modify the values ArrayList that is used to show results in ShowDetails activity.
+     * @param data containing all the results of the query
+     * @return ArrayList containing only the posts that match the filters
+     */
     private ArrayList<DataSnapshot> applyFilters(ArrayList<DataSnapshot> data) {
         String local_area = "HRM";
         String category = "Furnishing";
@@ -188,9 +212,13 @@ public class ShowDetails extends AppCompatActivity implements View.OnClickListen
         return list;
     }
 
-
+    /**
+     * Method that displays search results in a multiple of 4 depending on the number of clicks of Show More button.
+     * Modifies numPosts which keeps track of the total posts currently on page.
+     */
     private void extractPosts() {
         int batchCount = 0;
+        //Start before the postings already on screen.
         for (int i = values.size() - numPosts -1; i >= 0; i--) {
             DataSnapshot snapshot = values.get(i);
             String tit = snapshot.child("title").getValue().toString();
@@ -208,7 +236,7 @@ public class ShowDetails extends AppCompatActivity implements View.OnClickListen
         }
 
         numPosts += batchCount;
-
+        //Disable search button if we did not get 4 posts or we get all of the posts.
         if(batchCount < 4 || numPosts == values.size()) {
             showButton.setVisibility(View.GONE);
         }
@@ -224,6 +252,10 @@ public class ShowDetails extends AppCompatActivity implements View.OnClickListen
         listGoods.setAdapter(editor);
     }
 
+    /**
+     * Behavior when the show more button is clicked.
+     * @param view
+     */
     @Override
     public void onClick(View view) {
         extractPosts();
