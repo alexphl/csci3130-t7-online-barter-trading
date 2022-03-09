@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,6 +26,8 @@ import java.util.UUID;
 public class PreferenceActivity extends AppCompatActivity implements View.OnClickListener {
     //km
     public static final int MAX_DISTANCE = 1000;
+    public static String areaText;
+
     private DatabaseReference userRef;
 
     @Override
@@ -34,8 +37,17 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
 
         setPreferences();
 
+        //get area from intent
+        areaText = "stub area";
+        //set the area
+        TextView localAreaText = (TextView) findViewById(R.id.localArea);
+        localAreaText.setText(areaText);
+        Chip areaChip = (Chip) findViewById(R.id.localTrue);
+        areaChip.setText(areaText);
+
         Button enterButton = findViewById(R.id.preferenceButton);
         enterButton.setOnClickListener(this);
+
     }
 
     protected void initializeUserDBRef() {
@@ -148,9 +160,9 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
 
     protected boolean minIsLessThanMax(int min, int max){
         if (min<= max){
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
 
@@ -167,22 +179,21 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
             errorMessage =  getResources().getString(R.string.EMPTY_FIELD);
         }
 
-        if (!isValidMaxValue(maxValue)){
+        else if (!isValidMaxValue(maxValue)){
             errorMessage = getResources().getString(R.string.EMPTY_FIELD);
         }
 
-        if (!minIsLessThanMax(minValue,maxValue)){
+        else if (!minIsLessThanMax(minValue,maxValue)){
             errorMessage = getResources().getString(R.string.MIN_LESS_MAX);
         }
 
         setStatusMessage(errorMessage);
 
         if (errorMessage.equals("")){
-
             // Saves preferences to DB for specific user
             Map<String, Preference> preferences = new HashMap<>();
             Preference userPref =
-                    new Preference(selectedTags, minValue, maxValue, maxDistance);
+                    new Preference(selectedTags, minValue, maxValue, maxDistance, areaText);
             preferences.put("preferences", userPref);
 
             userRef.setValue(preferences);

@@ -9,12 +9,14 @@ public class Preference {
     private int minValue;
     private int maxValue;
     private int distance;
+    private String localArea;
 
-    public Preference(List<Integer> tags, int minValue, int maxValue, int distance){
+    public Preference(List<Integer> tags, int minValue, int maxValue, int distance, String localArea){
         this.tags = tags;
         this.minValue = minValue;
         this.maxValue = maxValue;
         this.distance = distance;
+        this.localArea = localArea;
     }
 
     public List<Integer> getTags() {
@@ -31,5 +33,9 @@ public class Preference {
 
     public int getDistance() {
         return distance;
+    }
+
+    public String getLocalArea() {
+        return localArea;
     }
 }
