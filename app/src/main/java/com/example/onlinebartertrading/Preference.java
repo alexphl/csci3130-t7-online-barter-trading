@@ -3,14 +3,14 @@ package com.example.onlinebartertrading;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PreferenceClass {
+public class Preference {
 
     private List<Integer> tags;
     private int minValue;
     private int maxValue;
     private int distance;
 
-    public PreferenceClass(List<Integer> tags, int minValue, int maxValue, int distance){
+    public Preference(List<Integer> tags, int minValue, int maxValue, int distance){
         this.tags = tags;
         this.minValue = minValue;
         this.maxValue = maxValue;

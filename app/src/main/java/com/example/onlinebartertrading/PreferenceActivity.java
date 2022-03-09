@@ -40,7 +40,7 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
 
     protected void initializeUserDBRef() {
         Intent intent = getIntent();
-        String email = intent.getStringExtra("email");
+        String email = intent.getStringExtra(LoginFormFragment.LOGGED_USER_ID);
 
         DatabaseReference dbRef = FirebaseDatabase
                 .getInstance(FirebaseConstants.FIREBASE_URL)
@@ -180,9 +180,9 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
         if (errorMessage.equals("")){
 
             // Saves preferences to DB for specific user
-            Map<String, PreferenceClass> preferences = new HashMap<>();
-            PreferenceClass userPref =
-                    new PreferenceClass(selectedTags, minValue, maxValue, maxDistance);
+            Map<String, Preference> preferences = new HashMap<>();
+            Preference userPref =
+                    new Preference(selectedTags, minValue, maxValue, maxDistance);
             preferences.put("preferences", userPref);
 
             userRef.setValue(preferences);
