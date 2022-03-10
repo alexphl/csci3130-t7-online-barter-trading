@@ -60,8 +60,8 @@ public class RoleDecisionFragment extends Fragment implements View.OnClickListen
      * @param
      */
     protected void switch2PostsWindow() {
-        Intent switchActivity = new Intent(getActivity(), MakePostActivity.class);
-        startActivity(switchActivity);
+        Intent switchPostActivity = new Intent(getActivity(), MakePostActivity.class);
+        startActivity(switchPostActivity);
     }
 
     /**
@@ -69,8 +69,8 @@ public class RoleDecisionFragment extends Fragment implements View.OnClickListen
      * @param
      */
     protected void switch2ListingsWindow() {
-        Intent switchActivity = new Intent(getActivity(), ShowDetailsActivity.class);
-        startActivity(switchActivity);
+        Intent switchListActivity = new Intent(getActivity(), ShowDetailsActivity.class);
+        startActivity(switchListActivity);
     }
 
     @Override
