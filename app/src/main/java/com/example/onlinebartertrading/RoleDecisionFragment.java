@@ -27,10 +27,24 @@ public class RoleDecisionFragment extends Fragment implements View.OnClickListen
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.login_form_fragment, container, false);
+        return inflater.inflate(R.layout.activity_role, container, false);
     }
 
+    /**
+     * This event is triggered soon after onCreateView().
+     * View setup occurs here.
+     */
+    @Override
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        DB_HANDLER = new DBHandler();
+        DB_HANDLER.retrieveUsers();
 
+        Button providerButton = requireView().findViewById(R.id.ProviderButton);
+        Button recieverButton = requireView().findViewById(R.id.RecieverButton);
+
+        providerButton.setOnClickListener(this);
+        recieverButton.setOnClickListener(this);
+    }
 
     @Override
     public void onClick(View view) {

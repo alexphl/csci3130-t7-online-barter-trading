@@ -8,7 +8,7 @@
     <View style="@style/Divider." />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/RecieverButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Reciever"
@@ -16,7 +16,7 @@
         tools:layout_editor_absoluteY="629dp" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/ProviderButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Provider"
