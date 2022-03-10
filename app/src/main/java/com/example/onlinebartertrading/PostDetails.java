@@ -19,7 +19,7 @@ public class PostDetails {
      * @param givenDesc     user provided description
      * @param givenValue    user provided valuation of product
      */
-    public PostDetails (String email, String givenTitle, String givenDesc, double givenValue, String category, double latitude, double longitude, String localArea) {
+    public PostDetails (String email, String givenTitle, String givenDesc, double givenValue, String category, double latitude, double longitude) {
         this.posterEmail = email;
         this.title = givenTitle;
         this.desc = givenDesc;
@@ -27,7 +27,6 @@ public class PostDetails {
         this.category = category;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.localArea = localArea;
     }
 
     /**
@@ -47,9 +46,6 @@ public class PostDetails {
     }
     public String getCategory() {
         return category;
-    }
-    public String getArea() {
-        return localArea;
     }
     public double getValue() {
         return monetaryValue;

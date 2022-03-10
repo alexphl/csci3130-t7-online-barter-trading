@@ -124,7 +124,7 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
         setStatusMessage(errorMessage);
         if (errorMessage.equals("")){
             String time = Long.toString(System.currentTimeMillis());
-            PostDetails newPost = new PostDetails(userEmail, title, desc, value, category, location[0], location[1], area);
+            PostDetails newPost = new PostDetails(userEmail, title, desc, value, category, location[0], location[1]);
             myDatabase.child("posts").child(time).setValue(newPost);
             switch2ShowDetail(title,desc,value);
         }
