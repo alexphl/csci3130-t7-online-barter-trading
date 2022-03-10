@@ -46,8 +46,16 @@ public class RoleDecisionFragment extends Fragment implements View.OnClickListen
         recieverButton.setOnClickListener(this);
     }
 
+    /**
+     * Sets status message
+     * @param message to set
+     */
+    protected void setStatusMessage(String message) {
+        TextView statusLabel = requireView().findViewById(R.id.roleStatus);
+        statusLabel.setText(message.trim());
+    }
+
     @Override
     public void onClick(View view) {
-
     }
 }

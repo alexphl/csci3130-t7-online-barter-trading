@@ -5,8 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <View style="@style/Divider." />
-
     <Button
         android:id="@+id/RecieverButton"
         android:layout_width="wrap_content"
@@ -19,10 +17,10 @@
         android:id="@+id/ProviderButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="48dp"
         android:text="Provider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.636"
-        app:layout_constraintStart_toEndOf="@+id/button"
         tools:layout_editor_absoluteY="629dp" />
 
     <TextView
@@ -163,5 +161,12 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/editTextTextMultiLine"
         tools:layout_editor_absoluteY="64dp" />
+
+    <TextView
+        android:id="@+id/roleStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="180dp"
+        tools:layout_editor_absoluteY="681dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
