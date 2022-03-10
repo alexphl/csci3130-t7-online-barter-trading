@@ -1,8 +1,11 @@
 package com.example.onlinebartertrading;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,18 +13,30 @@ import android.widget.TextView;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class PreferenceActivity extends AppCompatActivity implements View.OnClickListener {
     //km
     public static final int MAX_DISTANCE = 1000;
     public static String areaText;
 
+    private DatabaseReference userRef;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preference);
+
+        setPreferences();
 
         //get area from intent
         areaText = "stub area";
@@ -34,6 +49,41 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
         Button enterButton = findViewById(R.id.preferenceButton);
         enterButton.setOnClickListener(this);
 
+    }
+
+    protected void initializeUserDBRef() {
+        Intent intent = getIntent();
+        String email = intent.getStringExtra(LoginFormFragment.LOGGED_USER_ID);
+
+        DatabaseReference dbRef = FirebaseDatabase
+                .getInstance(FirebaseConstants.FIREBASE_URL)
+                .getReference();
+
+        String uuid = UUID.nameUUIDFromBytes(email.getBytes()).toString();
+        userRef = dbRef.child(FirebaseConstants.USERS_COLLECTION).child(uuid);
+    }
+
+    // Checks if user has saved preferences and sets them if true
+    protected void setPreferences() {
+
+        initializeUserDBRef();
+
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.hasChild("preferences")) {
+                    // Set preferences on edittexts and chips
+                }
+                else {
+                    // no preferences exist so load defaults
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                System.out.println("DATABASE ERROR: " + error.getMessage());
+            }
+        });
     }
 
     protected void setStatusMessage(String message){
@@ -141,12 +191,13 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
         setStatusMessage(errorMessage);
 
         if (errorMessage.equals("")){
-            PreferenceClass userPref = new PreferenceClass();
-            userPref.setDistance(maxDistance);
-            userPref.setMaxValue(maxValue);
-            userPref.setMinValue(minValue);
-            userPref.setTags(selectedTags);
-            userPref.setLocalArea(areaText);
+            // Saves preferences to DB for specific user
+            Map<String, Object> preferences = new HashMap<>();
+            PreferenceClass userPref =
+                    new PreferenceClass(selectedTags, minValue, maxValue, maxDistance, areaText);
+            preferences.put("preferences", userPref);
+
+            userRef.updateChildren(preferences);
 
             //switch to new activity
         }

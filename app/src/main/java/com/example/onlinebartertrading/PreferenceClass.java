@@ -1,32 +1,25 @@
 package com.example.onlinebartertrading;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PreferenceClass {
+
     private List<Integer> tags;
     private int minValue;
     private int maxValue;
     private int distance;
     private String localArea;
-    public PreferenceClass(){
-        tags = new ArrayList<>();
-        minValue = 0;
-        maxValue = MakePostActivity.maxValue;
-        distance = PreferenceActivity.MAX_DISTANCE;
-        localArea = "ALL";
+
+    public PreferenceClass(List<Integer> tags, int minValue, int maxValue, int distance, String localArea){
+        this.tags = tags;
+        this.minValue = minValue;
+        this.maxValue = maxValue;
+        this.distance = distance;
+        this.localArea = localArea;
     }
 
     public List<Integer> getTags() {
         return tags;
-    }
-
-    public int getDistance() {
-        return distance;
-    }
-
-    public int getMaxValue() {
-        return maxValue;
     }
 
     public int getMinValue() {
@@ -35,23 +28,12 @@ public class PreferenceClass {
 
     public String getLocalArea(){ return localArea;}
 
-    public void setDistance(int distance) {
-        this.distance = distance;
+    public int getMaxValue() {
+        return maxValue;
     }
 
-    public void setMaxValue(int maxValue) {
-        this.maxValue = maxValue;
+    public int getDistance() {
+        return distance;
     }
 
-    public void setMinValue(int minValue) {
-        this.minValue = minValue;
-    }
-
-    public void setTags(List<Integer> tags) {
-        this.tags = tags;
-    }
-
-    public void setLocalArea(String localArea) {
-        this.localArea = localArea;
-    }
 }
