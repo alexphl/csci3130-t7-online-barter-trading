@@ -191,12 +191,12 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
 
         if (errorMessage.equals("")){
             // Saves preferences to DB for specific user
-            Map<String, Preference> preferences = new HashMap<>();
+            Map<String, Object> preferences = new HashMap<>();
             Preference userPref =
                     new Preference(selectedTags, minValue, maxValue, maxDistance, areaText);
             preferences.put("preferences", userPref);
 
-            userRef.setValue(preferences);
+            userRef.updateChildren(preferences);
 
             //switch to new activity
         }
