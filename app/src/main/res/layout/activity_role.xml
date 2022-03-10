@@ -114,7 +114,7 @@
         android:gravity="start|top"
         android:inputType="textMultiLine"
         android:maxLines="30"
-        android:text=" ● See a history of your exchanges \n\n ● Post used goods in order to have a mutual exchange \n\n ● Contact users to discuss the exchange \n\n ● Able to set location of good in order for recievers to locate \n\n ● Set product details, and tags for your specific good"
+        android:text=" ● See a history of your exchanges \n\n ● Post used goods in order to have a mutual exchange \n\n ● Contact users to discuss the exchange \n\n ● Able to set location of good in order for recievers to locate \n\n\n ● Set product details, and tags for your specific good"
         android:textAlignment="center"
         tools:layout_editor_absoluteX="209dp"
         tools:layout_editor_absoluteY="58dp" />
