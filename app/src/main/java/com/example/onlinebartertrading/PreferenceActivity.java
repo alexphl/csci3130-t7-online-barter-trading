@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -192,8 +193,8 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
         if (errorMessage.equals("")){
             // Saves preferences to DB for specific user
             Map<String, Object> preferences = new HashMap<>();
-            Preference userPref =
-                    new Preference(selectedTags, minValue, maxValue, maxDistance, areaText);
+            PreferenceClass userPref =
+                    new PreferenceClass(selectedTags, minValue, maxValue, maxDistance, areaText);
             preferences.put("preferences", userPref);
 
             userRef.updateChildren(preferences);

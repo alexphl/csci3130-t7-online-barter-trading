@@ -2,7 +2,7 @@ package com.example.onlinebartertrading;
 
 import java.util.List;
 
-public class Preference {
+public class PreferenceClass {
 
     private List<Integer> tags;
     private int minValue;
@@ -10,7 +10,7 @@ public class Preference {
     private int distance;
     private String localArea;
 
-    public Preference(List<Integer> tags, int minValue, int maxValue, int distance, String localArea){
+    public PreferenceClass(List<Integer> tags, int minValue, int maxValue, int distance, String localArea){
         this.tags = tags;
         this.minValue = minValue;
         this.maxValue = maxValue;
