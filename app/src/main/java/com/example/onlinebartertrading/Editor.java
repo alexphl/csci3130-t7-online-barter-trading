@@ -16,9 +16,9 @@ import java.util.Objects;
  **/
 public class Editor extends ArrayAdapter<String> {
     Context context;
-    ArrayList<String> name = new ArrayList<>();
-    ArrayList<String> detail = new ArrayList<>();
-    ArrayList<String> value = new ArrayList<>();
+    ArrayList<String> name;
+    ArrayList<String> detail;
+    ArrayList<String> value;
 
     /**
      * @param context
@@ -62,5 +62,10 @@ public class Editor extends ArrayAdapter<String> {
         Objects.requireNonNull(nameSet.get("value")).setText("$" + value.get(position));
 
         return view;
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
     }
 }
