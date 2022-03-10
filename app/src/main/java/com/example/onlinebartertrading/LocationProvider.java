@@ -11,7 +11,10 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
+
+import androidx.annotation.RequiresApi;
 
 /**
  * Represents a user location provider
@@ -26,7 +29,7 @@ public class LocationProvider {
     public LocationProvider(Activity activity) {
         this.context = activity.getApplicationContext();
         this.locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        requestLocationPermissions();
+        getLocationPermissions();
     }
 
     /**
@@ -41,9 +44,9 @@ public class LocationProvider {
         Criteria locationMode = new Criteria();
 
         // Establish location accuracy mode
-        if (getPermissionLevel() == 2 && gpsEnabled) {
+        if (getAccuracyLevel() == 2 && gpsEnabled) {
             locationMode.setAccuracy(Criteria.ACCURACY_FINE);
-        } else if (getPermissionLevel() > 0 && networkEnabled) {
+        } else if (getAccuracyLevel() > 0 && networkEnabled) {
             locationMode.setAccuracy(Criteria.ACCURACY_COARSE);
         } else return null;
 
@@ -68,21 +71,38 @@ public class LocationProvider {
      * only if none have been granted so far.
      * @return true if at least coarse location permission has been granted
      */
-    private boolean requestLocationPermissions() {
-        if (getPermissionLevel() > 0) return true;
+    private boolean getLocationPermissions() {
+        if (getAccuracyLevel() > 0) return true;
 
         String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION,
                                 Manifest.permission.ACCESS_COARSE_LOCATION};
 
         requestPermissions((Activity) context, permissions, 100);
-        return getPermissionLevel() >= 1;
+        return getAccuracyLevel() >= 1;
+    }
+
+    /**
+     * Requests background location permissions if not granted
+     * @return true if granted
+     */
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    private boolean getBackgroundPermissions() {
+        int bgLocation = context.checkCallingOrSelfPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION);
+        if (bgLocation == PackageManager.PERMISSION_GRANTED) return true;
+
+        String[] permissions = {Manifest.permission.ACCESS_BACKGROUND_LOCATION};
+
+        requestPermissions((Activity) context, permissions,100);
+
+        return context.checkCallingOrSelfPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+                == PackageManager.PERMISSION_GRANTED;
     }
 
     /**
      * Checks the maximum allowed location precision
      * @return 2 for FINE, 1 for COARSE, 0 for NONE
      */
-    public int getPermissionLevel() {
+    public int getAccuracyLevel() {
         int fineLocation = context.checkCallingOrSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
         int coarseLocation = context.checkCallingOrSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
 
