@@ -53,7 +53,7 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
 
     protected void initializeUserDBRef() {
         Intent intent = getIntent();
-        String email = intent.getStringExtra(LoginFormFragment.LOGGED_USER_ID);
+        String email = intent.getStringExtra("email");
 
         DatabaseReference dbRef = FirebaseDatabase
                 .getInstance(FirebaseConstants.FIREBASE_URL)

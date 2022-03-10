@@ -90,6 +90,7 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
         intent.putExtra("title",title);
         intent.putExtra("desc",desc);
         intent.putExtra("value",value);
+        intent.putExtra("email", userEmail);
         startActivity(intent);
     }
 
