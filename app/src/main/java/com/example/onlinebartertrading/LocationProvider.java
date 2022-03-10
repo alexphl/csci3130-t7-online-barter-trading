@@ -1,42 +1,37 @@
 package com.example.onlinebartertrading;
 
 import static androidx.core.app.ActivityCompat.requestPermissions;
-import static androidx.test.InstrumentationRegistry.getContext;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Service;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.IBinder;
 
-import com.google.android.gms.location.LocationCallback;
+public class LocationProvider {
+    private final Activity activity;
+    private final Context context;
+    private final LocationManager locationManager;
 
-public class LocationService extends Service {
-    private Activity activity;
-
-    public LocationService(Activity activity) {
+    public LocationProvider(Activity activity, Context context) {
         this.activity = activity;
+        this.context = context;
+        this.locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        requestLocationPermissions();
     }
 
-    @Override
-    public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-
+    /**
+     * Requests a single location update.
+     * @return Latitude in Double[0], Longitude in Double[1]
+     */
     @SuppressLint("MissingPermission")
-    public Double[] getLocationUpdate(Context context, LocationCallback callback) {
+    public Double[] getLocationUpdate() {
         Double[] results = new Double[2];
-
-        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         boolean networkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
         boolean gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         Criteria locationMode = new Criteria();
@@ -63,10 +58,12 @@ public class LocationService extends Service {
         return results;
     }
 
+    /**
+     * Requests runtime location permissions,
+     * only if none have been granted so far.
+     * @return true if at least coarse location permission has been granted
+     */
     private boolean requestLocationPermissions() {
-        int fineLocation = getContext().checkCallingOrSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
-        int coarseLocation = getContext().checkCallingOrSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
-
         if (getPermissionLevel() == 0) {
             String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
             requestPermissions(activity, permissions, 100);
@@ -75,9 +72,13 @@ public class LocationService extends Service {
         return getPermissionLevel() >= 1;
     }
 
+    /**
+     * Checks the maximum allowed location precision
+     * @return 2 for FINE, 1 for COARSE, 0 for NONE
+     */
     public int getPermissionLevel() {
-        int fineLocation = getContext().checkCallingOrSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
-        int coarseLocation = getContext().checkCallingOrSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
+        int fineLocation = context.checkCallingOrSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+        int coarseLocation = context.checkCallingOrSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
 
         if (fineLocation == PackageManager.PERMISSION_GRANTED) return 2;
         if (coarseLocation == PackageManager.PERMISSION_GRANTED) return 1;
