@@ -32,7 +32,6 @@ import java.util.UUID;
 public class PreferenceActivity extends AppCompatActivity implements View.OnClickListener {
     //km
     public static final int MAX_DISTANCE = 1000;
-    public static String areaText;
 
     private DatabaseReference userRef;
 
@@ -54,7 +53,7 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
 
     protected void initializeUserDBRef() {
         Intent intent = getIntent();
-        String email = "alex@email.com";//intent.getStringExtra("email");
+        String email = intent.getStringExtra("email");
 
         DatabaseReference dbRef = FirebaseDatabase
                 .getInstance(FirebaseConstants.FIREBASE_URL)
@@ -129,7 +128,29 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
 
 
     protected void setDistance(int distance) {
-        return;
+        Chip distChip;
+
+        switch (distance) {
+            case 10:
+                distChip = findViewById(R.id.tenDist);
+                break;
+            case 25:
+                distChip = findViewById(R.id.twentyFiveDist);
+                break;
+            case 50:
+                distChip = findViewById(R.id.fiftyDist);
+                break;
+            case 100:
+                distChip = findViewById(R.id.hundredDist);
+                break;
+            case 200:
+                distChip = findViewById(R.id.twoHundredDist);
+                break;
+            default:
+                distChip = findViewById(R.id.twoHundredPlusDist);
+        }
+
+        distChip.setChecked(true);
     }
 
     /**
