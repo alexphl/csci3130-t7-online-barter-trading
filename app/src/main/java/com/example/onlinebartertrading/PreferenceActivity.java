@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
+import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
@@ -54,7 +56,7 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
 
     protected void initializeUserDBRef() {
         Intent intent = getIntent();
-        String email = intent.getStringExtra("email");
+        String email = "alex@email.com";//intent.getStringExtra("email");
 
         DatabaseReference dbRef = FirebaseDatabase
                 .getInstance(FirebaseConstants.FIREBASE_URL)
@@ -74,6 +76,15 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String message;
                 if (snapshot.hasChild("preferences")) {
+                    PreferenceClass preferences = snapshot
+                            .child("preferences")
+                            .getValue(PreferenceClass.class);
+
+                    setTags(preferences.getTags());
+                    setMinValue(preferences.getMinValue());
+                    setMaxValue(preferences.getMaxValue());
+                    setDistance(preferences.getDistance());
+
                     message = "Preferences loaded";
                 }
                 else {
@@ -87,6 +98,24 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
                 System.out.println("DATABASE ERROR: " + error.getMessage());
             }
         });
+    }
+
+    protected void setTags(List<Integer> tags) {
+        return;
+    }
+
+    protected void setMinValue(int minValue) {
+        EditText minTextBox = findViewById(R.id.minValue);
+        minTextBox.setText(String.format(Locale.ENGLISH, "%d", minValue));
+    }
+
+    protected void setMaxValue(int maxValue) {
+        EditText maxTextBox = findViewById(R.id.maxValue);
+        maxTextBox.setText(String.format(Locale.ENGLISH, "%d", maxValue));
+    }
+
+    protected void setDistance(int distance) {
+        return;
     }
 
     protected void setStatusMessage(String message){
