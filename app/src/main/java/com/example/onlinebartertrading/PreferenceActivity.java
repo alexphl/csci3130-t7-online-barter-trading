@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -71,12 +72,14 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String message;
                 if (snapshot.hasChild("preferences")) {
-                    // Set preferences on edittexts and chips
+                    message = "Preferences loaded";
                 }
                 else {
-                    // no preferences exist so load defaults
+                    message = "No preferences found for user";
                 }
+                Toast.makeText(PreferenceActivity.this, message, Toast.LENGTH_LONG).show();
             }
 
             @Override
