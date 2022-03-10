@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import java.security.NoSuchAlgorithmException;
@@ -18,9 +19,7 @@ import java.security.NoSuchAlgorithmException;
  * This is the Role Decision Fragment
  * that is included as part of AuthActivity.
  */
-public class RoleDecisionFragment extends Fragment implements View.OnClickListener {
-
-    public DBHandler DB_HANDLER;
+public class RoleDecisionFragment extends AppCompatActivity {
 
     /**
      * Obligatory Fragment inflater.
@@ -36,14 +35,32 @@ public class RoleDecisionFragment extends Fragment implements View.OnClickListen
      */
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        DB_HANDLER = new DBHandler();
-        DB_HANDLER.retrieveUsers();
+        Button providerButton = findViewById(R.id.ProviderButton);
+        Button receiverButton = findViewById(R.id.RecieverButton);
 
-        Button providerButton = requireView().findViewById(R.id.ProviderButton);
-        Button recieverButton = requireView().findViewById(R.id.RecieverButton);
+        /**
+         * "Provider" button processor.
+         *  This button will do the following function:
+         *      Switches to the Posts Activity if Provider Role selected
+         */
+        providerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch2PostsWindow();
+            }
+        });
 
-        providerButton.setOnClickListener(this);
-        recieverButton.setOnClickListener(this);
+        /**
+         * "Receiver" button processor.
+         *  This button will do the following function:
+         *      Switches to the Listings Activity if Receiver Role selected
+         */
+        receiverButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch2ListingsWindow();
+            }
+        });
     }
 
     /**
@@ -51,7 +68,7 @@ public class RoleDecisionFragment extends Fragment implements View.OnClickListen
      * @param message to set
      */
     protected void setStatusMessage(String message) {
-        TextView statusLabel = requireView().findViewById(R.id.roleStatus);
+        TextView statusLabel = findViewById(R.id.roleStatus);
         statusLabel.setText(message.trim());
     }
 
@@ -60,20 +77,16 @@ public class RoleDecisionFragment extends Fragment implements View.OnClickListen
      * @param
      */
     protected void switch2PostsWindow() {
-        Intent switchPostActivity = new Intent(getActivity(), MakePostActivity.class);
+        Intent switchPostActivity = new Intent(this, MakePostActivity.class);
         startActivity(switchPostActivity);
     }
 
     /**
-     * Switches to post once reciever role picked successfully
+     * Switches to post once receiver role picked successfully
      * @param
      */
     protected void switch2ListingsWindow() {
-        Intent switchListActivity = new Intent(getActivity(), ShowDetailsActivity.class);
+        Intent switchListActivity = new Intent(this, ShowDetailsActivity.class);
         startActivity(switchListActivity);
-    }
-
-    @Override
-    public void onClick(View view) {
     }
 }
