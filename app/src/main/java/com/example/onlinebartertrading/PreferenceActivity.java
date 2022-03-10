@@ -124,7 +124,7 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
     }
 
     protected int getDistance(){
-        ChipGroup pref = findViewById(R.id.allChips);
+        ChipGroup pref = findViewById(R.id.distanceChips);
         int checkedChip = pref.getCheckedChipId();
         int maxDistance = MAX_DISTANCE;
         if (checkedChip == R.id.tenDist){
