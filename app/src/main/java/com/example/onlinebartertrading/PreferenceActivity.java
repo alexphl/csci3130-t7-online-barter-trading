@@ -54,7 +54,7 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
 
     protected void initializeUserDBRef() {
         Intent intent = getIntent();
-        String email = intent.getStringExtra("email");
+        String email = "alex@email.com";//intent.getStringExtra("email");
 
         DatabaseReference dbRef = FirebaseDatabase
                 .getInstance(FirebaseConstants.FIREBASE_URL)
@@ -98,8 +98,15 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
         });
     }
 
-    protected void setTags(List<Integer> tags) {
-        return;
+    protected void setTags(List<Integer> dbTags) {
+        if (dbTags == null) {
+            return;
+        }
+
+        for (Integer id: dbTags) {
+            Chip tag = findViewById(id);
+            tag.setChecked(true);
+        }
     }
 
     /**
@@ -119,6 +126,7 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
         EditText maxTextBox = findViewById(R.id.maxValue);
         maxTextBox.setText(String.format(Locale.ENGLISH, "%d", maxValue));
     }
+
 
     protected void setDistance(int distance) {
         return;
