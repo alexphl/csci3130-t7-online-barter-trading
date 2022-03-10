@@ -26,6 +26,9 @@
             android:value="YOUR_API_KEY" />
 
         <activity
+            android:name=".PreferenceActivity"
+            android:exported="false" />
+        <activity
             android:name=".AuthActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize|adjustPan">
@@ -51,6 +54,8 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
+            android:windowSoftInputMode="adjustResize|adjustPan">
+
     </application>
 
 </manifest>
