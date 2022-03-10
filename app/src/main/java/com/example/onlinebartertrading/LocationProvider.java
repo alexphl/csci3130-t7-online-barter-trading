@@ -13,36 +13,41 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
+/**
+ * Represents a user location provider
+ */
 public class LocationProvider {
-    private final Activity activity;
     private final Context context;
     private final LocationManager locationManager;
 
-    public LocationProvider(Activity activity, Context context) {
-        this.activity = activity;
-        this.context = context;
+    /**
+     * @param activity TODO: figure out if this is all we need
+     */
+    public LocationProvider(Activity activity) {
+        this.context = activity.getApplicationContext();
         this.locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         requestLocationPermissions();
     }
 
     /**
      * Requests a single location update.
-     * @return Latitude in Double[0], Longitude in Double[1]
+     * @return Latitude in Double[0], Longitude in Double[1], null if unavailable
      */
-    @SuppressLint("MissingPermission")
+    @SuppressLint("MissingPermission") // we do it ourselves
     public Double[] getLocationUpdate() {
         Double[] results = new Double[2];
         boolean networkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
         boolean gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         Criteria locationMode = new Criteria();
 
+        // Establish location accuracy mode
         if (getPermissionLevel() == 2 && gpsEnabled) {
             locationMode.setAccuracy(Criteria.ACCURACY_FINE);
-        }
-        else if (getPermissionLevel() > 0 && networkEnabled) {
+        } else if (getPermissionLevel() > 0 && networkEnabled) {
             locationMode.setAccuracy(Criteria.ACCURACY_COARSE);
-        }
+        } else return null;
 
+        // Get location update and store latitude and longitude in results
         locationManager.requestSingleUpdate(locationMode, new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
@@ -64,11 +69,12 @@ public class LocationProvider {
      * @return true if at least coarse location permission has been granted
      */
     private boolean requestLocationPermissions() {
-        if (getPermissionLevel() == 0) {
-            String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
-            requestPermissions(activity, permissions, 100);
-        }
+        if (getPermissionLevel() > 0) return true;
 
+        String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION,
+                                Manifest.permission.ACCESS_COARSE_LOCATION};
+
+        requestPermissions((Activity) context, permissions, 100);
         return getPermissionLevel() >= 1;
     }
 
