@@ -55,6 +55,24 @@ public class RoleDecisionFragment extends Fragment implements View.OnClickListen
         statusLabel.setText(message.trim());
     }
 
+    /**
+     * Switches to post once provider role picked successfully
+     * @param
+     */
+    protected void switch2PostsWindow() {
+        Intent switchActivity = new Intent(getActivity(), MakePostActivity.class);
+        startActivity(switchActivity);
+    }
+
+    /**
+     * Switches to post once reciever role picked successfully
+     * @param
+     */
+    protected void switch2ListingsWindow() {
+        Intent switchActivity = new Intent(getActivity(), MakePostActivity.class);
+        startActivity(switchActivity);
+    }
+
     @Override
     public void onClick(View view) {
     }
