@@ -45,6 +45,7 @@ public class LoginUnitTests {
     public void checkIfPasswordFieldIsEmpty() {
         assertTrue(loginActivity.isEmptyPassword(""));
         assertFalse(loginActivity.isEmptyPassword("testingPassword"));
+
     }
 
     /*** User Acceptance Test - III**/
