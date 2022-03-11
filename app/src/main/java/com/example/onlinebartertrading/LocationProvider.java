@@ -81,6 +81,10 @@ public class LocationProvider {
      * adapted from: https://stackoverflow.com/a/27834110 TODO: cite this
      */
     public Double[] getLocationFromAddress(String strAddress) {
+        // This requires us to have INTERNET and COARSE LOCATION permissions
+        if (!getPermission(Manifest.permission.INTERNET) ||
+                getAccuracyLevel() == 0) return null;
+
         Double[] coordinates= new Double[2];
         Geocoder coder = new Geocoder(context);
         List<Address> address;
@@ -118,14 +122,22 @@ public class LocationProvider {
      */
     @RequiresApi(api = Build.VERSION_CODES.Q)
     private boolean getBackgroundPermissions() {
-        int bgLocation = context.checkCallingOrSelfPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION);
+        return getPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION);
+    }
+
+    /**
+     * Requests a permission if not granted
+     * @return true if granted
+     */
+    private boolean getPermission(String permission) {
+        int bgLocation = context.checkCallingOrSelfPermission(permission);
         if (bgLocation == PackageManager.PERMISSION_GRANTED) return true;
 
-        String[] permissions = {Manifest.permission.ACCESS_BACKGROUND_LOCATION};
+        String[] permissions = {permission};
 
         requestPermissions((Activity) context, permissions,100);
 
-        return context.checkCallingOrSelfPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+        return context.checkCallingOrSelfPermission(permission)
                 == PackageManager.PERMISSION_GRANTED;
     }
 
@@ -141,4 +153,5 @@ public class LocationProvider {
         if (coarseLocation == PackageManager.PERMISSION_GRANTED) return 1;
         return 0;
     }
+
 }
