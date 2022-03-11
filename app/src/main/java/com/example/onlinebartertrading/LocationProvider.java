@@ -7,7 +7,9 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Address;
 import android.location.Criteria;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -15,6 +17,11 @@ import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.RequiresApi;
+
+import com.google.android.gms.maps.model.LatLng;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Represents a user location provider
@@ -38,7 +45,7 @@ public class LocationProvider {
      */
     @SuppressLint("MissingPermission") // we do it ourselves
     public Double[] getLocationUpdate() {
-        Double[] results = new Double[2];
+        Double[] coordinates = new Double[2];
         boolean networkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
         boolean gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         Criteria locationMode = new Criteria();
@@ -54,8 +61,8 @@ public class LocationProvider {
         locationManager.requestSingleUpdate(locationMode, new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                results[0] = location.getLatitude();
-                results[1] = location.getLongitude();
+                coordinates[0] = location.getLatitude();
+                coordinates[1] = location.getLongitude();
             }
 
             @Override public void onStatusChanged(String provider, int status, Bundle extras) { }
@@ -63,7 +70,31 @@ public class LocationProvider {
             @Override public void onProviderDisabled(String provider) { }
         }, null);
 
-        return results;
+        return coordinates;
+    }
+
+    /**
+     * Best guess approach to getting coordinates from an address string
+     * Uses Google Play Services
+     * @return Latitude in Double[0], Longitude in Double[1], null if unavailable
+     *
+     * adapted from: https://stackoverflow.com/a/27834110 TODO: cite this
+     */
+    public Double[] getLocationFromAddress(String strAddress) {
+        Double[] coordinates= new Double[2];
+        Geocoder coder = new Geocoder(context);
+        List<Address> address;
+
+        try {
+            address = coder.getFromLocationName(strAddress, 5);
+            if (address == null) return null;
+
+            Address location = address.get(0);
+            coordinates[0] = location.getLatitude();
+            coordinates[1] = location.getLongitude();
+        } catch (IOException ex) { ex.printStackTrace(); }
+
+        return coordinates;
     }
 
     /**
