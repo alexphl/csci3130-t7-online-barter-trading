@@ -5,11 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.Preference;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -21,30 +21,30 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
+
+/**
+ * This class provides a way for users to select their preferences
+ */
 public class PreferenceActivity extends AppCompatActivity implements View.OnClickListener {
     //km
     public static final int MAX_DISTANCE = 1000;
-    public static String areaText;
 
     private DatabaseReference userRef;
 
+    /**
+     * Sets the new view up
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preference);
 
         setPreferences();
-
-        //get area from intent
-        areaText = "stub area";
-        //set the area
-        TextView localAreaText = (TextView) findViewById(R.id.localArea);
-        localAreaText.setText(areaText);
-        Chip areaChip = (Chip) findViewById(R.id.localTrue);
-        areaChip.setText(areaText);
 
         Button enterButton = findViewById(R.id.preferenceButton);
         enterButton.setOnClickListener(this);
@@ -63,7 +63,9 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
         userRef = dbRef.child(FirebaseConstants.USERS_COLLECTION).child(uuid);
     }
 
-    // Checks if user has saved preferences and sets them if true
+    /**
+     * Sets the preferences of a user if they are stored in database
+     */
     protected void setPreferences() {
 
         initializeUserDBRef();
@@ -71,12 +73,24 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String message;
                 if (snapshot.hasChild("preferences")) {
-                    // Set preferences on edittexts and chips
+
+                    PreferenceClass preferences = snapshot
+                            .child("preferences")
+                            .getValue(PreferenceClass.class);
+
+                    setTags(preferences.getTags());
+                    setMinValue(preferences.getMinValue());
+                    setMaxValue(preferences.getMaxValue());
+                    setDistance(preferences.getDistance());
+
+                    message = "Preferences loaded";
                 }
                 else {
-                    // no preferences exist so load defaults
+                    message = "No preferences found for user";
                 }
+                Toast.makeText(PreferenceActivity.this, message, Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -86,17 +100,92 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
         });
     }
 
+    /**
+     * Method to check tags saved from database in UI
+     * @param dbTags used to check which tags were stored in DB
+     */
+    protected void setTags(List<Integer> dbTags) {
+        if (dbTags == null) {
+            return;
+        }
+
+        for (Integer id: dbTags) {
+            Chip tag = findViewById(id);
+            tag.setChecked(true);
+        }
+    }
+
+    /**
+     * sets minimum value EditText to whatever was stored in DB
+     * @param minValue to set
+     */
+    protected void setMinValue(int minValue) {
+        EditText minTextBox = findViewById(R.id.minValue);
+        minTextBox.setText(String.format(Locale.ENGLISH, "%d", minValue));
+    }
+
+    /**
+     * sets maximum value EditText to whatever was stored in DB
+     * @param maxValue to set
+     */
+    protected void setMaxValue(int maxValue) {
+        EditText maxTextBox = findViewById(R.id.maxValue);
+        maxTextBox.setText(String.format(Locale.ENGLISH, "%d", maxValue));
+    }
+
+    /**
+     * Selects the correct distance chip based on what is stored in DB
+     * @param distance to check
+     */
+    protected void setDistance(int distance) {
+        Chip distChip;
+
+        switch (distance) {
+            case 10:
+                distChip = findViewById(R.id.tenDist);
+                break;
+            case 25:
+                distChip = findViewById(R.id.twentyFiveDist);
+                break;
+            case 50:
+                distChip = findViewById(R.id.fiftyDist);
+                break;
+            case 100:
+                distChip = findViewById(R.id.hundredDist);
+                break;
+            case 200:
+                distChip = findViewById(R.id.twoHundredDist);
+                break;
+            default:
+                distChip = findViewById(R.id.twoHundredPlusDist);
+        }
+
+        distChip.setChecked(true);
+    }
+
+    /**
+     * Sets an error message if the user enters incorrect details
+     * @param message
+     */
     protected void setStatusMessage(String message){
         TextView statusLabel = findViewById(R.id.prefStatusLabel);
         statusLabel.setText(message.trim());
     }
 
+    /**
+     * returns the preferences selected
+     * @return
+     */
     protected List<Integer> getPreferences(){
         ChipGroup pref = findViewById(R.id.allChips);
         List<Integer> checkedChips = pref.getCheckedChipIds();
         return checkedChips;
     }
 
+    /**
+     * Gets the minimum value eneterd by the user
+     * @return
+     */
     protected int getMinValue(){
         EditText minTextBox = findViewById(R.id.minValue);
         int minValue;
@@ -110,6 +199,10 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
         return minValue;
     }
 
+    /**
+     * Gets the maximum value entered by the user
+     * @return
+     */
     protected int getMaxValue(){
         EditText minTextBox = findViewById(R.id.maxValue);
         int maxValue;
@@ -123,6 +216,10 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
         return maxValue;
     }
 
+    /**
+     * Gets the distance the user selected from the chips
+     * @return
+     */
     protected int getDistance(){
         ChipGroup pref = findViewById(R.id.distanceChips);
         int checkedChip = pref.getCheckedChipId();
@@ -145,6 +242,11 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
         return maxDistance;
     }
 
+    /**
+     * checked if minimum value is not too small or too large
+     * @param value
+     * @return
+     */
     protected boolean isValidMinValue(int value){
         if (value>=0 && value<MakePostActivity.maxValue){
             return true;
@@ -152,6 +254,11 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
         return false;
     }
 
+    /**
+     * Checks if maximum is not too small or too large
+     * @param value
+     * @return
+     */
     protected boolean isValidMaxValue(int value){
         if (value>=1 && value<MakePostActivity.maxValue){
             return true;
@@ -159,6 +266,12 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
         return false;
     }
 
+    /**
+     * Checks the minimum is less than the maximum
+     * @param min
+     * @param max
+     * @return
+     */
     protected boolean minIsLessThanMax(int min, int max){
         if (min<= max){
             return true;
@@ -166,8 +279,11 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
         return false;
     }
 
-
-
+    /**
+     * When button is pressed, preferences are saved if they are valid or an error message is
+     * displayed
+     * @param view
+     */
     @Override
     public void onClick(View view) {
         List<Integer> selectedTags = getPreferences();
@@ -194,12 +310,13 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
             // Saves preferences to DB for specific user
             Map<String, Object> preferences = new HashMap<>();
             PreferenceClass userPref =
-                    new PreferenceClass(selectedTags, minValue, maxValue, maxDistance, areaText);
+                    new PreferenceClass(selectedTags, minValue, maxValue, maxDistance);
             preferences.put("preferences", userPref);
 
             userRef.updateChildren(preferences);
 
             //switch to new activity
+
         }
     }
 }

@@ -10,12 +10,15 @@ public class PreferenceClass {
     private int distance;
     private String localArea;
 
-    public PreferenceClass(List<Integer> tags, int minValue, int maxValue, int distance, String localArea){
+    public PreferenceClass() {
+        //Needed
+    }
+
+    public PreferenceClass(List<Integer> tags, int minValue, int maxValue, int distance){
         this.tags = tags;
         this.minValue = minValue;
         this.maxValue = maxValue;
         this.distance = distance;
-        this.localArea = localArea;
     }
 
     public List<Integer> getTags() {
@@ -26,7 +29,6 @@ public class PreferenceClass {
         return minValue;
     }
 
-    public String getLocalArea(){ return localArea;}
 
     public int getMaxValue() {
         return maxValue;
