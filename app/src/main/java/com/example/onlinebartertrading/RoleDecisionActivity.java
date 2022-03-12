@@ -1,10 +1,12 @@
 package com.example.onlinebartertrading;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,6 +15,10 @@ import androidx.appcompat.app.AppCompatActivity;
  * class.
  */
 public class RoleDecisionActivity extends AppCompatActivity implements View.OnClickListener {
+
+    Context context = getApplicationContext();
+    CharSequence text = "Successfully posted";
+    int duration = Toast.LENGTH_SHORT;
 
     /**
      *  Preliminary setup
@@ -41,8 +47,8 @@ public class RoleDecisionActivity extends AppCompatActivity implements View.OnCl
      * @param
      */
     protected void switch2PostsWindow() {
-        Intent switchPostActivity = new Intent(this, MakePostActivity.class);
-        startActivity(switchPostActivity);
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
     }
 
     /**
