@@ -16,19 +16,22 @@ public class Editor extends ArrayAdapter<String> {
     ArrayList<String> name;
     ArrayList<String> detail;
     ArrayList<String> value;
+    ArrayList<String> category;
 
     /**
      * @param context
      * @param name      User provided name
      * @param detail    User provided details
      * @param value     User provided item valuation
+     * @param category  User provided category
      */
-    public Editor(ShowDetails context, ArrayList<String> name, ArrayList<String> detail, ArrayList<String> value) {
+    public Editor(ShowDetails context, ArrayList<String> name, ArrayList<String> detail, ArrayList<String> value, ArrayList<String> category) {
         super(context, R.layout.activity_listview, R.id.textview2, name);
         this.context = context;
         this.name = name;
         this.detail = detail;
         this.value = value;
+        this.category = category;
     }
 
     /**

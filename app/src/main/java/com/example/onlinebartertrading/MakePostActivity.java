@@ -94,11 +94,12 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
      * @param title     user provided title
      * @param value     user provided value
      */
-    protected void switch2ShowDetail(String title, String desc, float value) {
+    protected void switch2ShowDetail(String title, String desc, float value,String category) {
         Intent intent = new Intent(MakePostActivity.this, ShowDetails.class);
         intent.putExtra("title",title);
         intent.putExtra("desc",desc);
         intent.putExtra("value",value);
+        intent.putExtra("category", category);
         intent.putExtra("email", userEmail);
         startActivity(intent);
     }
@@ -135,7 +136,7 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
             String time = Long.toString(System.currentTimeMillis());
             PostDetails newPost = new PostDetails(userEmail, title, desc, value, category, location[0], location[1]);
             myDatabase.child("posts").child(time).setValue(newPost);
-            switch2ShowDetail(title,desc,value);
+            switch2ShowDetail(title,desc,value,category);
         }
 
     }

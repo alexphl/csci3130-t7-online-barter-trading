@@ -149,6 +149,7 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
     protected void setDistance(int distance) {
         Chip distChip = findViewById(distanceChips.get(0));
         boolean checkedAChip = false;
+        //compare distance chips with distance provided
         for (int i =0 ; i<distanceChips.size();i++){
             distChip = findViewById(distanceChips.get(i));
             if (distChip.getTag().equals(String.valueOf(distance))){

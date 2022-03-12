@@ -47,6 +47,7 @@ public class ShowDetails extends AppCompatActivity implements View.OnClickListen
     ArrayList<String> name = new ArrayList<>();
     ArrayList<String> detail = new ArrayList<>();
     ArrayList<String> value = new ArrayList<>();
+    ArrayList<String> category = new ArrayList<>();
     Button showButton;
     Editor editor;
     Chip chip;
@@ -230,6 +231,7 @@ public class ShowDetails extends AppCompatActivity implements View.OnClickListen
             String tit = snapshot.child("title").getValue().toString();
             String de = snapshot.child("desc").getValue().toString();
             String val = snapshot.child("value").getValue().toString();
+            String cat = snapshot.child("category").getValue().toString();
 
 
             if(!tit.isEmpty() && !de.isEmpty() && !val.isEmpty()) {
@@ -237,6 +239,7 @@ public class ShowDetails extends AppCompatActivity implements View.OnClickListen
                 name.add(tit);
                 detail.add(de);
                 value.add(val);
+                category.add(cat);
             }
             if(batchCount == 5) break;
         }
@@ -249,7 +252,7 @@ public class ShowDetails extends AppCompatActivity implements View.OnClickListen
 
         //Send to adapter and make data in each layout
         if(editor == null) {
-            editor = new Editor(ShowDetails.this, name, detail, value);
+            editor = new Editor(ShowDetails.this, name, detail, value, category);
         }
         else {
             editor.notifyDataSetChanged();
