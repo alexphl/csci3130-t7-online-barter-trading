@@ -21,6 +21,7 @@ import androidx.annotation.RequiresApi;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -38,7 +39,15 @@ public class LocationProvider {
         this.context = context;
         this.locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         getLocationPermissions();
-        getLocationUpdate();
+        updateLocation();
+    }
+
+    public LocationProvider(Context context, double[] lastLocation) {
+        this.userLocation = lastLocation;
+        this.context = context;
+        this.locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        getLocationPermissions();
+        updateLocation();
     }
 
     /**

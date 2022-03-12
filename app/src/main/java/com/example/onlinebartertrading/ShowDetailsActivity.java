@@ -31,6 +31,7 @@ import com.google.maps.android.SphericalUtil;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.stream.Collectors;
 
@@ -61,7 +62,6 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
 
     // Necessary for location provider
     private LocationProvider locationProvider;
-    double[] userLocation;
 
     int numPosts = 0;
 
@@ -72,6 +72,7 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         searchKeyword = getSearchQuery(getIntent());
+
         //listview layout
         setContentView(R.layout.activity_listmain);
         listGoods = findViewById(R.id.listView);
@@ -82,8 +83,7 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
         showButton.setOnClickListener(this);
 
         // We call this here as it takes a second to fetch user location
-        locationProvider = new LocationProvider(this);
-        userLocation = locationProvider.getLocationUpdate();
+        locationProvider = new LocationProvider(this, getIntent().getDoubleArrayExtra("lastLocation"));
 
         //Swipe down to refresh lets the user automatically show any new posts that are made by other users.
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swiperefresh);
@@ -209,6 +209,9 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
         int valueUpperLimit =  1000000;
         int valueLowerLimit = 0;
         int distance = 1000;
+
+        double[] userLocation = locationProvider.getLocationUpdate();
+
         if(preferences != null) {
             categories = preferences.getCategories();
             //The upper limit of the price
@@ -220,6 +223,7 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
         }
         //This is the current location, this would be taken from the intent from the activity that detects location.
         LatLng current_position = new LatLng(userLocation[0], userLocation[1]);
+        System.out.println("USER LOCATION " + Arrays.toString(userLocation));
 
         ArrayList<DataSnapshot> list = new ArrayList<>();
         for(DataSnapshot value : data) {

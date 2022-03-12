@@ -23,10 +23,11 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
     public static final int maxDescLength = 180;
     public static final int maxValue = 1000000;
     private static final String area = "HRM";
-    private static double[] location;
+    //private static double[] userLocation;
     private String userEmail;
     private DatabaseReference myDatabase;
     private LocationProvider locationProvider;
+    double[] userLocation;
 
     /**
      * Preliminary setup
@@ -42,7 +43,6 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
 
         //get location
         locationProvider = new LocationProvider(this);
-        location = locationProvider.getLocationUpdate();
     }
 
     /**
@@ -93,18 +93,10 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
 
     /**
      * Switches to ShowDetail Activity.
-     * Creates an Intent with the following params:
-     * @param desc      user provided description
-     * @param title     user provided title
-     * @param value     user provided value
      */
-protected void switch2ShowDetail(String title, String desc, float value,String category) {
+protected void switch2ShowDetail() {
         Intent intent = new Intent(MakePostActivity.this, ShowDetailsActivity.class);
-        intent.putExtra("title",title);
-        intent.putExtra("desc",desc);
-        intent.putExtra("value",value);
-        intent.putExtra("category", category);
-        intent.putExtra("email", userEmail);
+        intent.putExtra("lastLocation", userLocation);
         startActivity(intent);
     }
 
@@ -119,10 +111,11 @@ protected void switch2ShowDetail(String title, String desc, float value,String c
         //String category = getCategory();
         String category = "Furnishing";
         float value = getValue();
+        userLocation = locationProvider.getLocationUpdate();
 
         String errorMessage = "";
 
-        if (location[0] == 0) errorMessage = "Location fetch failed";
+        if (userLocation[0] == 0) errorMessage = "Location fetch failed";
         if (!validTitleDesc(title)){
             errorMessage = getResources().getString(R.string.INVALID_TITLE).trim();
         }
@@ -139,9 +132,9 @@ protected void switch2ShowDetail(String title, String desc, float value,String c
         setStatusMessage(errorMessage);
         if (errorMessage.equals("")){
             String time = Long.toString(System.currentTimeMillis());
-            Post newPost = new Post(userEmail, title, desc, value, category, location);
+            Post newPost = new Post(userEmail, title, desc, value, category, userLocation);
             myDatabase.child("posts").child(time).setValue(newPost);
-            switch2ShowDetail(title,desc,value,category);
+            switch2ShowDetail();
         }
 
     }
