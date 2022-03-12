@@ -2,8 +2,6 @@ package com.example.onlinebartertrading;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.typeText;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -33,15 +31,9 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 public class RoleEspressoTest {
 
-    @Test
-    public void useAppContext() {
-        // Context of the app under test.
-        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.example.onlinebartertrading", appContext.getPackageName());
-    }
-
     @Rule
-    public ActivityScenarioRule<AuthActivity> myRule = new ActivityScenarioRule<>(AuthActivity.class);
+    public ActivityScenarioRule<RoleDecision> myRule = new ActivityScenarioRule<>(RoleDecision.class);
+    public IntentsTestRule<RoleDecision> myIntentRule = new IntentsTestRule<>(RoleDecision.class);
 
     @BeforeClass
     public static void setup() {
@@ -53,5 +45,12 @@ public class RoleEspressoTest {
         System.gc();
     }
 
-    
+    /*** User Acceptance Test - I**/
+    @Test
+    public void checkIfPostButtonWorks() {
+        onView(withId(R.id.ProviderButton)).perform(click());
+        intended(hasComponent(MakePostActivity.class.getName()));
+    }
+
+
 }

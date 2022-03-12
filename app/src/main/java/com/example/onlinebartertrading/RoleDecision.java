@@ -2,11 +2,8 @@ package com.example.onlinebartertrading;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,48 +16,20 @@ import java.security.NoSuchAlgorithmException;
  * This is the Role Decision Fragment
  * that is included as part of AuthActivity.
  */
-public class RoleDecisionFragment extends AppCompatActivity {
+public class RoleDecision extends AppCompatActivity implements View.OnClickListener {
 
     /**
-     * Obligatory Fragment inflater.
+     *  Preliminary setup
      */
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_role, container, false);
-    }
 
-    /**
-     * This event is triggered soon after onCreateView().
-     * View setup occurs here.
-     */
     @Override
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_role);
         Button providerButton = findViewById(R.id.ProviderButton);
         Button receiverButton = findViewById(R.id.RecieverButton);
-
-        /**
-         * "Provider" button processor.
-         *  This button will do the following function:
-         *      Switches to the Posts Activity if Provider Role selected
-         */
-        providerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switch2PostsWindow();
-            }
-        });
-
-        /**
-         * "Receiver" button processor.
-         *  This button will do the following function:
-         *      Switches to the Listings Activity if Receiver Role selected
-         */
-        receiverButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switch2ListingsWindow();
-            }
-        });
+        providerButton.setOnClickListener(this);
+        receiverButton.setOnClickListener(this);
     }
 
     /**
@@ -88,5 +57,17 @@ public class RoleDecisionFragment extends AppCompatActivity {
     protected void switch2ListingsWindow() {
         Intent switchListActivity = new Intent(this, ShowDetailsActivity.class);
         startActivity(switchListActivity);
+    }
+
+    @Override
+    public void onClick(View view) {
+        int viewId = view.getId();
+
+        if (viewId == R.id.RecieverButton) {
+            switch2PostsWindow();
+        }
+        else if (viewId == R.id.ProviderButton) {
+            switch2ListingsWindow();
+        }
     }
 }
