@@ -34,15 +34,12 @@ import java.util.stream.Collectors;
  * This class provides a way for users to select their preferences
  */
 public class PreferenceActivity extends AppCompatActivity implements View.OnClickListener {
-    //km
-    public static final int MAX_DISTANCE = 1000;
     private DatabaseReference userRef;
     String userEmail;
     public static ArrayList<Integer> distanceChips;
 
     /**
      * Sets the new view up
-     * @param savedInstanceState
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,12 +179,11 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
      */
     protected List<Integer> getPreferences(){
         ChipGroup pref = findViewById(R.id.allChips);
-        List<Integer> checkedChips = pref.getCheckedChipIds();
-        return checkedChips;
+        return pref.getCheckedChipIds();
     }
 
     /**
-     * Gets the minimum value eneterd by the user
+     * Gets the minimum value entered by the user
      * @return
      */
     protected int getMinValue(){
@@ -228,8 +224,7 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
         ChipGroup pref = findViewById(R.id.distanceChips);
         int checkedChip = pref.getCheckedChipId();
         Chip selectedChip = findViewById(checkedChip);
-        int maxDistance = Integer.valueOf(selectedChip.getTag().toString());
-        return maxDistance;
+        return Integer.parseInt(selectedChip.getTag().toString());
     }
 
     /**
@@ -238,10 +233,7 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
      * @return
      */
     protected boolean isValidMinValue(int value){
-        if (value>=0 && value<MakePostActivity.maxValue){
-            return true;
-        }
-        return false;
+        return value >= 0 && value < MakePostActivity.maxValue;
     }
 
     /**
@@ -250,10 +242,7 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
      * @return
      */
     protected boolean isValidMaxValue(int value){
-        if (value>=1 && value<MakePostActivity.maxValue){
-            return true;
-        }
-        return false;
+        return value >= 1 && value < MakePostActivity.maxValue;
     }
 
     /**
@@ -263,10 +252,7 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
      * @return
      */
     protected boolean minIsLessThanMax(int min, int max){
-        if (min<= max){
-            return true;
-        }
-        return false;
+        return min <= max;
     }
 
     /**
