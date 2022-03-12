@@ -59,6 +59,10 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
     String searchKeyword = "";
     PreferenceClass preferences;
 
+    // Necessary for location provider
+    private LocationProvider locationProvider;
+    double[] userLocation;
+
     int numPosts = 0;
 
     /**
@@ -76,6 +80,10 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
 
         showButton = findViewById(R.id.btn);
         showButton.setOnClickListener(this);
+
+        // We call this here as it takes a second to fetch user location
+        locationProvider = new LocationProvider(this);
+        userLocation = locationProvider.getLocationUpdate();
 
         //Swipe down to refresh lets the user automatically show any new posts that are made by other users.
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swiperefresh);
@@ -212,9 +220,7 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
             //Upper limit of distance. This should be in meters
         }
         //This is the current location, this would be taken from the intent from the activity that detects location.
-        double current_lat = 44.637438120009094;
-        double current_long = -63.57768822532626;
-        LatLng current_position = new LatLng(current_lat, current_long);
+        LatLng current_position = new LatLng(userLocation[0], userLocation[1]);
 
         ArrayList<DataSnapshot> list = new ArrayList<>();
         for(DataSnapshot value : data) {
