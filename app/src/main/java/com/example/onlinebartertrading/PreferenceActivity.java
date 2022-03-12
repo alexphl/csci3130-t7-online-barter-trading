@@ -32,7 +32,6 @@ import java.util.UUID;
 public class PreferenceActivity extends AppCompatActivity implements View.OnClickListener {
     //km
     public static final int MAX_DISTANCE = 1000;
-
     private DatabaseReference userRef;
 
     /**
@@ -53,7 +52,7 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
 
     protected void initializeUserDBRef() {
         Intent intent = getIntent();
-        String email = "alex@email.com";
+        String email = intent.getStringExtra("email");
 
         DatabaseReference dbRef = FirebaseDatabase
                 .getInstance(FirebaseConstants.FIREBASE_URL)
@@ -63,7 +62,9 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
         userRef = dbRef.child(FirebaseConstants.USERS_COLLECTION).child(uuid);
     }
 
-    // Checks if user has saved preferences and sets them if true
+    /**
+     * Sets the preferences of a user if they are stored in database
+     */
     protected void setPreferences() {
 
         initializeUserDBRef();
@@ -73,6 +74,7 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String message;
                 if (snapshot.hasChild("preferences")) {
+
                     PreferenceClass preferences = snapshot
                             .child("preferences")
                             .getValue(PreferenceClass.class);
@@ -97,6 +99,10 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
         });
     }
 
+    /**
+     * Method to check tags saved from database in UI
+     * @param dbTags used to check which tags were stored in DB
+     */
     protected void setTags(List<Integer> dbTags) {
         if (dbTags == null) {
             return;
@@ -106,12 +112,11 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
             Chip tag = findViewById(id);
             tag.setChecked(true);
         }
-
     }
 
     /**
-     * sets minimum value the user wants to filter by
-     * @param minValue
+     * sets minimum value EditText to whatever was stored in DB
+     * @param minValue to set
      */
     protected void setMinValue(int minValue) {
         EditText minTextBox = findViewById(R.id.minValue);
@@ -119,16 +124,42 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
     }
 
     /**
-     * sets maximum value the user wants to filter by
-     * @param maxValue
+     * sets maximum value EditText to whatever was stored in DB
+     * @param maxValue to set
      */
     protected void setMaxValue(int maxValue) {
         EditText maxTextBox = findViewById(R.id.maxValue);
         maxTextBox.setText(String.format(Locale.ENGLISH, "%d", maxValue));
     }
 
+    /**
+     * Selects the correct distance chip based on what is stored in DB
+     * @param distance to check
+     */
     protected void setDistance(int distance) {
-        return;
+        Chip distChip;
+
+        switch (distance) {
+            case 10:
+                distChip = findViewById(R.id.tenDist);
+                break;
+            case 25:
+                distChip = findViewById(R.id.twentyFiveDist);
+                break;
+            case 50:
+                distChip = findViewById(R.id.fiftyDist);
+                break;
+            case 100:
+                distChip = findViewById(R.id.hundredDist);
+                break;
+            case 200:
+                distChip = findViewById(R.id.twoHundredDist);
+                break;
+            default:
+                distChip = findViewById(R.id.twoHundredPlusDist);
+        }
+
+        distChip.setChecked(true);
     }
 
     /**

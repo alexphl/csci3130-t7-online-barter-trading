@@ -48,6 +48,100 @@
             android:id="@+id/postValue">
         </EditText>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:text="Category">
+        </TextView>
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/allChips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:singleLine="true"
+            app:singleSelection="true"
+            app:selectionRequired="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/carChip"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cars" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/buildingChip"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Building Supplies" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/computerChip"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Computers" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/gameChip"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Games" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/petChip"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pet Supplies" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/sportChip"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sport Supplies" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/furnitureChip"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Furniture" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/craftChip"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Crafts and Supplies" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/clothesChip"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Clothes" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/cookingChip"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cooking" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/otherChip"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Other" />
+
+        </com.google.android.material.chip.ChipGroup>
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
