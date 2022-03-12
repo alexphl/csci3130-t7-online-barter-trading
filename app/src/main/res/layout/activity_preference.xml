@@ -68,6 +68,34 @@
                 android:layout_height="wrap_content"
                 android:text="Furniture" />
 
+            <com.google.android.material.chip.Chip
+                android:id="@+id/craftChip"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Crafts and Supplies" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/clothesChip"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Clothes" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/cookingChip"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cooking" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/otherChip"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Other" />
+
         </com.google.android.material.chip.ChipGroup>
 
         <TextView
