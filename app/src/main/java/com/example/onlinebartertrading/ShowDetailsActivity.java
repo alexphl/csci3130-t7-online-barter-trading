@@ -10,13 +10,11 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.SearchView;
 
 import com.google.android.material.chip.Chip;
@@ -30,11 +28,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.SphericalUtil;
 
 
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
-import java.util.stream.Collectors;
 
 /**
  * This class represents the details activity
@@ -61,7 +56,7 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
     ArrayList<DataSnapshot> values;
     DatabaseReference reference;
     String searchKeyword = "";
-    PreferenceClass preferences;
+    Preferences preferences;
     String userEmail;
 
     // Necessary for location provider
@@ -121,7 +116,7 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
                 ArrayList<DataSnapshot> list = new ArrayList<>();
                 //Get all values from iterator
                 snapshots.forEachRemaining(list::add);
-                preferences = (PreferenceClass) getIntent().getSerializableExtra("preferences");
+                preferences = (Preferences) getIntent().getSerializableExtra("preferences");
                 values = applyFilters(list);
                 extractPosts();
                 if(preferences == null) {

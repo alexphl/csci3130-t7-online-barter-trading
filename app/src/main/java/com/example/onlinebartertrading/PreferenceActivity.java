@@ -86,9 +86,9 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
                 String message;
                 if (snapshot.hasChild("preferences")) {
 
-                    PreferenceClass preferences = snapshot
+                    Preferences preferences = snapshot
                             .child("preferences")
-                            .getValue(PreferenceClass.class);
+                            .getValue(Preferences.class);
 
                     setTags(preferences.getTags());
                     setMinValue(preferences.getMinValue());
@@ -286,8 +286,8 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
         if (errorMessage.equals("")){
             // Saves preferences to DB for specific user
             Map<String, Object> preferences = new HashMap<>();
-            PreferenceClass userPref =
-                    new PreferenceClass(selectedTags, minValue, maxValue, maxDistance);
+            Preferences userPref =
+                    new Preferences(selectedTags, minValue, maxValue, maxDistance);
             preferences.put("preferences", userPref);
 
             userPref.setCategories((ArrayList<String>) userPref.getTags().stream().map(n -> ((Chip)findViewById(n)).getText().toString()).collect(Collectors.toList()));
