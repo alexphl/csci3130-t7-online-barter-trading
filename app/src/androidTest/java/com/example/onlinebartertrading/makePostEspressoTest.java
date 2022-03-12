@@ -34,7 +34,6 @@ public class makePostEspressoTest {
     public ActivityScenarioRule<MakePostActivity> myRule = new ActivityScenarioRule<>(MakePostActivity.class);
     public IntentsTestRule<MakePostActivity> myIntentRule = new IntentsTestRule<>(MakePostActivity.class);
 
-
     @BeforeClass
     public static void setup() {
         Intents.init();
