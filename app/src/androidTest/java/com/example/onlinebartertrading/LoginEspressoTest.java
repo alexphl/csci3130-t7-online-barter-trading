@@ -18,6 +18,8 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.swipeLeft;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.intent.Intents.intended;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.junit.Assert.assertEquals;
@@ -86,7 +88,7 @@ public class LoginEspressoTest {
         onView(withId(R.id.emailFieldL)).perform(typeText("alex@email.com"));
         onView(withId(R.id.passwordFieldL)).perform(typeText("aa"));
         onView(withId(R.id.loginButton)).perform(click());
-        onView(withId(R.id.loginStatus)).check(matches(withText("")));
+        intended(hasComponent(RoleDecisionActivity.class.getName()));
     }
 
     /*** User Acceptance Test - VI**/
