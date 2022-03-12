@@ -1,9 +1,11 @@
 package com.example.onlinebartertrading;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +27,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 
 /**
@@ -269,6 +272,7 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
      * displayed
      * @param view
      */
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onClick(View view) {
         List<Integer> selectedTags = getPreferences();
@@ -297,6 +301,9 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
             PreferenceClass userPref =
                     new PreferenceClass(selectedTags, minValue, maxValue, maxDistance);
             preferences.put("preferences", userPref);
+
+            userPref.setCategories((ArrayList<String>) userPref.getTags().stream().map(n -> ((Chip)findViewById(n)).getText().toString()).collect(Collectors.toList()));
+
 
             userRef.updateChildren(preferences);
             // switch to new activity

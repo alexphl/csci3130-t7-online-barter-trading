@@ -210,8 +210,7 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
         int valueLowerLimit = 0;
         int distance = 1000;
         if(preferences != null) {
-
-            categories = (ArrayList<String>) preferences.getTags().stream().map(n -> ((Chip)findViewById(n)).getText().toString()).collect(Collectors.toList());
+            categories = preferences.getCategories();
             //The upper limit of the price
             valueUpperLimit = preferences.getMaxValue();
             valueLowerLimit = preferences.getMinValue();

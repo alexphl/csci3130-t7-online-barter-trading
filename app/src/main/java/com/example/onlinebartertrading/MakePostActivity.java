@@ -74,7 +74,7 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
     }
 
     protected String getCategory(){
-        ChipGroup pref = findViewById(R.id.distanceChips);
+        ChipGroup pref = findViewById(R.id.allChips);
         int checkedChip = pref.getCheckedChipId();
         Chip checked = findViewById(checkedChip);
         return checked.getText().toString();

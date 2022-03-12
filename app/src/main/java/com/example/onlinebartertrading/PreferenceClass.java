@@ -7,6 +7,7 @@ import java.util.List;
 public class PreferenceClass implements Serializable {
 
     private ArrayList<Integer> tags;
+    private ArrayList<String> categories;
     private int minValue;
     private int maxValue;
     private int distance;
@@ -38,6 +39,14 @@ public class PreferenceClass implements Serializable {
 
     public int getDistance() {
         return distance;
+    }
+
+    public void setCategories(ArrayList<String> categories) {
+        this.categories = categories;
+    }
+
+    public ArrayList<String> getCategories() {
+        return categories;
     }
 
 }
