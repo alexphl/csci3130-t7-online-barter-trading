@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -67,6 +69,13 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
         return valueBox.getText().toString().isEmpty() ? -1 : Float.parseFloat(valueBox.getText().toString().trim());
     }
 
+    protected String getCategory(){
+        ChipGroup pref = findViewById(R.id.distanceChips);
+        int checkedChip = pref.getCheckedChipId();
+        Chip checked = findViewById(checkedChip);
+        return checked.getText().toString();
+    }
+
     /**
      * Below are the validator methods
      * Don't warrant their own descriptions
@@ -102,9 +111,9 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View view) {
         String title = getTitleDesc();
         String desc = getDesc();
+        String category = getCategory();
         float value = getValue();
 
-        String category = "Furnishing";
         double[] location = (int) (Math.random() * 2) == 0 ? location1 : location2;
 
         String errorMessage = "";
