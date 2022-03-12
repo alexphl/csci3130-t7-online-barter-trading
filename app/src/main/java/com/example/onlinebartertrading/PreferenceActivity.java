@@ -32,7 +32,6 @@ import java.util.UUID;
 public class PreferenceActivity extends AppCompatActivity implements View.OnClickListener {
     //km
     public static final int MAX_DISTANCE = 1000;
-    public static String areaText;
 
     private DatabaseReference userRef;
 
@@ -54,7 +53,7 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
 
     protected void initializeUserDBRef() {
         Intent intent = getIntent();
-        String email = intent.getStringExtra("email");
+        String email = "alex@email.com";
 
         DatabaseReference dbRef = FirebaseDatabase
                 .getInstance(FirebaseConstants.FIREBASE_URL)
@@ -98,8 +97,16 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
         });
     }
 
-    protected void setTags(List<Integer> tags) {
-        return;
+    protected void setTags(List<Integer> dbTags) {
+        if (dbTags == null) {
+            return;
+        }
+
+        for (Integer id: dbTags) {
+            Chip tag = findViewById(id);
+            tag.setChecked(true);
+        }
+
     }
 
     /**
@@ -275,8 +282,10 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
             preferences.put("preferences", userPref);
 
             userRef.updateChildren(preferences);
-
-            //switch to new activity
+            // switch to new activity
+            Intent intent = new Intent(getBaseContext(), ShowDetails.class);
+            intent.putExtra("preferences", userPref);
+            startActivity(intent);
 
         }
     }

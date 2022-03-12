@@ -19,6 +19,7 @@ import android.widget.ListView;
 import android.widget.SearchView;
 
 
+import com.google.android.material.chip.Chip;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,6 +32,7 @@ import com.google.maps.android.SphericalUtil;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.stream.Collectors;
 
 /**
  * This class represents the details activity
@@ -47,12 +49,14 @@ public class ShowDetails extends AppCompatActivity implements View.OnClickListen
     ArrayList<String> value = new ArrayList<>();
     Button showButton;
     Editor editor;
+    Chip chip;
     /*
     This holds the posts after applying filter and keyword search.
      */
     ArrayList<DataSnapshot> values;
     DatabaseReference reference;
     String searchKeyword = "";
+    PreferenceClass preferences;
 
     int numPosts = 0;
 
@@ -67,6 +71,7 @@ public class ShowDetails extends AppCompatActivity implements View.OnClickListen
         setContentView(R.layout.activity_listmain);
         listGoods = findViewById(R.id.listView);
         listGoods.addFooterView(getLayoutInflater().inflate(R.layout.footer_view, null));
+        listGoods.addHeaderView(getLayoutInflater().inflate(R.layout.header_view, null));
 
         showButton = findViewById(R.id.btn);
         showButton.setOnClickListener(this);
@@ -97,8 +102,12 @@ public class ShowDetails extends AppCompatActivity implements View.OnClickListen
                 ArrayList<DataSnapshot> list = new ArrayList<>();
                 //Get all values from iterator
                 snapshots.forEachRemaining(list::add);
+                preferences = (PreferenceClass) getIntent().getSerializableExtra("preferences");
                 values = applyFilters(list);
                 extractPosts();
+                if(preferences == null) {
+                    chip.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -107,7 +116,13 @@ public class ShowDetails extends AppCompatActivity implements View.OnClickListen
             }
         });
 
-
+        chip = findViewById(R.id.filterChip);
+        chip.setOnCloseIconClickListener(view -> {
+            Intent intent = getIntent();
+            String param = null;
+            intent.putExtra("preferences", param);
+            startActivity(getIntent());
+        });
     }
 
     /**
@@ -128,27 +143,9 @@ public class ShowDetails extends AppCompatActivity implements View.OnClickListen
         MenuItem filter = menu.findItem(R.id.setting);
         //Behaviour for when filter button is clicked. The user will be taken to the preferences activity.
         filter.setOnMenuItemClickListener(item -> {
-         Intent intent = new Intent(getBaseContext(), MakePostActivity.class);
-//             intent.putExtra();
+         Intent intent = new Intent(getBaseContext(), PreferenceActivity.class);
          startActivity(intent);
          return false;
-        });
-        filter.setVisible(false);
-
-        //Behavior when the ActionBar is expanded. The filter button is made visible or invisible depending on this configuration.
-        search.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
-            @Override
-            public boolean onMenuItemActionExpand(MenuItem item) {
-                filter.setVisible(true);
-                return true;
-            }
-
-            @Override
-            public boolean onMenuItemActionCollapse(MenuItem item) {
-                filter.setVisible(false);
-                return true;
-            }
-
         });
 
         SearchView searchView =
@@ -181,18 +178,26 @@ public class ShowDetails extends AppCompatActivity implements View.OnClickListen
      * @param data containing all the results of the query
      * @return ArrayList containing only the posts that match the filters
      */
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private ArrayList<DataSnapshot> applyFilters(ArrayList<DataSnapshot> data) {
-        String local_area = "HRM";
-        String category = "Furnishing";
-        //The upper limit of the price
-        int valueUpperLimit = 2000;
-        //Upper limit of distance. This should be in meters
+        ArrayList<String> categories = new ArrayList<>();
+        int valueUpperLimit =  1000000;
+        int valueLowerLimit = 0;
         int distance = 1000;
+        if(preferences != null) {
+
+            categories = (ArrayList<String>) preferences.getTags().stream().map(n -> ((Chip)findViewById(n)).getText().toString()).collect(Collectors.toList());
+            //The upper limit of the price
+            valueUpperLimit = preferences.getMaxValue();
+            valueLowerLimit = preferences.getMinValue();
+            distance = preferences.getDistance() * 1000;
+
+            //Upper limit of distance. This should be in meters
+        }
         //This is the current location, this would be taken from the intent from the activity that detects location.
         double current_lat = 44.637438120009094;
         double current_long = -63.57768822532626;
         LatLng current_position = new LatLng(current_lat, current_long);
-
 
 
         ArrayList<DataSnapshot> list = new ArrayList<>();
@@ -204,9 +209,10 @@ public class ShowDetails extends AppCompatActivity implements View.OnClickListen
             double distance_between = SphericalUtil.computeDistanceBetween(current_position, post_position);
 //            System.out.println(distance_between);
             //Refactor
-//            if(value.child("category").getValue().toString().equals(category) &&  value.child("area").getValue().toString().equals(local_area) && distance_between <= distance && Integer.parseInt(value.child("value").getValue().toString()) <= valueUpperLimit)
             if ((value.child("title").getValue().toString().contains(searchKeyword) || value.child("desc").getValue().toString().contains(searchKeyword))) {
-                list.add(value);
+                if(preferences == null || ((categories.isEmpty() || categories.contains(value.child("category").getValue().toString()))  && distance_between <= distance && valueLowerLimit <= Integer.parseInt(value.child("value").getValue().toString()) && Integer.parseInt(value.child("value").getValue().toString()) <= valueUpperLimit)) {
+                    list.add(value);
+                }
             }
         }
         return list;
@@ -232,12 +238,12 @@ public class ShowDetails extends AppCompatActivity implements View.OnClickListen
                 detail.add(de);
                 value.add(val);
             }
-            if(batchCount == 4) break;
+            if(batchCount == 5) break;
         }
 
         numPosts += batchCount;
         //Disable search button if we did not get 4 posts or we get all of the posts.
-        if(batchCount < 4 || numPosts == values.size()) {
+        if(batchCount < 5 || numPosts == values.size()) {
             showButton.setVisibility(View.GONE);
         }
 
