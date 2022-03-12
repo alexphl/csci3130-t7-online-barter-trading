@@ -96,6 +96,7 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
      */
 protected void switch2ShowDetail() {
         Intent intent = new Intent(MakePostActivity.this, ShowDetailsActivity.class);
+        intent.putExtra("userEmail", userEmail);
         intent.putExtra("lastLocation", userLocation);
         startActivity(intent);
     }

@@ -59,6 +59,7 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
     DatabaseReference reference;
     String searchKeyword = "";
     PreferenceClass preferences;
+    String userEmail;
 
     // Necessary for location provider
     private LocationProvider locationProvider;
@@ -84,6 +85,9 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
 
         // We call this here as it takes a second to fetch user location
         locationProvider = new LocationProvider(this, getIntent().getDoubleArrayExtra("lastLocation"));
+
+        //Get user email from intent
+        userEmail = getIntent().getStringExtra("userEmail");
 
         //Swipe down to refresh lets the user automatically show any new posts that are made by other users.
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swiperefresh);
@@ -169,6 +173,7 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
         //Behaviour for when filter button is clicked. The user will be taken to the preferences activity.
         filter.setOnMenuItemClickListener(item -> {
          Intent intent = new Intent(getBaseContext(), PreferenceActivity.class);
+         intent.putExtra("userEmail", userEmail);
          startActivity(intent);
          return false;
         });

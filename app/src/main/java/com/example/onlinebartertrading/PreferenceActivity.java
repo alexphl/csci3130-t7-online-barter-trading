@@ -65,7 +65,7 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
 
     protected void initializeUserDBRef() {
         Intent intent = getIntent();
-        String email = intent.getStringExtra("email");
+        String email = intent.getStringExtra("userEmail");
 
         DatabaseReference dbRef = FirebaseDatabase
                 .getInstance(FirebaseConstants.FIREBASE_URL)
@@ -123,7 +123,8 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
 
         for (Integer id: dbTags) {
             Chip tag = findViewById(id);
-            tag.setChecked(true);
+            if (tag != null) tag.setChecked(true);
+            else System.out.println("NULL TAG ID: " + id);
         }
     }
 
