@@ -9,15 +9,14 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 /**
- * This is the Role Decision Fragment
- * that is included as part of AuthActivity.
+ * This is the Role Decision
+ * class.
  */
 public class RoleDecision extends AppCompatActivity implements View.OnClickListener {
 
     /**
      *  Preliminary setup
      */
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

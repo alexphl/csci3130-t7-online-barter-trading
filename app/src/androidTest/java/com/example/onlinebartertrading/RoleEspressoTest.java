@@ -44,14 +44,14 @@ public class RoleEspressoTest {
 
     /*** User Acceptance Test - I**/
     @Test
-    public void checkIfPostButtonWorks() {
+    public void checkIfProviderButtonWorks() {
         onView(withId(R.id.ProviderButton)).perform(click());
         intended(hasComponent(MakePostActivity.class.getName()));
     }
 
     /*** User Acceptance Test - I**/
     @Test
-    public void checkIfListingButtonWorks() {
+    public void checkIfReceiverButtonWorks() {
         onView(withId(R.id.ReceiverButton)).perform(click());
         intended(hasComponent(ShowDetailsActivity.class.getName()));
     }
