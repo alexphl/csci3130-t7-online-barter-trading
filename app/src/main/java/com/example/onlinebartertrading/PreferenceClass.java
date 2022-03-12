@@ -1,10 +1,12 @@
 package com.example.onlinebartertrading;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-public class PreferenceClass {
+public class PreferenceClass implements Serializable {
 
-    private List<Integer> tags;
+    private ArrayList<Integer> tags;
     private int minValue;
     private int maxValue;
     private int distance;
@@ -15,7 +17,7 @@ public class PreferenceClass {
     }
 
     public PreferenceClass(List<Integer> tags, int minValue, int maxValue, int distance){
-        this.tags = tags;
+        this.tags = new ArrayList<>(tags);
         this.minValue = minValue;
         this.maxValue = maxValue;
         this.distance = distance;
