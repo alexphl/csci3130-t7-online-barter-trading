@@ -30,6 +30,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.SphericalUtil;
 
 
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -40,7 +41,6 @@ import java.util.stream.Collectors;
  * which appears when a user enters a product post
  **/
 public class ShowDetailsActivity extends AppCompatActivity implements View.OnClickListener{
-
     ListView listGoods;
     /*
     These lists hold the posts that are needed to be displayed. These are passed to Editor.java to add the the ArrayAdaptor.
@@ -49,9 +49,12 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
     ArrayList<String> detail = new ArrayList<>();
     ArrayList<String> value = new ArrayList<>();
     ArrayList<String> category = new ArrayList<>();
+    ArrayList<String> email = new ArrayList<>();
+    ArrayList<String> distance = new ArrayList<>();
     Button showButton;
     Editor editor;
     Chip chip;
+    LatLng position;
     /*
     This holds the posts after applying filter and keyword search.
      */
@@ -101,6 +104,9 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
                 }
         );
 
+        double[] userLocation = locationProvider.getLocationUpdate();
+        position = new LatLng(userLocation[0], userLocation[1]);
+
         reference = FirebaseDatabase.getInstance().getReference().child("posts");
 
         Query query = reference.orderByKey();
@@ -110,22 +116,6 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onDataChange(@NonNull DataSnapshot datasnapshot) {
-            //get data from firebase
-
-                for(DataSnapshot snapshot : datasnapshot.getChildren()) {
-                    String tit = snapshot.child("title").getValue().toString();
-                    String de = snapshot.child("desc").getValue().toString();
-                    String val = snapshot.child("value").getValue().toString();
-
-                    name.add(tit);
-                    detail.add(de);
-                    value.add(val);
-                }
-
-                //Send to adapter and make data in each layout
-                Editor editor = new Editor(ShowDetailsActivity.this, name, detail, value, category);
-                listGoods.setAdapter(editor);
-
                 //get data from firebase
                 Iterator<DataSnapshot> snapshots = datasnapshot.getChildren().iterator();
                 ArrayList<DataSnapshot> list = new ArrayList<>();
@@ -216,8 +206,6 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
         int valueLowerLimit = 0;
         int distance = 1000;
 
-        double[] userLocation = locationProvider.getLocationUpdate();
-
         if(preferences != null) {
             categories = preferences.getCategories();
             //The upper limit of the price
@@ -228,9 +216,7 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
             //Upper limit of distance. This should be in meters
         }
         //This is the current location, this would be taken from the intent from the activity that detects location.
-        System.out.println("USER LOCATION " + Arrays.toString(userLocation));
-        LatLng current_position = new LatLng(userLocation[0], userLocation[1]);
-
+        LatLng current_position = position;
 
         ArrayList<DataSnapshot> list = new ArrayList<>();
         for(DataSnapshot value : data) {
@@ -263,6 +249,11 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
             String de = snapshot.child("desc").getValue().toString();
             String val = snapshot.child("value").getValue().toString();
             String cat = snapshot.child("category").getValue().toString();
+            String posterEmail = snapshot.child("posterEmail").getValue().toString();
+            LatLng itemPosition = new LatLng(Double.parseDouble(snapshot.child("latitude").getValue().toString()), Double.parseDouble(snapshot.child("longitude").getValue().toString()));
+            LatLng currentPosition = position;
+            int distance = (int) (SphericalUtil.computeDistanceBetween(itemPosition, currentPosition));
+            String distVal = "<"+(distance/1000+10)/10 *10;
 
 
             if(!tit.isEmpty() && !de.isEmpty() && !val.isEmpty()) {
@@ -271,6 +262,8 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
                 detail.add(de);
                 value.add(val);
                 category.add(cat);
+                email.add(posterEmail);
+                this.distance.add(distVal);
             }
             if(batchCount == 5) break;
         }
@@ -283,7 +276,7 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
 
         //Send to adapter and make data in each layout
         if(editor == null) {
-            editor = new Editor(ShowDetailsActivity.this, name, detail, value, category);
+            editor = new Editor(ShowDetailsActivity.this, name, detail, value, category, distance, email);
         }
         else {
             editor.notifyDataSetChanged();
