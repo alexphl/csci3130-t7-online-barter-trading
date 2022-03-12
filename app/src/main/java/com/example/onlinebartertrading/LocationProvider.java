@@ -31,10 +31,11 @@ public class LocationProvider {
     private final LocationManager locationManager;
 
     /**
-     * @param activity TODO: figure out if this is all we need
+     * TODO: figure out if this is all we need
      */
-    public LocationProvider(Activity activity) {
-        this.context = activity.getApplicationContext();
+    public LocationProvider(Context context) {
+        //this.context = activity.getApplicationContext();
+        this.context = context;
         this.locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         getLocationPermissions();
     }
@@ -44,8 +45,8 @@ public class LocationProvider {
      * @return Latitude in Double[0], Longitude in Double[1], null if unavailable
      */
     @SuppressLint("MissingPermission") // we do it ourselves
-    public Double[] getLocationUpdate() {
-        Double[] coordinates = new Double[2];
+    public double[] getLocationUpdate() {
+        double[] coordinates = new double[2];
         boolean networkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
         boolean gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         Criteria locationMode = new Criteria();
@@ -80,12 +81,12 @@ public class LocationProvider {
      *
      * adapted from: https://stackoverflow.com/a/27834110 TODO: cite this
      */
-    public Double[] getLocationFromAddress(String strAddress) {
+    public double[] getLocationFromAddress(String strAddress) {
         // This requires us to have INTERNET and COARSE LOCATION permissions
         if (!getPermission(Manifest.permission.INTERNET) ||
                 getAccuracyLevel() == 0) return null;
 
-        Double[] coordinates= new Double[2];
+        double[] coordinates = new double[2];
         Geocoder coder = new Geocoder(context);
         List<Address> address;
 
