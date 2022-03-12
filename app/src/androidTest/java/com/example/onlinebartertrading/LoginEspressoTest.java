@@ -84,7 +84,7 @@ public class LoginEspressoTest {
     public void checkIfPasswordMatches() {
         onView(withId(R.id.viewPager)).perform(swipeLeft());
         onView(withId(R.id.emailFieldL)).perform(typeText("alex@email.com"));
-        onView(withId(R.id.passwordFieldL)).perform(typeText("a"));
+        onView(withId(R.id.passwordFieldL)).perform(typeText("aa"));
         onView(withId(R.id.loginButton)).perform(click());
         onView(withId(R.id.loginStatus)).check(matches(withText("")));
     }
@@ -94,7 +94,7 @@ public class LoginEspressoTest {
     public void checkIfPasswordDoesNotMatch() {
         onView(withId(R.id.viewPager)).perform(swipeLeft());
         onView(withId(R.id.emailFieldL)).perform(typeText("alex@email.com"));
-        onView(withId(R.id.passwordFieldL)).perform(typeText("aa"));
+        onView(withId(R.id.passwordFieldL)).perform(typeText("aaa"));
         onView(withId(R.id.loginButton)).perform(click());
         onView(withId(R.id.loginStatus)).check(matches(withText(R.string.INVALID_PASSWORD)));
     }
