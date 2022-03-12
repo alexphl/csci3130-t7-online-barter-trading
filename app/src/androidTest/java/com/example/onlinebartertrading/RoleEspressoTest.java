@@ -8,9 +8,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.junit.Assert.assertEquals;
 
-import android.content.Context;
-
-import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
 
 import androidx.test.espresso.intent.Intents;
@@ -52,5 +49,10 @@ public class RoleEspressoTest {
         intended(hasComponent(MakePostActivity.class.getName()));
     }
 
-
+    /*** User Acceptance Test - I**/
+    @Test
+    public void checkIfListingButtonWorks() {
+        onView(withId(R.id.ReceiverButton)).perform(click());
+        intended(hasComponent(ShowDetailsActivity.class.getName()));
+    }
 }

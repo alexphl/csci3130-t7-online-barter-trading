@@ -6,11 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
-import java.security.NoSuchAlgorithmException;
 
 /**
  * This is the Role Decision Fragment
@@ -27,7 +23,7 @@ public class RoleDecision extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_role);
         Button providerButton = findViewById(R.id.ProviderButton);
-        Button receiverButton = findViewById(R.id.RecieverButton);
+        Button receiverButton = findViewById(R.id.ReceiverButton);
         providerButton.setOnClickListener(this);
         receiverButton.setOnClickListener(this);
     }
@@ -63,7 +59,7 @@ public class RoleDecision extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         int viewId = view.getId();
 
-        if (viewId == R.id.RecieverButton) {
+        if (viewId == R.id.ReceiverButton) {
             switch2PostsWindow();
         }
         else if (viewId == R.id.ProviderButton) {
