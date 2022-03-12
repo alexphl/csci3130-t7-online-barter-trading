@@ -19,6 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -32,8 +33,8 @@ import java.util.UUID;
 public class PreferenceActivity extends AppCompatActivity implements View.OnClickListener {
     //km
     public static final int MAX_DISTANCE = 1000;
-
     private DatabaseReference userRef;
+    public static ArrayList<Integer> distanceChips;
 
     /**
      * Sets the new view up
@@ -48,6 +49,14 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
 
         Button enterButton = findViewById(R.id.preferenceButton);
         enterButton.setOnClickListener(this);
+        //save id of all distance chips
+        distanceChips = new ArrayList<>();
+        distanceChips.add(R.id.tenDist);
+        distanceChips.add(R.id.twentyFiveDist);
+        distanceChips.add(R.id.fiftyDist);
+        distanceChips.add(R.id.hundredDist);
+        distanceChips.add(R.id.twoHundredDist);
+        distanceChips.add(R.id.twoHundredPlusDist);
 
     }
 
@@ -138,29 +147,19 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
      * @param distance to check
      */
     protected void setDistance(int distance) {
-        Chip distChip;
-
-        switch (distance) {
-            case 10:
-                distChip = findViewById(R.id.tenDist);
-                break;
-            case 25:
-                distChip = findViewById(R.id.twentyFiveDist);
-                break;
-            case 50:
-                distChip = findViewById(R.id.fiftyDist);
-                break;
-            case 100:
-                distChip = findViewById(R.id.hundredDist);
-                break;
-            case 200:
-                distChip = findViewById(R.id.twoHundredDist);
-                break;
-            default:
-                distChip = findViewById(R.id.twoHundredPlusDist);
+        Chip distChip = findViewById(distanceChips.get(0));
+        boolean checkedAChip = false;
+        //compare distance chips with distance provided
+        for (int i =0 ; i<distanceChips.size();i++){
+            distChip = findViewById(distanceChips.get(i));
+            if (distChip.getTag().equals(String.valueOf(distance))){
+                distChip.setChecked(true);
+                checkedAChip = true;
+            }
         }
-
-        distChip.setChecked(true);
+        if (!checkedAChip){
+            distChip.setChecked(true);
+        }
     }
 
     /**
@@ -223,22 +222,8 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
     protected int getDistance(){
         ChipGroup pref = findViewById(R.id.distanceChips);
         int checkedChip = pref.getCheckedChipId();
-        int maxDistance = MAX_DISTANCE;
-        if (checkedChip == R.id.tenDist){
-            maxDistance = 10;
-        }
-        else if (checkedChip == R.id.twentyFiveDist){
-            maxDistance = 25;
-        }
-        else if (checkedChip == R.id.fiftyDist){
-            maxDistance = 50;
-        }
-        else if (checkedChip == R.id.hundredDist){
-            maxDistance = 100;
-        }
-        else if (checkedChip == R.id.twoHundredDist){
-            maxDistance = 200;
-        }
+        Chip selectedChip = findViewById(checkedChip);
+        int maxDistance = Integer.valueOf(selectedChip.getTag().toString());
         return maxDistance;
     }
 
@@ -314,8 +299,10 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
             preferences.put("preferences", userPref);
 
             userRef.updateChildren(preferences);
-
-            //switch to new activity
+            // switch to new activity
+            Intent intent = new Intent(getBaseContext(), ShowDetailsActivity.class);
+            intent.putExtra("preferences", userPref);
+            startActivity(intent);
 
         }
     }

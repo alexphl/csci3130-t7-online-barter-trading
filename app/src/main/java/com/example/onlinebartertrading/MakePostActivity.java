@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -71,6 +73,13 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
         return valueBox.getText().toString().isEmpty() ? -1 : Float.parseFloat(valueBox.getText().toString().trim());
     }
 
+    protected String getCategory(){
+        ChipGroup pref = findViewById(R.id.distanceChips);
+        int checkedChip = pref.getCheckedChipId();
+        Chip checked = findViewById(checkedChip);
+        return checked.getText().toString();
+    }
+
     /**
      * Below are the validator methods
      * Don't warrant their own descriptions
@@ -89,11 +98,12 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
      * @param title     user provided title
      * @param value     user provided value
      */
-    protected void switch2ShowDetail(String title, String desc, float value) {
+protected void switch2ShowDetail(String title, String desc, float value,String category) {
         Intent intent = new Intent(MakePostActivity.this, ShowDetailsActivity.class);
         intent.putExtra("title",title);
         intent.putExtra("desc",desc);
         intent.putExtra("value",value);
+        intent.putExtra("category", category);
         intent.putExtra("email", userEmail);
         startActivity(intent);
     }
@@ -106,9 +116,9 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View view) {
         String title = getTitleDesc();
         String desc = getDesc();
-        float value = getValue();
-
+        //String category = getCategory();
         String category = "Furnishing";
+        float value = getValue();
 
         String errorMessage = "";
 
@@ -131,7 +141,7 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
             String time = Long.toString(System.currentTimeMillis());
             Post newPost = new Post(userEmail, title, desc, value, category, location);
             myDatabase.child("posts").child(time).setValue(newPost);
-            switch2ShowDetail(title,desc,value);
+            switch2ShowDetail(title,desc,value,category);
         }
 
     }
