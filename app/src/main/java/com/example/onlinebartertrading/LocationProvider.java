@@ -29,6 +29,7 @@ import java.util.List;
 public class LocationProvider {
     private final Context context;
     private final LocationManager locationManager;
+    private double[] userLocation = {0.0, 0.0};
 
     /**
      * TODO: figure out if this is all we need
@@ -37,6 +38,7 @@ public class LocationProvider {
         this.context = context;
         this.locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         getLocationPermissions();
+        getLocationUpdate();
     }
 
     /**
@@ -44,8 +46,7 @@ public class LocationProvider {
      * @return Latitude in Double[0], Longitude in Double[1], null if unavailable
      */
     @SuppressLint("MissingPermission") // we do it ourselves
-    public double[] getLocationUpdate() {
-        double[] coordinates = new double[2];
+    public void updateLocation() {
         boolean networkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
         boolean gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         Criteria locationMode = new Criteria();
@@ -55,23 +56,26 @@ public class LocationProvider {
             locationMode.setAccuracy(Criteria.ACCURACY_FINE);
         } else if (getAccuracyLevel() > 0 && networkEnabled) {
             locationMode.setAccuracy(Criteria.ACCURACY_COARSE);
-        } else return null;
+        } else return;
 
         // Get location update and store latitude and longitude in results
         locationManager.requestSingleUpdate(locationMode, new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
                 System.out.println("Location requested/n" + location.getLatitude() + "; " + location.getLongitude());
-                coordinates[0] = location.getLatitude();
-                coordinates[1] = location.getLongitude();
+                userLocation[0] = location.getLatitude();
+                userLocation[1] = location.getLongitude();
             }
 
             @Override public void onStatusChanged(String provider, int status, Bundle extras) { }
             @Override public void onProviderEnabled(String provider) { }
             @Override public void onProviderDisabled(String provider) { }
         }, null);
+    }
 
-        return coordinates;
+    public double[] getLocationUpdate() {
+        updateLocation();
+        return userLocation;
     }
 
     /**
