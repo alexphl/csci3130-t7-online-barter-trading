@@ -37,6 +37,7 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
     //km
     public static final int MAX_DISTANCE = 1000;
     private DatabaseReference userRef;
+    String userEmail;
     public static ArrayList<Integer> distanceChips;
 
     /**
@@ -65,13 +66,13 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
 
     protected void initializeUserDBRef() {
         Intent intent = getIntent();
-        String email = intent.getStringExtra("userEmail");
+        userEmail = intent.getStringExtra("userEmail");
 
         DatabaseReference dbRef = FirebaseDatabase
                 .getInstance(FirebaseConstants.FIREBASE_URL)
                 .getReference();
 
-        String uuid = UUID.nameUUIDFromBytes(email.getBytes()).toString();
+        String uuid = UUID.nameUUIDFromBytes(userEmail.getBytes()).toString();
         userRef = dbRef.child(FirebaseConstants.USERS_COLLECTION).child(uuid);
     }
 
@@ -309,6 +310,7 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
             userRef.updateChildren(preferences);
             // switch to new activity
             Intent intent = new Intent(getBaseContext(), ShowDetailsActivity.class);
+            intent.putExtra("userEmail", userEmail);
             intent.putExtra("preferences", userPref);
             double[] lastLocation = getIntent().getDoubleArrayExtra("lastLocation");
             intent.putExtra("lastLocation", lastLocation);
