@@ -63,7 +63,6 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
 
     // Necessary for location provider
     private LocationProvider locationProvider;
-
     int numPosts = 0;
 
     /**
@@ -84,7 +83,8 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
         showButton.setOnClickListener(this);
 
         // We call this here as it takes a second to fetch user location
-        locationProvider = new LocationProvider(this, getIntent().getDoubleArrayExtra("lastLocation"));
+        double[] lastLocation = getIntent().getDoubleArrayExtra("lastLocation");
+        locationProvider = new LocationProvider(this, lastLocation);
 
         //Get user email from intent
         userEmail = getIntent().getStringExtra("userEmail");
@@ -173,6 +173,7 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
         //Behaviour for when filter button is clicked. The user will be taken to the preferences activity.
         filter.setOnMenuItemClickListener(item -> {
          Intent intent = new Intent(getBaseContext(), PreferenceActivity.class);
+         intent.putExtra("lastLocation", locationProvider.getLocationUpdate());
          intent.putExtra("userEmail", userEmail);
          startActivity(intent);
          return false;
@@ -227,8 +228,9 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
             //Upper limit of distance. This should be in meters
         }
         //This is the current location, this would be taken from the intent from the activity that detects location.
-        LatLng current_position = new LatLng(userLocation[0], userLocation[1]);
         System.out.println("USER LOCATION " + Arrays.toString(userLocation));
+        LatLng current_position = new LatLng(userLocation[0], userLocation[1]);
+
 
         ArrayList<DataSnapshot> list = new ArrayList<>();
         for(DataSnapshot value : data) {

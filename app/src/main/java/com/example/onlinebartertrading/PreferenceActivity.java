@@ -310,6 +310,8 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
             // switch to new activity
             Intent intent = new Intent(getBaseContext(), ShowDetailsActivity.class);
             intent.putExtra("preferences", userPref);
+            double[] lastLocation = getIntent().getDoubleArrayExtra("lastLocation");
+            intent.putExtra("lastLocation", lastLocation);
             startActivity(intent);
 
         }
