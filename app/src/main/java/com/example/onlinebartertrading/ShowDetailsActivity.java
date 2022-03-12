@@ -99,8 +99,7 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
                 }
         );
 
-        double[] userLocation = locationProvider.getLocationUpdate();
-        position = new LatLng(userLocation[0], userLocation[1]);
+        position = locationProvider.getLocationUpdate();
 
         reference = FirebaseDatabase.getInstance().getReference().child("posts");
 

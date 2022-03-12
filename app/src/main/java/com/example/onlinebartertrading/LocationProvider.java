@@ -82,9 +82,12 @@ public class LocationProvider {
         }, null);
     }
 
-    public double[] getLocationUpdate() {
+    public LatLng getLocationUpdate() {
         updateLocation();
-        return userLocation;
+
+        LatLng coordinates = new LatLng(userLocation[0], userLocation[1]);
+
+        return coordinates;
     }
 
     /**
