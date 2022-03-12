@@ -34,7 +34,6 @@ public class LocationProvider {
      * TODO: figure out if this is all we need
      */
     public LocationProvider(Context context) {
-        //this.context = activity.getApplicationContext();
         this.context = context;
         this.locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         getLocationPermissions();
@@ -62,6 +61,7 @@ public class LocationProvider {
         locationManager.requestSingleUpdate(locationMode, new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
+                System.out.println("Location requested/n" + location.getLatitude() + "; " + location.getLongitude());
                 coordinates[0] = location.getLatitude();
                 coordinates[1] = location.getLongitude();
             }
