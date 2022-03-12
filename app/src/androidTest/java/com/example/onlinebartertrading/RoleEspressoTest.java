@@ -42,4 +42,16 @@ public class RoleEspressoTest {
 
     @Rule
     public ActivityScenarioRule<AuthActivity> myRule = new ActivityScenarioRule<>(AuthActivity.class);
+
+    @BeforeClass
+    public static void setup() {
+        Intents.init();
+    }
+
+    @AfterClass
+    public static void tearDown() {
+        System.gc();
+    }
+
+    
 }
