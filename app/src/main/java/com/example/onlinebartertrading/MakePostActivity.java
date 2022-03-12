@@ -20,11 +20,11 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
     public static final int maxTitleLength = 50;
     public static final int maxDescLength = 180;
     public static final int maxValue = 1000000;
-    private static final double[] location1 = {44.63761546397678, -63.58739939828512};
-    private static final double[] location2 = {44.66004142421364, -63.74106611737466};
     private static final String area = "HRM";
+    private static double[] location;
     private String userEmail;
     private DatabaseReference myDatabase;
+    private LocationProvider locationProvider;
 
     /**
      * Preliminary setup
@@ -37,6 +37,10 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
         userEmail = getIntent().getStringExtra("userID");
         postButton.setOnClickListener(this);
         myDatabase = FirebaseDatabase.getInstance().getReference();
+
+        //get location
+        locationProvider = new LocationProvider(this);
+        location = locationProvider.getLocationUpdate();
     }
 
     /**
@@ -105,9 +109,10 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
         float value = getValue();
 
         String category = "Furnishing";
-        double[] location = (int) (Math.random() * 2) == 0 ? location1 : location2;
 
         String errorMessage = "";
+
+        if (location[0] == 0) errorMessage = "Location fetch failed";
         if (!validTitleDesc(title)){
             errorMessage = getResources().getString(R.string.INVALID_TITLE).trim();
         }
@@ -124,7 +129,7 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
         setStatusMessage(errorMessage);
         if (errorMessage.equals("")){
             String time = Long.toString(System.currentTimeMillis());
-            Post newPost = new Post(userEmail, title, desc, value, category, location[0], location[1]);
+            Post newPost = new Post(userEmail, title, desc, value, category, location);
             myDatabase.child("posts").child(time).setValue(newPost);
             switch2ShowDetail(title,desc,value);
         }

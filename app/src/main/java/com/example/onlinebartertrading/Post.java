@@ -19,14 +19,14 @@ public class Post {
      * @param givenDesc     user provided description
      * @param givenValue    user provided valuation of product
      */
-    public Post (String email, String givenTitle, String givenDesc, double givenValue, String category, double latitude, double longitude) {
+    public Post (String email, String givenTitle, String givenDesc, double givenValue, String category, double[] coordinates) {
         this.posterEmail = email;
         this.title = givenTitle;
         this.desc = givenDesc;
         this.monetaryValue = givenValue;
         this.category = category;
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.latitude = coordinates[0];
+        this.longitude = coordinates[1];
     }
 
     /**
