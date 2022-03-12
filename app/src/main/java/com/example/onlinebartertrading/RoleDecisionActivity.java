@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
  * This is the Role Decision
  * class.
  */
-public class RoleDecision extends AppCompatActivity implements View.OnClickListener {
+public class RoleDecisionActivity extends AppCompatActivity implements View.OnClickListener {
 
     /**
      *  Preliminary setup

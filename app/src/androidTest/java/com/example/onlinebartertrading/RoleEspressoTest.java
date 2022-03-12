@@ -29,8 +29,8 @@ import org.junit.runner.RunWith;
 public class RoleEspressoTest {
 
     @Rule
-    public ActivityScenarioRule<RoleDecision> myRule = new ActivityScenarioRule<>(RoleDecision.class);
-    public IntentsTestRule<RoleDecision> myIntentRule = new IntentsTestRule<>(RoleDecision.class);
+    public ActivityScenarioRule<RoleDecisionActivity> myRule = new ActivityScenarioRule<>(RoleDecisionActivity.class);
+    public IntentsTestRule<RoleDecisionActivity> myIntentRule = new IntentsTestRule<>(RoleDecisionActivity.class);
 
     @BeforeClass
     public static void setup() {
