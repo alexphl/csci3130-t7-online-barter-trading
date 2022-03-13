@@ -20,6 +20,7 @@ public class User implements Serializable {
 
     public void setLocationProvider(LocationProvider locationProvider) {
         this.locationProvider = locationProvider;
+        updateLastLocation();
     }
 
     public void setLastLocation(LatLng lastLocation) {
@@ -30,8 +31,8 @@ public class User implements Serializable {
         this.preferences = preferences;
     }
 
-    private void updateLastLocation(LatLng lastLocation) {
-        this.lastLocation = this.locationProvider.getLocationUpdate();
+    private void updateLastLocation() {
+        this.lastLocation = getLocationUpdate();
     }
 
     public LatLng getLocationUpdate() {
@@ -53,7 +54,13 @@ public class User implements Serializable {
     public Preferences getPreferences() {
         return preferences;
     }
-    public LatLng getLastLocation() {return lastLocation;}
+
+    public LatLng getLastLocation() {
+        LatLng cacheLocation = lastLocation;
+        updateLastLocation();
+        if (lastLocation.latitude != 0) return lastLocation;
+        return cacheLocation;1
+    }
 
 
 
