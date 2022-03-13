@@ -16,6 +16,7 @@ public class User implements Serializable {
     private transient LocationProvider locationProvider;
     private Preferences preferences;
     private double[] lastLocation;
+    private double[] cacheLocation;
 
     public User(String email) {
         this.email = email;
@@ -47,6 +48,7 @@ public class User implements Serializable {
      * Grabs a location update from LocationProvider
      */
     private void updateLastLocation() {
+        if (lastLocation != null && lastLocation[0] != 0) cacheLocation = lastLocation;
         this.lastLocation = this.locationProvider.getLocationUpdate();
     }
 
@@ -56,10 +58,9 @@ public class User implements Serializable {
      * May output 0.0 for latitude and longitude if location fetch failed
      */
     public LatLng getLocation() {
-        LatLng cacheLocation = new LatLng(lastLocation[0], lastLocation[1]);
         updateLastLocation();
-        if (lastLocation[0] != 0) return new LatLng(lastLocation[0], lastLocation[1]);
-        return cacheLocation;
+        if (lastLocation[0] != 0 || cacheLocation == null) return new LatLng(lastLocation[0], lastLocation[1]);
+        return new LatLng(cacheLocation[0], cacheLocation[1]);
     }
 
     /**
