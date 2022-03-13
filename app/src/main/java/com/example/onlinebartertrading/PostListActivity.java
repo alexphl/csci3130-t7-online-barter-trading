@@ -30,6 +30,7 @@ import com.google.maps.android.SphericalUtil;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Objects;
 
 /**
  * This class represents the details activity
@@ -230,16 +231,23 @@ public class PostListActivity extends AppCompatActivity implements View.OnClickL
         //Start before the postings already on screen.
         for (int i = values.size() - numPosts -1; i >= 0; i--) {
             DataSnapshot snapshot = values.get(i);
-            String tit = snapshot.child("title").getValue().toString();
-            String de = snapshot.child("desc").getValue().toString();
-            String val = snapshot.child("value").getValue().toString();
-            String cat = snapshot.child("category").getValue().toString();
-            String posterEmail = snapshot.child("posterEmail").getValue().toString();
-            LatLng itemPosition = new LatLng(Double.parseDouble(snapshot.child("latitude").getValue().toString()), Double.parseDouble(snapshot.child("longitude").getValue().toString()));
+            String tit, de, val, cat, posterEmail;
+            LatLng itemPosition;
+
+            try {
+                tit = Objects.requireNonNull(snapshot.child("title").getValue()).toString();
+                de = Objects.requireNonNull(snapshot.child("desc").getValue()).toString();
+                val = Objects.requireNonNull(snapshot.child("value").getValue()).toString();
+                cat = Objects.requireNonNull(snapshot.child("category").getValue()).toString();
+                posterEmail = Objects.requireNonNull(snapshot.child("posterEmail").getValue()).toString();
+                itemPosition = new LatLng(Double.parseDouble(Objects.requireNonNull(snapshot.child("latitude").getValue()).toString()), Double.parseDouble(snapshot.child("longitude").getValue().toString()));
+            } catch (NullPointerException e) {
+                continue;
+            }
+
             LatLng currentPosition = position;
             int distance = (int) (SphericalUtil.computeDistanceBetween(itemPosition, currentPosition));
             String distVal = "<"+(distance/1000+10)/10 *10;
-
 
             if(!tit.isEmpty() && !de.isEmpty() && !val.isEmpty()) {
                 batchCount++;
