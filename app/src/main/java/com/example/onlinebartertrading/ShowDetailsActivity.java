@@ -57,7 +57,7 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
     DatabaseReference reference;
     String searchKeyword = "";
     Preferences preferences;
-    String userEmail;
+    User user;
 
     // Necessary for location provider
     private LocationProvider locationProvider;
@@ -71,6 +71,9 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         searchKeyword = getSearchQuery(getIntent());
 
+        user = (User) getIntent().getSerializableExtra("user");
+        user.setLocationProvider(new LocationProvider(this));
+
         //listview layout
         setContentView(R.layout.activity_listmain);
         listGoods = findViewById(R.id.listView);
@@ -79,13 +82,6 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
 
         showButton = findViewById(R.id.btn);
         showButton.setOnClickListener(this);
-
-        // We call this here as it takes a second to fetch user location
-        double[] lastLocation = getIntent().getDoubleArrayExtra("lastLocation");
-        locationProvider = new LocationProvider(this, lastLocation);
-
-        //Get user email from intent
-        userEmail = getIntent().getStringExtra("userEmail");
 
         //Swipe down to refresh lets the user automatically show any new posts that are made by other users.
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swiperefresh);
@@ -99,7 +95,7 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
                 }
         );
 
-        position = locationProvider.getLocationUpdate();
+        position = user.getLastLocation();
 
         reference = FirebaseDatabase.getInstance().getReference().child("posts");
 
@@ -157,8 +153,7 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
         //Behaviour for when filter button is clicked. The user will be taken to the preferences activity.
         filter.setOnMenuItemClickListener(item -> {
          Intent intent = new Intent(getBaseContext(), PreferenceActivity.class);
-         intent.putExtra("lastLocation", locationProvider.getLocationUpdate());
-         intent.putExtra("userEmail", userEmail);
+         intent.putExtra("user", user);
          startActivity(intent);
          return false;
         });
