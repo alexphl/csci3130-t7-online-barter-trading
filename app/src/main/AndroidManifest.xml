@@ -41,6 +41,10 @@
             android:exported="true"
             android:windowSoftInputMode="adjustResize|adjustPan" />
         <activity
+            android:name=".RoleDecisionActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize|adjustPan" />
+        <activity
             android:name=".ShowDetailsActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize|adjustPan">
