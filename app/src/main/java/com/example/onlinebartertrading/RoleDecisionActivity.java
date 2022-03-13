@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
  * class.
  */
 public class RoleDecisionActivity extends AppCompatActivity implements View.OnClickListener {
+    CharSequence text = "Successfully posted";
+    int duration = Toast.LENGTH_SHORT;
 
     /**
      *  Preliminary setup
@@ -43,6 +46,8 @@ public class RoleDecisionActivity extends AppCompatActivity implements View.OnCl
     protected void switch2PostsWindow() {
         Intent switchPostActivity = new Intent(this, MakePostActivity.class);
         startActivity(switchPostActivity);
+        Toast toast = Toast.makeText(this, text, duration);
+        toast.show();
     }
 
     /**
