@@ -1,5 +1,6 @@
 package com.example.onlinebartertrading;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,8 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
  * class.
  */
 public class RoleDecisionActivity extends AppCompatActivity implements View.OnClickListener {
-    CharSequence text = "Successfully posted";
-    int duration = Toast.LENGTH_SHORT;
     User user;
 
     /**
@@ -43,21 +42,11 @@ public class RoleDecisionActivity extends AppCompatActivity implements View.OnCl
     }
 
     /**
-     * Switches to post once provider role picked successfully
+     * Switches to appropriate activity once user picks role
+     * @param target activity to switch to
      */
-    protected void switch2PostsWindow() {
-        Intent switchPostActivity = new Intent(this, MakePostActivity.class);
-        switchPostActivity.putExtra("user", user);
-        startActivity(switchPostActivity);
-        Toast toast = Toast.makeText(this, text, duration);
-        toast.show();
-    }
-
-    /**
-     * Switches to post once receiver role picked successfully
-     */
-    protected void switch2ListingsWindow() {
-        Intent switchListActivity = new Intent(this, PostListActivity.class);
+    protected void switch2Activity(Class target) {
+        Intent switchListActivity = new Intent(this, target);
         switchListActivity.putExtra("user", user);
         startActivity(switchListActivity);
     }
@@ -67,10 +56,10 @@ public class RoleDecisionActivity extends AppCompatActivity implements View.OnCl
         int viewId = view.getId();
 
         if (viewId == R.id.ReceiverButton) {
-            switch2PostsWindow();
+            switch2Activity(MakePostActivity.class);
         }
         else if (viewId == R.id.ProviderButton) {
-            switch2ListingsWindow();
+            switch2Activity(PostListActivity.class);
         }
     }
 }
