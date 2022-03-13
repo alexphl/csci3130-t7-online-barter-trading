@@ -12,7 +12,7 @@ public class User implements Serializable {
     private String lastName;
     private transient LocationProvider locationProvider;
     private Preferences preferences;
-    private LatLng lastLocation;
+    private double[] lastLocation;
 
     public User(String email) {
         this.email = email;
@@ -23,7 +23,7 @@ public class User implements Serializable {
         updateLastLocation();
     }
 
-    public void setLastLocation(LatLng lastLocation) {
+    public void setLastLocation(double[] lastLocation) {
         this.lastLocation = lastLocation;
     }
 
@@ -32,11 +32,12 @@ public class User implements Serializable {
     }
 
     private void updateLastLocation() {
-        this.lastLocation = getLocationUpdate();
+        this.lastLocation = this.locationProvider.getLocationUpdate();
     }
 
     public LatLng getLocationUpdate() {
-        return this.locationProvider.getLocationUpdate();
+        LatLng location = new LatLng(lastLocation[0], lastLocation[1]);
+        return location;
     }
 
     public String getUuid() {
@@ -56,9 +57,9 @@ public class User implements Serializable {
     }
 
     public LatLng getLastLocation() {
-        LatLng cacheLocation = lastLocation;
+        LatLng cacheLocation = new LatLng(lastLocation[0], lastLocation[1]);
         updateLastLocation();
-        if (lastLocation.latitude != 0) return lastLocation;
+        if (lastLocation[0] != 0) return new LatLng(lastLocation[0], lastLocation[1]);
         return cacheLocation;
     }
 

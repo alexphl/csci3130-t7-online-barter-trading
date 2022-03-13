@@ -74,9 +74,9 @@ public class LocationProvider {
         }, null);
     }
 
-    public LatLng getLocationUpdate() {
+    public double[] getLocationUpdate() {
         updateLocation();
-        return new LatLng(coordinates[0], coordinates[1]);
+        return coordinates;
     }
 
     /**
