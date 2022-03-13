@@ -30,6 +30,7 @@ public class RoleDecisionActivity extends AppCompatActivity implements View.OnCl
         receiverButton.setOnClickListener(this);
 
         user = (User) getIntent().getSerializableExtra("user");
+        user.setLocationProvider(new LocationProvider(this));
     }
 
     /**

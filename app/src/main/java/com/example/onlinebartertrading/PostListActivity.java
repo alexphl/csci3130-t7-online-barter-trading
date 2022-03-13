@@ -119,6 +119,8 @@ public class PostListActivity extends AppCompatActivity implements View.OnClickL
                 if(user.getPreferences() == null) {
                     chip.setVisibility(View.GONE);
                 }
+
+                position = user.getLocation();
             }
 
             @Override
