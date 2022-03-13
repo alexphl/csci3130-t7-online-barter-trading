@@ -59,7 +59,7 @@ public class User implements Serializable {
         LatLng cacheLocation = lastLocation;
         updateLastLocation();
         if (lastLocation.latitude != 0) return lastLocation;
-        return cacheLocation;1
+        return cacheLocation;
     }
 
 
