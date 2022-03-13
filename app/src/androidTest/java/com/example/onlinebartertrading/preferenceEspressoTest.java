@@ -8,14 +8,20 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import android.content.Intent;
+import android.os.Bundle;
 
+<<<<<<< HEAD
+=======
+import android.content.Intent;
+import android.os.Bundle;
+
+>>>>>>> 23-UserClass
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.runner.AndroidJUnit4;
 
-import org.hamcrest.integration.JMock1Adapter;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -25,9 +31,14 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 public class preferenceEspressoTest {
 
-
+    static Intent intent = new Intent(ApplicationProvider.getApplicationContext(), PreferenceActivity.class);
+    static Bundle bundle = new Bundle();
+    static {
+        bundle.putString("userEmail", "testuser1@email.com");
+        intent.putExtras(bundle);
+    }
     @Rule
-    public ActivityScenarioRule<PreferenceActivity> myRule = new ActivityScenarioRule<>(PreferenceActivity.class);
+    public ActivityScenarioRule<PreferenceActivity> activityScenarioRule = new ActivityScenarioRule<>(intent);
 
 
 
