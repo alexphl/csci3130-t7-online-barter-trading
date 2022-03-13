@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import android.app.Activity;
 import android.os.Bundle;
 import android.widget.ListView;
 import android.app.SearchManager;
@@ -69,10 +71,11 @@ public class PostListActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        searchKeyword = getSearchQuery(getIntent());
 
         user = (User) getIntent().getSerializableExtra("user");
         user.setLocationProvider(new LocationProvider(this));
+
+        searchKeyword = getSearchQuery(getIntent());
 
         //listview layout
         setContentView(R.layout.activity_listmain);
@@ -158,6 +161,22 @@ public class PostListActivity extends AppCompatActivity implements View.OnClickL
         SearchView searchView =
                 (SearchView) search.getActionView();
         searchView.setIconifiedByDefault(false);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Intent intent = new Intent(getBaseContext(), PostListActivity.class);
+                intent.putExtra("query", query);
+                intent.putExtra("user", user);
+                startActivity(intent);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
 
         searchView.setSearchableInfo(
                 searchManager.getSearchableInfo(getComponentName()));
