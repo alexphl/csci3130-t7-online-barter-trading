@@ -10,35 +10,16 @@ public class User implements Serializable {
     private String email;
     private String firstName;
     private String lastName;
-    private LatLng lastLocation;
+    private transient LocationProvider locationProvider;
     private Preferences preferences;
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public LatLng getLastLocation() {
-        return lastLocation;
-    }
-
-    public Preferences getPreferences() {
-        return preferences;
-    }
+    private LatLng lastLocation;
 
     public User(String email) {
         this.email = email;
+    }
+
+    public void setLocationProvider(LocationProvider locationProvider) {
+        this.locationProvider = locationProvider;
     }
 
     public void setLastLocation(LatLng lastLocation) {
@@ -48,5 +29,32 @@ public class User implements Serializable {
     public void setPreferences(Preferences preferences) {
         this.preferences = preferences;
     }
+
+    private void updateLastLocation(LatLng lastLocation) {
+        this.lastLocation = this.locationProvider.getLocationUpdate();
+    }
+
+    public LatLng getLocationUpdate() {
+        return this.locationProvider.getLocationUpdate();
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+    public String getEmail() {
+        return email;
+    }
+    public String getFirstName() {
+        return firstName;
+    }
+    public String getLastName() {
+        return lastName;
+    }
+    public Preferences getPreferences() {
+        return preferences;
+    }
+    public LatLng getLastLocation() {return lastLocation;}
+
+
 
 }

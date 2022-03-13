@@ -30,20 +30,12 @@ import java.util.List;
 public class LocationProvider {
     private final Context context;
     private final LocationManager locationManager;
-    private double[] userLocation = {0.0, 0.0};
+    private double[] coordinates = {0.0, 0.0};
 
     /**
      * TODO: figure out if this is all we need
      */
     public LocationProvider(Context context) {
-        this.context = context;
-        this.locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        getLocationPermissions();
-        updateLocation();
-    }
-
-    public LocationProvider(Context context, double[] lastLocation) {
-        this.userLocation = lastLocation;
         this.context = context;
         this.locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         getLocationPermissions();
@@ -72,8 +64,8 @@ public class LocationProvider {
             @Override
             public void onLocationChanged(Location location) {
                 System.out.println("Location requested/n" + location.getLatitude() + "; " + location.getLongitude());
-                userLocation[0] = location.getLatitude();
-                userLocation[1] = location.getLongitude();
+                coordinates[0] = location.getLatitude();
+                coordinates[1] = location.getLongitude();
             }
 
             @Override public void onStatusChanged(String provider, int status, Bundle extras) { }
@@ -84,10 +76,7 @@ public class LocationProvider {
 
     public LatLng getLocationUpdate() {
         updateLocation();
-
-        LatLng coordinates = new LatLng(userLocation[0], userLocation[1]);
-
-        return coordinates;
+        return new LatLng(coordinates[0], coordinates[1]);
     }
 
     /**
