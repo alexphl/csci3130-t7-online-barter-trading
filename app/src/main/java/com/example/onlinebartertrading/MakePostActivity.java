@@ -25,7 +25,6 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
     private static final String area = "HRM";
     private User user;
     private DatabaseReference myDatabase;
-    private LocationProvider locationProvider;
 
     /**
      * Preliminary setup
@@ -35,12 +34,12 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_make_post);
         Button postButton = findViewById(R.id.makePostButton);
-        user = getIntent().getParcelableExtra("user");
+
+        user = (User) getIntent().getSerializableExtra("user");
+        user.setLocationProvider(new LocationProvider(this));
+
         postButton.setOnClickListener(this);
         myDatabase = FirebaseDatabase.getInstance().getReference();
-
-        //get location
-        locationProvider = new LocationProvider(this);
     }
 
     /**
@@ -94,8 +93,7 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
      */
 protected void switch2ShowDetail() {
         Intent intent = new Intent(MakePostActivity.this, ShowDetailsActivity.class);
-        intent.putExtra("userEmail", user.getEmail());
-        intent.putExtra("lastLocation", user.getLastLocation());
+        intent.putExtra("user", user);
         startActivity(intent);
     }
 
@@ -110,7 +108,6 @@ protected void switch2ShowDetail() {
         //String category = getCategory();
         String category = "Furnishing";
         float value = getValue();
-        user.setLastLocation(locationProvider.getLocationUpdate());
 
         String errorMessage = "";
 
@@ -132,7 +129,7 @@ protected void switch2ShowDetail() {
         if (errorMessage.equals("")){
             String time = Long.toString(System.currentTimeMillis());
             Post newPost = new Post(user.getEmail(), title, desc, value, category, user.getLastLocation());
-            myDatabase.child("posts").child(time).setValue(newPost);
+            //myDatabase.child("posts").child(time).setValue(newPost);
             switch2ShowDetail();
         }
 
