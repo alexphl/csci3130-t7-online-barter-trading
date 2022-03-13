@@ -4,19 +4,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import android.app.Activity;
 import android.os.Bundle;
 import android.widget.ListView;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.SearchView;
 
 import com.google.android.material.chip.Chip;
@@ -30,20 +30,18 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.SphericalUtil;
 
 
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 /**
  * This class represents the details activity
  * which appears when a user enters a product post
  **/
-public class ShowDetailsActivity extends AppCompatActivity implements View.OnClickListener{
+public class PostListActivity extends AppCompatActivity implements View.OnClickListener{
     ListView listGoods;
     /*
-    These lists hold the posts that are needed to be displayed. These are passed to Editor.java to add the the ArrayAdaptor.
+    These lists hold the posts that are needed to be displayed. These are passed to PostListAdapter.java to add the the ArrayAdaptor.
      */
     ArrayList<String> name = new ArrayList<>();
     ArrayList<String> detail = new ArrayList<>();
@@ -52,7 +50,7 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
     ArrayList<String> email = new ArrayList<>();
     ArrayList<String> distance = new ArrayList<>();
     Button showButton;
-    Editor editor;
+    PostListAdapter postListAdapter;
     Chip chip;
     LatLng position;
     /*
@@ -61,8 +59,7 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
     ArrayList<DataSnapshot> values;
     DatabaseReference reference;
     String searchKeyword = "";
-    PreferenceClass preferences;
-    String userEmail;
+    User user;
 
     // Necessary for location provider
     private LocationProvider locationProvider;
@@ -74,6 +71,10 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        user = (User) getIntent().getSerializableExtra("user");
+        user.setLocationProvider(new LocationProvider(this));
+
         searchKeyword = getSearchQuery(getIntent());
 
         //listview layout
@@ -85,27 +86,21 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
         showButton = findViewById(R.id.btn);
         showButton.setOnClickListener(this);
 
-        // We call this here as it takes a second to fetch user location
-        double[] lastLocation = getIntent().getDoubleArrayExtra("lastLocation");
-        locationProvider = new LocationProvider(this, lastLocation);
-
-        //Get user email from intent
-        userEmail = getIntent().getStringExtra("userEmail");
-
         //Swipe down to refresh lets the user automatically show any new posts that are made by other users.
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swiperefresh);
         swipeRefreshLayout.setOnRefreshListener(
                 () -> {
                     finish();
                     overridePendingTransition( 0, 0);
-                    startActivity(getIntent());
+                    Intent intent = getIntent();
+                    intent.putExtra("user", user);
+                    startActivity(intent);
                     overridePendingTransition( 0, 0);
                     swipeRefreshLayout.setRefreshing(false);
                 }
         );
 
-        double[] userLocation = locationProvider.getLocationUpdate();
-        position = new LatLng(userLocation[0], userLocation[1]);
+        position = user.getLocation();
 
         reference = FirebaseDatabase.getInstance().getReference().child("posts");
 
@@ -121,12 +116,13 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
                 ArrayList<DataSnapshot> list = new ArrayList<>();
                 //Get all values from iterator
                 snapshots.forEachRemaining(list::add);
-                preferences = (PreferenceClass) getIntent().getSerializableExtra("preferences");
                 values = applyFilters(list);
                 extractPosts();
-                if(preferences == null) {
+                if(user.getPreferences() == null) {
                     chip.setVisibility(View.GONE);
                 }
+
+                position = user.getLocation();
             }
 
             @Override
@@ -137,10 +133,12 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
 
         chip = findViewById(R.id.filterChip);
         chip.setOnCloseIconClickListener(view -> {
+            user.setPreferences(null);
             Intent intent = getIntent();
-            String param = null;
-            intent.putExtra("preferences", param);
-            startActivity(getIntent());
+            intent.putExtra(SearchManager.QUERY, "");
+            intent.putExtra("user", user);
+            intent.putExtra("query", "");
+            startActivity(intent);
         });
     }
 
@@ -163,8 +161,7 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
         //Behaviour for when filter button is clicked. The user will be taken to the preferences activity.
         filter.setOnMenuItemClickListener(item -> {
          Intent intent = new Intent(getBaseContext(), PreferenceActivity.class);
-         intent.putExtra("lastLocation", locationProvider.getLocationUpdate());
-         intent.putExtra("userEmail", userEmail);
+         intent.putExtra("user", user);
          startActivity(intent);
          return false;
         });
@@ -176,6 +173,22 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
         searchView.setSearchableInfo(
                 searchManager.getSearchableInfo(getComponentName()));
 
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Intent intent = new Intent(getBaseContext(), PostListActivity.class);
+                intent.putExtra("query", query);
+                intent.putExtra("user", user);
+                startActivity(intent);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
         return true;
     }
 
@@ -185,13 +198,8 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
      * @return the search keyword entered by the user.
      */
     private String getSearchQuery(Intent intent) {
-        //Search query is added to the Intent with the ACTION_SEARCH action on Searchable.
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            return query.trim();
-        }
-        //Defaults to an empty string which will display all posts.
-        return "";
+        if (intent.getStringExtra("query") == null) return "";
+        return intent.getStringExtra("query");
     }
 
     /**
@@ -206,12 +214,12 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
         int valueLowerLimit = 0;
         int distance = 1000;
 
-        if(preferences != null) {
-            categories = preferences.getCategories();
+        if(user.getPreferences() != null) {
+            categories = user.getPreferences().getCategories();
             //The upper limit of the price
-            valueUpperLimit = preferences.getMaxValue();
-            valueLowerLimit = preferences.getMinValue();
-            distance = preferences.getDistance() * 1000;
+            valueUpperLimit = user.getPreferences().getMaxValue();
+            valueLowerLimit = user.getPreferences().getMinValue();
+            distance = user.getPreferences().getDistance() * 1000;
 
             //Upper limit of distance. This should be in meters
         }
@@ -228,7 +236,7 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
 //            System.out.println(distance_between);
             //Refactor
             if ((value.child("title").getValue().toString().contains(searchKeyword) || value.child("desc").getValue().toString().contains(searchKeyword))) {
-                if(preferences == null || ((categories.isEmpty() || categories.contains(value.child("category").getValue().toString()))  && distance_between <= distance && valueLowerLimit <= Integer.parseInt(value.child("value").getValue().toString()) && Integer.parseInt(value.child("value").getValue().toString()) <= valueUpperLimit)) {
+                if(user.getPreferences() == null || ((categories.isEmpty() || categories.contains(value.child("category").getValue().toString()))  && distance_between <= distance && valueLowerLimit <= Integer.parseInt(value.child("value").getValue().toString()) && Integer.parseInt(value.child("value").getValue().toString()) <= valueUpperLimit)) {
                     list.add(value);
                 }
             }
@@ -245,16 +253,23 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
         //Start before the postings already on screen.
         for (int i = values.size() - numPosts -1; i >= 0; i--) {
             DataSnapshot snapshot = values.get(i);
-            String tit = snapshot.child("title").getValue().toString();
-            String de = snapshot.child("desc").getValue().toString();
-            String val = snapshot.child("value").getValue().toString();
-            String cat = snapshot.child("category").getValue().toString();
-            String posterEmail = snapshot.child("posterEmail").getValue().toString();
-            LatLng itemPosition = new LatLng(Double.parseDouble(snapshot.child("latitude").getValue().toString()), Double.parseDouble(snapshot.child("longitude").getValue().toString()));
+            String tit, de, val, cat, posterEmail;
+            LatLng itemPosition;
+
+            try {
+                tit = Objects.requireNonNull(snapshot.child("title").getValue()).toString();
+                de = Objects.requireNonNull(snapshot.child("desc").getValue()).toString();
+                val = Objects.requireNonNull(snapshot.child("value").getValue()).toString();
+                cat = Objects.requireNonNull(snapshot.child("category").getValue()).toString();
+                posterEmail = Objects.requireNonNull(snapshot.child("posterEmail").getValue()).toString();
+                itemPosition = new LatLng(Double.parseDouble(Objects.requireNonNull(snapshot.child("latitude").getValue()).toString()), Double.parseDouble(snapshot.child("longitude").getValue().toString()));
+            } catch (NullPointerException e) {
+                continue;
+            }
+
             LatLng currentPosition = position;
             int distance = (int) (SphericalUtil.computeDistanceBetween(itemPosition, currentPosition));
             String distVal = "<"+(distance/1000+10)/10 *10;
-
 
             if(!tit.isEmpty() && !de.isEmpty() && !val.isEmpty()) {
                 batchCount++;
@@ -275,14 +290,14 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
         }
 
         //Send to adapter and make data in each layout
-        if(editor == null) {
-            editor = new Editor(ShowDetailsActivity.this, name, detail, value, category, distance, email);
+        if(postListAdapter == null) {
+            postListAdapter = new PostListAdapter(PostListActivity.this, name, detail, value, category, distance, email);
         }
         else {
-            editor.notifyDataSetChanged();
+            postListAdapter.notifyDataSetChanged();
         }
 
-        listGoods.setAdapter(editor);
+        listGoods.setAdapter(postListAdapter);
     }
 
     /**

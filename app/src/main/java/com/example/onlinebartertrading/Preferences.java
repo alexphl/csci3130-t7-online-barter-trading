@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PreferenceClass implements Serializable {
+public class Preferences implements Serializable {
 
     private ArrayList<Integer> tags;
     private ArrayList<String> categories;
@@ -13,11 +13,11 @@ public class PreferenceClass implements Serializable {
     private int distance;
     private String localArea;
 
-    public PreferenceClass() {
+    public Preferences() {
         //Needed
     }
 
-    public PreferenceClass(List<Integer> tags, int minValue, int maxValue, int distance){
+    public Preferences(List<Integer> tags, int minValue, int maxValue, int distance){
         this.tags = new ArrayList<>(tags);
         this.minValue = minValue;
         this.maxValue = maxValue;

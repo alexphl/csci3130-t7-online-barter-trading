@@ -15,6 +15,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 
 import androidx.annotation.RequiresApi;
 
@@ -27,10 +28,10 @@ import java.util.List;
 /**
  * Represents a user location provider
  */
-public class LocationProvider {
+public class LocationProvider extends Thread{
     private final Context context;
     private final LocationManager locationManager;
-    private double[] userLocation = {0.0, 0.0};
+    private double[] coordinates = {0.0, 0.0};
 
     /**
      * TODO: figure out if this is all we need
@@ -40,13 +41,11 @@ public class LocationProvider {
         this.locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         getLocationPermissions();
         updateLocation();
+        start();
     }
 
-    public LocationProvider(Context context, double[] lastLocation) {
-        this.userLocation = lastLocation;
-        this.context = context;
-        this.locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        getLocationPermissions();
+    public void run() {
+        Looper.prepare();
         updateLocation();
     }
 
@@ -72,8 +71,8 @@ public class LocationProvider {
             @Override
             public void onLocationChanged(Location location) {
                 System.out.println("Location requested/n" + location.getLatitude() + "; " + location.getLongitude());
-                userLocation[0] = location.getLatitude();
-                userLocation[1] = location.getLongitude();
+                coordinates[0] = location.getLatitude();
+                coordinates[1] = location.getLongitude();
             }
 
             @Override public void onStatusChanged(String provider, int status, Bundle extras) { }
@@ -83,8 +82,10 @@ public class LocationProvider {
     }
 
     public double[] getLocationUpdate() {
+        double[] cacheCoordinates = coordinates;
         updateLocation();
-        return userLocation;
+        if (coordinates[0] != 0) return coordinates;
+        return cacheCoordinates;
     }
 
     /**
