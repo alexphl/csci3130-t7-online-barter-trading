@@ -129,7 +129,7 @@ protected void switch2ShowDetail() {
         if (errorMessage.equals("")){
             String time = Long.toString(System.currentTimeMillis());
             Post newPost = new Post(user.getEmail(), title, desc, value, category, user.getLocation());
-            //myDatabase.child("posts").child(time).setValue(newPost);
+            myDatabase.child("posts").child(time).setValue(newPost);
             switch2ShowDetail();
         }
 
