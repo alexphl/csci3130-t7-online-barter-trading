@@ -15,6 +15,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 
 import androidx.annotation.RequiresApi;
 
@@ -27,7 +28,7 @@ import java.util.List;
 /**
  * Represents a user location provider
  */
-public class LocationProvider {
+public class LocationProvider extends Thread{
     private final Context context;
     private final LocationManager locationManager;
     private double[] coordinates = {0.0, 0.0};
@@ -39,6 +40,12 @@ public class LocationProvider {
         this.context = context;
         this.locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         getLocationPermissions();
+        updateLocation();
+        start();
+    }
+
+    public void run() {
+        Looper.prepare();
         updateLocation();
     }
 
@@ -75,8 +82,10 @@ public class LocationProvider {
     }
 
     public double[] getLocationUpdate() {
+        double[] cacheCoordinates = coordinates;
         updateLocation();
-        return coordinates;
+        if (coordinates[0] != 0) return coordinates;
+        return cacheCoordinates;
     }
 
     /**
