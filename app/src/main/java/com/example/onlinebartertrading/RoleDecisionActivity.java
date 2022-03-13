@@ -15,8 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
  * class.
  */
 public class RoleDecisionActivity extends AppCompatActivity implements View.OnClickListener {
-
-    Context context = getApplicationContext();
     CharSequence text = "Successfully posted";
     int duration = Toast.LENGTH_SHORT;
 
@@ -47,7 +45,7 @@ public class RoleDecisionActivity extends AppCompatActivity implements View.OnCl
      * @param
      */
     protected void switch2PostsWindow() {
-        Toast toast = Toast.makeText(context, text, duration);
+        Toast toast = Toast.makeText(this, text, duration);
         toast.show();
     }
 
