@@ -53,6 +53,6 @@ public class RoleEspressoTest {
     @Test
     public void checkIfReceiverButtonWorks() {
         onView(withId(R.id.ReceiverButton)).perform(click());
-        intended(hasComponent(PostListActivity.class.getName()));
+        intended(hasComponent(ShowDetailsActivity.class.getName()));
     }
 }

@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
  */
 public class PreferenceActivity extends AppCompatActivity implements View.OnClickListener {
     private DatabaseReference userRef;
-    User user;
+    String userEmail;
     public static ArrayList<Integer> distanceChips;
 
     /**
@@ -45,9 +45,6 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preference);
-
-        user = (User) getIntent().getSerializableExtra("user");
-        user.setLocationProvider(new LocationProvider(this));
 
         setPreferences();
 
@@ -65,11 +62,14 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
     }
 
     protected void initializeUserDBRef() {
+        Intent intent = getIntent();
+        userEmail = intent.getStringExtra("userEmail");
+
         DatabaseReference dbRef = FirebaseDatabase
                 .getInstance(FirebaseConstants.FIREBASE_URL)
                 .getReference();
 
-        String uuid = UUID.nameUUIDFromBytes(user.getEmail().getBytes()).toString();
+        String uuid = UUID.nameUUIDFromBytes(userEmail.getBytes()).toString();
         userRef = dbRef.child(FirebaseConstants.USERS_COLLECTION).child(uuid);
     }
 
@@ -86,9 +86,9 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
                 String message;
                 if (snapshot.hasChild("preferences")) {
 
-                    Preferences preferences = snapshot
+                    PreferenceClass preferences = snapshot
                             .child("preferences")
-                            .getValue(Preferences.class);
+                            .getValue(PreferenceClass.class);
 
                     setTags(preferences.getTags());
                     setMinValue(preferences.getMinValue());
@@ -286,19 +286,20 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
         if (errorMessage.equals("")){
             // Saves preferences to DB for specific user
             Map<String, Object> preferences = new HashMap<>();
-            Preferences userPref =
-                    new Preferences(selectedTags, minValue, maxValue, maxDistance);
+            PreferenceClass userPref =
+                    new PreferenceClass(selectedTags, minValue, maxValue, maxDistance);
             preferences.put("preferences", userPref);
 
             userPref.setCategories((ArrayList<String>) userPref.getTags().stream().map(n -> ((Chip)findViewById(n)).getText().toString()).collect(Collectors.toList()));
 
-            user.setPreferences(userPref);
 
             userRef.updateChildren(preferences);
-
             // switch to new activity
-            Intent intent = new Intent(getBaseContext(), PostListActivity.class);
-            intent.putExtra("user", user);
+            Intent intent = new Intent(getBaseContext(), ShowDetailsActivity.class);
+            intent.putExtra("userEmail", userEmail);
+            intent.putExtra("preferences", userPref);
+            double[] lastLocation = getIntent().getDoubleArrayExtra("lastLocation");
+            intent.putExtra("lastLocation", lastLocation);
             startActivity(intent);
 
         }

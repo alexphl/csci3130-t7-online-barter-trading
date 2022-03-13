@@ -41,18 +41,14 @@
             android:exported="true"
             android:windowSoftInputMode="adjustResize|adjustPan" />
         <activity
-            android:name=".RoleDecisionActivity"
-            android:exported="true"
-            android:windowSoftInputMode="adjustResize|adjustPan" />
-        <activity
-            android:name=".PostListActivity"
+            android:name=".ShowDetailsActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
             <meta-data
-                android:name="android.app.default_searchable"
+                android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
         <meta-data

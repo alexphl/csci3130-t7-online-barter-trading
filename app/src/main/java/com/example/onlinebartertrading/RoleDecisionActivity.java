@@ -1,6 +1,6 @@
 package com.example.onlinebartertrading;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -15,7 +15,10 @@ import androidx.appcompat.app.AppCompatActivity;
  * class.
  */
 public class RoleDecisionActivity extends AppCompatActivity implements View.OnClickListener {
-    User user;
+
+    Context context = getApplicationContext();
+    CharSequence text = "Successfully posted";
+    int duration = Toast.LENGTH_SHORT;
 
     /**
      *  Preliminary setup
@@ -28,9 +31,6 @@ public class RoleDecisionActivity extends AppCompatActivity implements View.OnCl
         Button receiverButton = findViewById(R.id.ReceiverButton);
         providerButton.setOnClickListener(this);
         receiverButton.setOnClickListener(this);
-
-        user = (User) getIntent().getSerializableExtra("user");
-        user.setLocationProvider(new LocationProvider(this));
     }
 
     /**
@@ -43,12 +43,20 @@ public class RoleDecisionActivity extends AppCompatActivity implements View.OnCl
     }
 
     /**
-     * Switches to appropriate activity once user picks role
-     * @param target activity to switch to
+     * Switches to post once provider role picked successfully
+     * @param
      */
-    protected void switch2Activity(Class target) {
-        Intent switchListActivity = new Intent(this, target);
-        switchListActivity.putExtra("user", user);
+    protected void switch2PostsWindow() {
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+    }
+
+    /**
+     * Switches to post once receiver role picked successfully
+     * @param
+     */
+    protected void switch2ListingsWindow() {
+        Intent switchListActivity = new Intent(this, ShowDetailsActivity.class);
         startActivity(switchListActivity);
     }
 
@@ -57,10 +65,10 @@ public class RoleDecisionActivity extends AppCompatActivity implements View.OnCl
         int viewId = view.getId();
 
         if (viewId == R.id.ReceiverButton) {
-            switch2Activity(PostListActivity.class);
+            switch2PostsWindow();
         }
         else if (viewId == R.id.ProviderButton) {
-            switch2Activity(MakePostActivity.class);
+            switch2ListingsWindow();
         }
     }
 }

@@ -1,7 +1,5 @@
 package com.example.onlinebartertrading;
 
-import com.google.android.gms.maps.model.LatLng;
-
 /**
  * Class to represent post details
  */
@@ -10,23 +8,25 @@ public class Post {
     private String posterEmail;
     private String title;
     private String desc;
+    private double latitude;
+    private double longitude;
     private String category;
     private String localArea;
     private double monetaryValue;
-    LatLng coordinates;
 
     /**
      * @param givenTitle    user provided title
      * @param givenDesc     user provided description
      * @param givenValue    user provided valuation of product
      */
-    public Post (String email, String givenTitle, String givenDesc, double givenValue, String category, LatLng coordinates) {
+    public Post (String email, String givenTitle, String givenDesc, double givenValue, String category, double[] coordinates) {
         this.posterEmail = email;
         this.title = givenTitle;
         this.desc = givenDesc;
         this.monetaryValue = givenValue;
         this.category = category;
-        this.coordinates = coordinates;
+        this.latitude = coordinates[0];
+        this.longitude = coordinates[1];
     }
 
     /**
@@ -42,7 +42,7 @@ public class Post {
         return title;
     }
     public double getLatitude() {
-        return coordinates.latitude;
+        return latitude;
     }
     public String getCategory() {
         return category;
@@ -51,6 +51,6 @@ public class Post {
         return monetaryValue;
     }
     public double getLongitude() {
-        return coordinates.longitude;
+        return longitude;
     }
 }

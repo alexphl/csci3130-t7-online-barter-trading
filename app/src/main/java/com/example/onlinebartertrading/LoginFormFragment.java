@@ -20,8 +20,8 @@ import java.security.NoSuchAlgorithmException;
  */
 public class LoginFormFragment extends Fragment implements View.OnClickListener {
 
+    public static String LOGGED_USER_ID = "userID";
     public DBHandler DB_HANDLER;
-    private User user;
 
     /**
      * Obligatory Fragment inflater.
@@ -103,10 +103,11 @@ public class LoginFormFragment extends Fragment implements View.OnClickListener 
 
     /**
      * Switches to post once login successful
+     * @param email to pass to next activity
      */
-    protected void switch2RoleWindow() {
-        Intent switchActivity = new Intent(getActivity(), RoleDecisionActivity.class);
-        switchActivity.putExtra("user", user);
+    protected void switch2PostsWindow(String email) {
+        Intent switchActivity = new Intent(getActivity(), MakePostActivity.class);
+        switchActivity.putExtra(LOGGED_USER_ID, email);
         startActivity(switchActivity);
     }
 
@@ -137,11 +138,8 @@ public class LoginFormFragment extends Fragment implements View.OnClickListener 
             errorMessage = getResources().getString(R.string.INVALID_PASSWORD).trim();
         }
         else {
-            user = new User(emailAddress);
-
             setStatusMessage(errorMessage);
-
-            switch2RoleWindow();
+            switch2PostsWindow(emailAddress);
         }
 
 

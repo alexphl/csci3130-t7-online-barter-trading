@@ -76,7 +76,7 @@ public class LoginEspressoTest {
     public void checkIfEmailDoesNotMatch() {
         onView(withId(R.id.viewPager)).perform(swipeLeft());
         onView(withId(R.id.emailFieldL)).perform(typeText("alex@email.comm"));
-        onView(withId(R.id.passwordFieldL)).perform(typeText("aa"));
+        onView(withId(R.id.passwordFieldL)).perform(typeText("a"));
         onView(withId(R.id.loginButton)).perform(click());
         onView(withId(R.id.loginStatus)).check(matches(withText(R.string.INVALID_EMAIL)));
     }
@@ -88,12 +88,7 @@ public class LoginEspressoTest {
         onView(withId(R.id.emailFieldL)).perform(typeText("alex@email.com"));
         onView(withId(R.id.passwordFieldL)).perform(typeText("aa"));
         onView(withId(R.id.loginButton)).perform(click());
-<<<<<<< HEAD
         intended(hasComponent(RoleDecisionActivity.class.getName()));
-
-=======
-        intended(hasComponent(PostListActivity.class.getName()));
->>>>>>> 23-UserClass
     }
 
     /*** User Acceptance Test - VI**/
@@ -102,7 +97,6 @@ public class LoginEspressoTest {
         onView(withId(R.id.viewPager)).perform(swipeLeft());
         onView(withId(R.id.emailFieldL)).perform(typeText("alex@email.com"));
         onView(withId(R.id.passwordFieldL)).perform(typeText("aaa"));
-
         onView(withId(R.id.loginButton)).perform(click());
         onView(withId(R.id.loginStatus)).check(matches(withText(R.string.INVALID_PASSWORD)));
     }

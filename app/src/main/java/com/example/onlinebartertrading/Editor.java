@@ -14,7 +14,7 @@ import java.util.Objects;
 /**
  * Post editing interface
  **/
-public class PostListAdapter extends ArrayAdapter<String> {
+public class Editor extends ArrayAdapter<String> {
     Context context;
     ArrayList<String> name;
     ArrayList<String> detail;
@@ -30,7 +30,7 @@ public class PostListAdapter extends ArrayAdapter<String> {
      * @param value     User provided item valuation
      * @param category  User provided category
      */
-    public PostListAdapter(PostListActivity context, ArrayList<String> name, ArrayList<String> detail, ArrayList<String> value, ArrayList<String> category, ArrayList<String> distance, ArrayList<String> email) {
+    public Editor(ShowDetailsActivity context, ArrayList<String> name, ArrayList<String> detail, ArrayList<String> value, ArrayList<String> category, ArrayList<String> distance, ArrayList<String> email) {
         super(context, R.layout.activity_listview, R.id.itemDetail, name);
         this.context = context;
         this.name = name;

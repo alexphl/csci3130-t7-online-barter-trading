@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:text="Receiver"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.849"
+        app:layout_constraintHorizontal_bias="0.17"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/bottomPurpSplitter" />
 
@@ -19,10 +19,12 @@
         android:id="@+id/ProviderButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="248dp"
+        android:layout_marginEnd="48dp"
         android:text="Provider"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bottomPurpSplitter" />
+        app:layout_constraintHorizontal_bias="0.636"
+        app:layout_constraintTop_toBottomOf="@id/bottomPurpSplitter"
+        tools:layout_editor_absoluteY="629dp" />
 
     <TextView
         android:id="@+id/ReceiverBanner"
@@ -34,40 +36,20 @@
         android:textColor="#651FFF"
         tools:layout_editor_absoluteX="75dp"
         tools:layout_editor_absoluteY="36dp"
-        android:layout_marginEnd="64dp"
         app:layout_constraintBottom_toTopOf="@id/topPurpSplitter"
-        app:layout_constraintTop_toBottomOf="@id/Arrow2"
-        app:layout_constraintEnd_toEndOf="parent"
         />
 
     <TextView
         android:id="@+id/ProviderBanner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
         android:fontFamily="@font/alfa_slab_one"
         android:text="Provider"
         android:textAlignment="center"
         android:textColor="#651FFF"
-        android:layout_marginEnd="260dp"
         app:layout_constraintBottom_toTopOf="@id/topPurpSplitter"
-        app:layout_constraintTop_toBottomOf="@id/Arrow1"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <TextView
-        android:id="@+id/RoleBanner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="128dp"
-        android:fontFamily="@font/alfa_slab_one"
-        android:shadowColor="#121111"
-        android:shadowDy="100"
-        android:text="Specify Role"
-        android:textAlignment="center"
-        android:textColor="#651FFF"
-        android:textColorHighlight="#050505"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@id/ReceiverBanner"
-        app:layout_constraintEnd_toEndOf="parent" />
+        tools:layout_editor_absoluteX="284dp" />
 
     <TextView
         android:id="@+id/Arrow1"
@@ -85,8 +67,8 @@
 
     <TextView
         android:id="@+id/Arrow2"
-        android:layout_width="37dp"
-        android:layout_height="22dp"
+        android:layout_width="31dp"
+        android:layout_height="19dp"
         android:layout_marginEnd="80dp"
         android:drawableTop="@drawable/ic_launcher_foreground"
         android:drawableBottom="@android:drawable/arrow_down_float"
@@ -104,10 +86,26 @@
         android:orientation="vertical"
         app:layout_constraintGuide_begin="-19dp" />
 
+    <TextView
+        android:id="@+id/RoleBanner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="128dp"
+        android:fontFamily="@font/alfa_slab_one"
+        android:shadowColor="#121111"
+        android:shadowDy="100"
+        android:text="Specify Role"
+        android:textAlignment="center"
+        android:textColor="#651FFF"
+        android:textColorHighlight="#050505"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@id/ReceiverBanner"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <EditText
         android:id="@+id/ReceiverInfo"
-        android:layout_width="187dp"
-        android:layout_height="430dp"
+        android:layout_width="185dp"
+        android:layout_height="564dp"
         android:layout_marginStart="220dp"
         android:layout_marginTop="56dp"
         android:ems="10"
@@ -122,8 +120,8 @@
 
     <EditText
         android:id="@+id/ProviderInfo"
-        android:layout_width="215dp"
-        android:layout_height="431dp"
+        android:layout_width="189dp"
+        android:layout_height="564dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="56dp"
         android:ems="10"
@@ -166,6 +164,7 @@
         android:layout_height="6dp"
         android:layout_gravity="center"
         android:background="@color/design_default_color_primary"
+        app:layout_constraintHorizontal_bias="0.473"
         tools:layout_editor_absoluteY="616dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ProviderInfo"
@@ -174,18 +173,18 @@
     <View
         android:id="@+id/rightPurpSplitter"
         android:layout_width="6dp"
-        android:layout_height="490dp"
+        android:layout_height="558dp"
         android:layout_gravity="center"
-        android:layout_marginRight="5dp"
+        android:layout_marginLeft="212dp"
         android:background="@color/design_default_color_primary"
-        app:layout_constraintLeft_toRightOf="@id/ReceiverInfo"
+        app:layout_constraintLeft_toRightOf="@id/ProviderInfo"
         app:layout_constraintWidth_percent="0.8"
         tools:layout_editor_absoluteY="62dp" />
 
     <View
         android:id="@+id/leftPurpSplitter"
         android:layout_width="6dp"
-        android:layout_height="490dp"
+        android:layout_height="558dp"
         android:layout_gravity="center"
         android:layout_marginRight="216dp"
         android:background="@color/design_default_color_primary"
