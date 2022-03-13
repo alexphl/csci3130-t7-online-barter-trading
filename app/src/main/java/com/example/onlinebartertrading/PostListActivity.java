@@ -132,6 +132,10 @@ public class PostListActivity extends AppCompatActivity implements View.OnClickL
         chip = findViewById(R.id.filterChip);
         chip.setOnCloseIconClickListener(view -> {
             user.setPreferences(null);
+            Intent intent = getIntent();
+            intent.putExtra(SearchManager.QUERY, "");
+            intent.putExtra("user", user);
+            intent.putExtra("query", "");
             startActivity(getIntent());
         });
     }
