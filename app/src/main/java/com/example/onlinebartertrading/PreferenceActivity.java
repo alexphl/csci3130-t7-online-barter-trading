@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
  */
 public class PreferenceActivity extends AppCompatActivity implements View.OnClickListener {
     private DatabaseReference userRef;
-    String userEmail;
+    User user;
     public static ArrayList<Integer> distanceChips;
 
     /**
@@ -45,6 +45,9 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preference);
+
+        user = (User) getIntent().getSerializableExtra("user");
+        user.setLocationProvider(new LocationProvider(this));
 
         setPreferences();
 
@@ -62,14 +65,11 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
     }
 
     protected void initializeUserDBRef() {
-        Intent intent = getIntent();
-        userEmail = intent.getStringExtra("userEmail");
-
         DatabaseReference dbRef = FirebaseDatabase
                 .getInstance(FirebaseConstants.FIREBASE_URL)
                 .getReference();
 
-        String uuid = UUID.nameUUIDFromBytes(userEmail.getBytes()).toString();
+        String uuid = UUID.nameUUIDFromBytes(user.getEmail().getBytes()).toString();
         userRef = dbRef.child(FirebaseConstants.USERS_COLLECTION).child(uuid);
     }
 
@@ -292,14 +292,13 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
 
             userPref.setCategories((ArrayList<String>) userPref.getTags().stream().map(n -> ((Chip)findViewById(n)).getText().toString()).collect(Collectors.toList()));
 
+            user.setPreferences(userPref);
 
             userRef.updateChildren(preferences);
+
             // switch to new activity
             Intent intent = new Intent(getBaseContext(), ShowDetailsActivity.class);
-            intent.putExtra("userEmail", userEmail);
-            intent.putExtra("preferences", userPref);
-            double[] lastLocation = getIntent().getDoubleArrayExtra("lastLocation");
-            intent.putExtra("lastLocation", lastLocation);
+            intent.putExtra("user", user);
             startActivity(intent);
 
         }

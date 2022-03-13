@@ -56,7 +56,6 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
     ArrayList<DataSnapshot> values;
     DatabaseReference reference;
     String searchKeyword = "";
-    Preferences preferences;
     User user;
 
     // Necessary for location provider
@@ -111,10 +110,9 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
                 ArrayList<DataSnapshot> list = new ArrayList<>();
                 //Get all values from iterator
                 snapshots.forEachRemaining(list::add);
-                preferences = (Preferences) getIntent().getSerializableExtra("preferences");
                 values = applyFilters(list);
                 extractPosts();
-                if(preferences == null) {
+                if(user.getPreferences() == null) {
                     chip.setVisibility(View.GONE);
                 }
             }
@@ -128,8 +126,7 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
         chip = findViewById(R.id.filterChip);
         chip.setOnCloseIconClickListener(view -> {
             Intent intent = getIntent();
-            String param = null;
-            intent.putExtra("preferences", param);
+            user.setPreferences(null);
             startActivity(getIntent());
         });
     }
@@ -195,12 +192,12 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
         int valueLowerLimit = 0;
         int distance = 1000;
 
-        if(preferences != null) {
-            categories = preferences.getCategories();
+        if(user.getPreferences() != null) {
+            categories = user.getPreferences().getCategories();
             //The upper limit of the price
-            valueUpperLimit = preferences.getMaxValue();
-            valueLowerLimit = preferences.getMinValue();
-            distance = preferences.getDistance() * 1000;
+            valueUpperLimit = user.getPreferences().getMaxValue();
+            valueLowerLimit = user.getPreferences().getMinValue();
+            distance = user.getPreferences().getDistance() * 1000;
 
             //Upper limit of distance. This should be in meters
         }
@@ -217,7 +214,7 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
 //            System.out.println(distance_between);
             //Refactor
             if ((value.child("title").getValue().toString().contains(searchKeyword) || value.child("desc").getValue().toString().contains(searchKeyword))) {
-                if(preferences == null || ((categories.isEmpty() || categories.contains(value.child("category").getValue().toString()))  && distance_between <= distance && valueLowerLimit <= Integer.parseInt(value.child("value").getValue().toString()) && Integer.parseInt(value.child("value").getValue().toString()) <= valueUpperLimit)) {
+                if(user.getPreferences() == null || ((categories.isEmpty() || categories.contains(value.child("category").getValue().toString()))  && distance_between <= distance && valueLowerLimit <= Integer.parseInt(value.child("value").getValue().toString()) && Integer.parseInt(value.child("value").getValue().toString()) <= valueUpperLimit)) {
                     list.add(value);
                 }
             }
