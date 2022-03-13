@@ -1,6 +1,5 @@
 package com.example.onlinebartertrading;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -45,7 +44,6 @@ public class RoleDecisionActivity extends AppCompatActivity implements View.OnCl
 
     /**
      * Switches to post once provider role picked successfully
-     * @param
      */
     protected void switch2PostsWindow() {
         Intent switchPostActivity = new Intent(this, MakePostActivity.class);
@@ -57,10 +55,9 @@ public class RoleDecisionActivity extends AppCompatActivity implements View.OnCl
 
     /**
      * Switches to post once receiver role picked successfully
-     * @param
      */
     protected void switch2ListingsWindow() {
-        Intent switchListActivity = new Intent(this, ShowDetailsActivity.class);
+        Intent switchListActivity = new Intent(this, PostListActivity.class);
         switchListActivity.putExtra("user", user);
         startActivity(switchListActivity);
     }

@@ -92,7 +92,7 @@ public class LoginEspressoTest {
         intended(hasComponent(RoleDecisionActivity.class.getName()));
 
 =======
-        intended(hasComponent(ShowDetailsActivity.class.getName()));
+        intended(hasComponent(PostListActivity.class.getName()));
 >>>>>>> 23-UserClass
     }
 

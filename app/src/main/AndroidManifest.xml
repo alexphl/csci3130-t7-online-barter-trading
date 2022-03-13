@@ -45,7 +45,7 @@
             android:exported="true"
             android:windowSoftInputMode="adjustResize|adjustPan" />
         <activity
-            android:name=".ShowDetailsActivity"
+            android:name=".PostListActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize|adjustPan">
             <intent-filter>

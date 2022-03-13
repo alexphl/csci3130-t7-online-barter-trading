@@ -92,7 +92,7 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
      * Switches to ShowDetail Activity.
      */
 protected void switch2ShowDetail() {
-        Intent intent = new Intent(MakePostActivity.this, ShowDetailsActivity.class);
+        Intent intent = new Intent(MakePostActivity.this, PostListActivity.class);
         intent.putExtra("user", user);
         startActivity(intent);
     }

@@ -297,7 +297,7 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
             userRef.updateChildren(preferences);
 
             // switch to new activity
-            Intent intent = new Intent(getBaseContext(), ShowDetailsActivity.class);
+            Intent intent = new Intent(getBaseContext(), PostListActivity.class);
             intent.putExtra("user", user);
             startActivity(intent);
 

@@ -35,10 +35,10 @@ import java.util.Iterator;
  * This class represents the details activity
  * which appears when a user enters a product post
  **/
-public class ShowDetailsActivity extends AppCompatActivity implements View.OnClickListener{
+public class PostListActivity extends AppCompatActivity implements View.OnClickListener{
     ListView listGoods;
     /*
-    These lists hold the posts that are needed to be displayed. These are passed to Editor.java to add the the ArrayAdaptor.
+    These lists hold the posts that are needed to be displayed. These are passed to PostListAdapter.java to add the the ArrayAdaptor.
      */
     ArrayList<String> name = new ArrayList<>();
     ArrayList<String> detail = new ArrayList<>();
@@ -47,7 +47,7 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
     ArrayList<String> email = new ArrayList<>();
     ArrayList<String> distance = new ArrayList<>();
     Button showButton;
-    Editor editor;
+    PostListAdapter postListAdapter;
     Chip chip;
     LatLng position;
     /*
@@ -125,7 +125,6 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
 
         chip = findViewById(R.id.filterChip);
         chip.setOnCloseIconClickListener(view -> {
-            Intent intent = getIntent();
             user.setPreferences(null);
             startActivity(getIntent());
         });
@@ -261,14 +260,14 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
         }
 
         //Send to adapter and make data in each layout
-        if(editor == null) {
-            editor = new Editor(ShowDetailsActivity.this, name, detail, value, category, distance, email);
+        if(postListAdapter == null) {
+            postListAdapter = new PostListAdapter(PostListActivity.this, name, detail, value, category, distance, email);
         }
         else {
-            editor.notifyDataSetChanged();
+            postListAdapter.notifyDataSetChanged();
         }
 
-        listGoods.setAdapter(editor);
+        listGoods.setAdapter(postListAdapter);
     }
 
     /**
