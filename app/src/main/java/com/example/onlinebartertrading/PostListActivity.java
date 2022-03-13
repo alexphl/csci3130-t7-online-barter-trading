@@ -92,7 +92,9 @@ public class PostListActivity extends AppCompatActivity implements View.OnClickL
                 () -> {
                     finish();
                     overridePendingTransition( 0, 0);
-                    startActivity(getIntent());
+                    Intent intent = getIntent();
+                    intent.putExtra("user", user);
+                    startActivity(intent);
                     overridePendingTransition( 0, 0);
                     swipeRefreshLayout.setRefreshing(false);
                 }
@@ -136,7 +138,7 @@ public class PostListActivity extends AppCompatActivity implements View.OnClickL
             intent.putExtra(SearchManager.QUERY, "");
             intent.putExtra("user", user);
             intent.putExtra("query", "");
-            startActivity(getIntent());
+            startActivity(intent);
         });
     }
 
