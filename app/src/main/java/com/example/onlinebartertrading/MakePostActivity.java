@@ -111,7 +111,7 @@ protected void switch2ShowDetail() {
 
         String errorMessage = "";
 
-        if (user.getLastLocation().latitude == 0) errorMessage = "Location fetch failed";
+        if (user.getLocation().latitude == 0) errorMessage = "Location fetch failed";
         if (!validTitleDesc(title)){
             errorMessage = getResources().getString(R.string.INVALID_TITLE).trim();
         }
@@ -128,7 +128,7 @@ protected void switch2ShowDetail() {
         setStatusMessage(errorMessage);
         if (errorMessage.equals("")){
             String time = Long.toString(System.currentTimeMillis());
-            Post newPost = new Post(user.getEmail(), title, desc, value, category, user.getLastLocation());
+            Post newPost = new Post(user.getEmail(), title, desc, value, category, user.getLocation());
             //myDatabase.child("posts").child(time).setValue(newPost);
             switch2ShowDetail();
         }

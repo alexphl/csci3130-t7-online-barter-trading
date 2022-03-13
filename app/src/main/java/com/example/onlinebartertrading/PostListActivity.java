@@ -94,7 +94,7 @@ public class PostListActivity extends AppCompatActivity implements View.OnClickL
                 }
         );
 
-        position = user.getLastLocation();
+        position = user.getLocation();
 
         reference = FirebaseDatabase.getInstance().getReference().child("posts");
 
