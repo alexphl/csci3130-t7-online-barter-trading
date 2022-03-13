@@ -56,10 +56,10 @@ public class RoleDecisionActivity extends AppCompatActivity implements View.OnCl
         int viewId = view.getId();
 
         if (viewId == R.id.ReceiverButton) {
-            switch2Activity(MakePostActivity.class);
+            switch2Activity(PostListActivity.class);
         }
         else if (viewId == R.id.ProviderButton) {
-            switch2Activity(PostListActivity.class);
+            switch2Activity(MakePostActivity.class);
         }
     }
 }
