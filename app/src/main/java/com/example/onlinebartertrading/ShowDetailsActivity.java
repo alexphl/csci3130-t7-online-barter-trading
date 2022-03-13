@@ -10,13 +10,11 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.SearchView;
 
 import com.google.android.material.chip.Chip;
@@ -30,11 +28,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.SphericalUtil;
 
 
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
-import java.util.stream.Collectors;
 
 /**
  * This class represents the details activity
@@ -61,8 +56,7 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
     ArrayList<DataSnapshot> values;
     DatabaseReference reference;
     String searchKeyword = "";
-    PreferenceClass preferences;
-    String userEmail;
+    User user;
 
     // Necessary for location provider
     private LocationProvider locationProvider;
@@ -76,6 +70,9 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         searchKeyword = getSearchQuery(getIntent());
 
+        user = (User) getIntent().getSerializableExtra("user");
+        user.setLocationProvider(new LocationProvider(this));
+
         //listview layout
         setContentView(R.layout.activity_listmain);
         listGoods = findViewById(R.id.listView);
@@ -84,13 +81,6 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
 
         showButton = findViewById(R.id.btn);
         showButton.setOnClickListener(this);
-
-        // We call this here as it takes a second to fetch user location
-        double[] lastLocation = getIntent().getDoubleArrayExtra("lastLocation");
-        locationProvider = new LocationProvider(this, lastLocation);
-
-        //Get user email from intent
-        userEmail = getIntent().getStringExtra("userEmail");
 
         //Swipe down to refresh lets the user automatically show any new posts that are made by other users.
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swiperefresh);
@@ -104,8 +94,7 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
                 }
         );
 
-        double[] userLocation = locationProvider.getLocationUpdate();
-        position = new LatLng(userLocation[0], userLocation[1]);
+        position = user.getLastLocation();
 
         reference = FirebaseDatabase.getInstance().getReference().child("posts");
 
@@ -121,10 +110,9 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
                 ArrayList<DataSnapshot> list = new ArrayList<>();
                 //Get all values from iterator
                 snapshots.forEachRemaining(list::add);
-                preferences = (PreferenceClass) getIntent().getSerializableExtra("preferences");
                 values = applyFilters(list);
                 extractPosts();
-                if(preferences == null) {
+                if(user.getPreferences() == null) {
                     chip.setVisibility(View.GONE);
                 }
             }
@@ -138,8 +126,7 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
         chip = findViewById(R.id.filterChip);
         chip.setOnCloseIconClickListener(view -> {
             Intent intent = getIntent();
-            String param = null;
-            intent.putExtra("preferences", param);
+            user.setPreferences(null);
             startActivity(getIntent());
         });
     }
@@ -163,8 +150,7 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
         //Behaviour for when filter button is clicked. The user will be taken to the preferences activity.
         filter.setOnMenuItemClickListener(item -> {
          Intent intent = new Intent(getBaseContext(), PreferenceActivity.class);
-         intent.putExtra("lastLocation", locationProvider.getLocationUpdate());
-         intent.putExtra("userEmail", userEmail);
+         intent.putExtra("user", user);
          startActivity(intent);
          return false;
         });
@@ -206,12 +192,12 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
         int valueLowerLimit = 0;
         int distance = 1000;
 
-        if(preferences != null) {
-            categories = preferences.getCategories();
+        if(user.getPreferences() != null) {
+            categories = user.getPreferences().getCategories();
             //The upper limit of the price
-            valueUpperLimit = preferences.getMaxValue();
-            valueLowerLimit = preferences.getMinValue();
-            distance = preferences.getDistance() * 1000;
+            valueUpperLimit = user.getPreferences().getMaxValue();
+            valueLowerLimit = user.getPreferences().getMinValue();
+            distance = user.getPreferences().getDistance() * 1000;
 
             //Upper limit of distance. This should be in meters
         }
@@ -228,7 +214,7 @@ public class ShowDetailsActivity extends AppCompatActivity implements View.OnCli
 //            System.out.println(distance_between);
             //Refactor
             if ((value.child("title").getValue().toString().contains(searchKeyword) || value.child("desc").getValue().toString().contains(searchKeyword))) {
-                if(preferences == null || ((categories.isEmpty() || categories.contains(value.child("category").getValue().toString()))  && distance_between <= distance && valueLowerLimit <= Integer.parseInt(value.child("value").getValue().toString()) && Integer.parseInt(value.child("value").getValue().toString()) <= valueUpperLimit)) {
+                if(user.getPreferences() == null || ((categories.isEmpty() || categories.contains(value.child("category").getValue().toString()))  && distance_between <= distance && valueLowerLimit <= Integer.parseInt(value.child("value").getValue().toString()) && Integer.parseInt(value.child("value").getValue().toString()) <= valueUpperLimit)) {
                     list.add(value);
                 }
             }

@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class RoleDecisionActivity extends AppCompatActivity implements View.OnClickListener {
     CharSequence text = "Successfully posted";
     int duration = Toast.LENGTH_SHORT;
+    User user;
 
     /**
      *  Preliminary setup
@@ -29,6 +30,8 @@ public class RoleDecisionActivity extends AppCompatActivity implements View.OnCl
         Button receiverButton = findViewById(R.id.ReceiverButton);
         providerButton.setOnClickListener(this);
         receiverButton.setOnClickListener(this);
+
+        user = (User) getIntent().getSerializableExtra("user");
     }
 
     /**
@@ -45,6 +48,9 @@ public class RoleDecisionActivity extends AppCompatActivity implements View.OnCl
      * @param
      */
     protected void switch2PostsWindow() {
+        Intent switchPostActivity = new Intent(this, MakePostActivity.class);
+        switchPostActivity.putExtra("user", user);
+        startActivity(switchPostActivity);
         Toast toast = Toast.makeText(this, text, duration);
         toast.show();
     }
@@ -55,6 +61,7 @@ public class RoleDecisionActivity extends AppCompatActivity implements View.OnCl
      */
     protected void switch2ListingsWindow() {
         Intent switchListActivity = new Intent(this, ShowDetailsActivity.class);
+        switchListActivity.putExtra("user", user);
         startActivity(switchListActivity);
     }
 

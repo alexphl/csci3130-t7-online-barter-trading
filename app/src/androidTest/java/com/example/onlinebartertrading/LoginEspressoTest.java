@@ -88,8 +88,12 @@ public class LoginEspressoTest {
         onView(withId(R.id.emailFieldL)).perform(typeText("alex@email.com"));
         onView(withId(R.id.passwordFieldL)).perform(typeText("aa"));
         onView(withId(R.id.loginButton)).perform(click());
+<<<<<<< HEAD
         intended(hasComponent(RoleDecisionActivity.class.getName()));
 
+=======
+        intended(hasComponent(ShowDetailsActivity.class.getName()));
+>>>>>>> 23-UserClass
     }
 
     /*** User Acceptance Test - VI**/

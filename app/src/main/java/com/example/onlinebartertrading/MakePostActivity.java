@@ -23,11 +23,8 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
     public static final int maxDescLength = 180;
     public static final int maxValue = 1000000;
     private static final String area = "HRM";
-    //private static double[] userLocation;
-    private String userEmail;
+    private User user;
     private DatabaseReference myDatabase;
-    private LocationProvider locationProvider;
-    double[] userLocation;
 
     /**
      * Preliminary setup
@@ -37,12 +34,12 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_make_post);
         Button postButton = findViewById(R.id.makePostButton);
-        userEmail = getIntent().getStringExtra("userID");
+
+        user = (User) getIntent().getSerializableExtra("user");
+        user.setLocationProvider(new LocationProvider(this));
+
         postButton.setOnClickListener(this);
         myDatabase = FirebaseDatabase.getInstance().getReference();
-
-        //get location
-        locationProvider = new LocationProvider(this);
     }
 
     /**
@@ -96,8 +93,7 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
      */
 protected void switch2ShowDetail() {
         Intent intent = new Intent(MakePostActivity.this, ShowDetailsActivity.class);
-        intent.putExtra("userEmail", userEmail);
-        intent.putExtra("lastLocation", userLocation);
+        intent.putExtra("user", user);
         startActivity(intent);
     }
 
@@ -112,11 +108,10 @@ protected void switch2ShowDetail() {
         //String category = getCategory();
         String category = "Furnishing";
         float value = getValue();
-        userLocation = locationProvider.getLocationUpdate();
 
         String errorMessage = "";
 
-        if (userLocation[0] == 0) errorMessage = "Location fetch failed";
+        if (user.getLastLocation().latitude == 0) errorMessage = "Location fetch failed";
         if (!validTitleDesc(title)){
             errorMessage = getResources().getString(R.string.INVALID_TITLE).trim();
         }
@@ -133,8 +128,8 @@ protected void switch2ShowDetail() {
         setStatusMessage(errorMessage);
         if (errorMessage.equals("")){
             String time = Long.toString(System.currentTimeMillis());
-            Post newPost = new Post(userEmail, title, desc, value, category, userLocation);
-            myDatabase.child("posts").child(time).setValue(newPost);
+            Post newPost = new Post(user.getEmail(), title, desc, value, category, user.getLastLocation());
+            //myDatabase.child("posts").child(time).setValue(newPost);
             switch2ShowDetail();
         }
 

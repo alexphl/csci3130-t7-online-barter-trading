@@ -11,6 +11,12 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import android.content.Intent;
 import android.os.Bundle;
 
+<<<<<<< HEAD
+=======
+import android.content.Intent;
+import android.os.Bundle;
+
+>>>>>>> 23-UserClass
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
