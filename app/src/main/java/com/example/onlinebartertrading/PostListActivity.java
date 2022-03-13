@@ -162,6 +162,9 @@ public class PostListActivity extends AppCompatActivity implements View.OnClickL
                 (SearchView) search.getActionView();
         searchView.setIconifiedByDefault(false);
 
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getComponentName()));
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -178,9 +181,6 @@ public class PostListActivity extends AppCompatActivity implements View.OnClickL
             }
         });
 
-        searchView.setSearchableInfo(
-                searchManager.getSearchableInfo(getComponentName()));
-
         return true;
     }
 
@@ -190,13 +190,8 @@ public class PostListActivity extends AppCompatActivity implements View.OnClickL
      * @return the search keyword entered by the user.
      */
     private String getSearchQuery(Intent intent) {
-        //Search query is added to the Intent with the ACTION_SEARCH action on Searchable.
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            return query.trim();
-        }
-        //Defaults to an empty string which will display all posts.
-        return "";
+        if (intent.getStringExtra("query") == null) return "";
+        return intent.getStringExtra("query");
     }
 
     /**
