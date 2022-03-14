@@ -118,7 +118,8 @@
         android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.8" />
+        app:layout_constraintWidth_percent="0.8"
+        tools:ignore="RtlCompat" />
 
     <EditText
         android:id="@+id/ProviderInfo"
@@ -134,7 +135,8 @@
         android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.8" />
+        app:layout_constraintWidth_percent="0.8"
+        tools:ignore="RtlCompat" />
 
     <TextView
         android:id="@+id/AlertMessage"
@@ -180,7 +182,8 @@
         android:background="@color/design_default_color_primary"
         app:layout_constraintLeft_toRightOf="@id/ReceiverInfo"
         app:layout_constraintWidth_percent="0.8"
-        tools:layout_editor_absoluteY="62dp" />
+        tools:layout_editor_absoluteY="62dp"
+        tools:ignore="MissingConstraints" />
 
     <View
         android:id="@+id/leftPurpSplitter"
@@ -191,7 +194,8 @@
         android:background="@color/design_default_color_primary"
         app:layout_constraintRight_toLeftOf="@id/ReceiverInfo"
         app:layout_constraintWidth_percent="0.8"
-        tools:layout_editor_absoluteY="62dp" />
+        tools:layout_editor_absoluteY="62dp"
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/roleStatus"
@@ -199,6 +203,7 @@
         android:layout_height="wrap_content"
         tools:layout_editor_absoluteX="205dp"
         tools:layout_editor_absoluteY="680dp"
-        app:layout_constraintTop_toBottomOf="@id/ReceiverButton"/>
+        app:layout_constraintTop_toBottomOf="@id/ReceiverButton"
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
