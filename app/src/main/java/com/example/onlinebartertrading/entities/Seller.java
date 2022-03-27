@@ -1,4 +1,4 @@
-package com.example.onlinebartertrading;
+package com.example.onlinebartertrading.entities;
 
 public class Seller extends User{
 

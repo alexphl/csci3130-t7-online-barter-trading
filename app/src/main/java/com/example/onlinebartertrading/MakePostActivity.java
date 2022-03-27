@@ -9,6 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.onlinebartertrading.entities.Post;
+import com.example.onlinebartertrading.entities.User;
+import com.example.onlinebartertrading.lib.LocationProvider;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.database.DatabaseReference;

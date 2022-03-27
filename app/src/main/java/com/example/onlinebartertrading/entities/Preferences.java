@@ -1,4 +1,4 @@
-package com.example.onlinebartertrading;
+package com.example.onlinebartertrading.entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;

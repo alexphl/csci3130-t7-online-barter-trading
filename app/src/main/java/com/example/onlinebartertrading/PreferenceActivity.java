@@ -13,6 +13,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.onlinebartertrading.configs.FirebaseConstants;
+import com.example.onlinebartertrading.entities.Preferences;
+import com.example.onlinebartertrading.entities.User;
+import com.example.onlinebartertrading.lib.LocationProvider;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.database.DataSnapshot;

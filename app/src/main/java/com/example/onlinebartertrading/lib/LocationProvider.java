@@ -1,4 +1,4 @@
-package com.example.onlinebartertrading;
+package com.example.onlinebartertrading.lib;
 
 import static androidx.core.app.ActivityCompat.requestPermissions;
 

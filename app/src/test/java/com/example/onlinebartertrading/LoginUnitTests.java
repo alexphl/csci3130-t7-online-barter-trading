@@ -2,12 +2,12 @@ package com.example.onlinebartertrading;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Rule;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-import java.lang.annotation.Target;
+import com.example.onlinebartertrading.lib.DBHandler;
+
 import java.security.NoSuchAlgorithmException;
 
 /**

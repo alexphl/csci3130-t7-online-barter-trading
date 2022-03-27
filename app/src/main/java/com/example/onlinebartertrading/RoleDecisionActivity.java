@@ -1,14 +1,15 @@
 package com.example.onlinebartertrading;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.onlinebartertrading.entities.User;
+import com.example.onlinebartertrading.lib.LocationProvider;
 
 /**
  * This is the Role Decision

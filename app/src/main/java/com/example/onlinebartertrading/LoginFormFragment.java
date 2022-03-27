@@ -12,6 +12,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.example.onlinebartertrading.entities.User;
+import com.example.onlinebartertrading.lib.DBHandler;
+
 import java.security.NoSuchAlgorithmException;
 
 /**

@@ -1,9 +1,8 @@
-package com.example.onlinebartertrading;
-
-import android.provider.ContactsContract;
+package com.example.onlinebartertrading.lib;
 
 import androidx.annotation.NonNull;
 
+import com.example.onlinebartertrading.configs.FirebaseConstants;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -16,7 +15,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.UUID;
-import java.util.concurrent.CountDownLatch;
 
 /**
  * This is our database worker class

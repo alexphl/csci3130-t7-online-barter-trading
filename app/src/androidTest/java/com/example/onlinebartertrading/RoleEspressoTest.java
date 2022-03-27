@@ -15,8 +15,9 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.runner.AndroidJUnit4;
 
 import androidx.test.espresso.intent.Intents;
-import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
+
+import com.example.onlinebartertrading.entities.User;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;

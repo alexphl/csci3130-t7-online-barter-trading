@@ -1,4 +1,4 @@
-package com.example.onlinebartertrading;
+package com.example.onlinebartertrading.entities;
 
 import com.google.android.gms.maps.model.LatLng;
 

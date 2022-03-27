@@ -1,5 +1,6 @@
-package com.example.onlinebartertrading;
+package com.example.onlinebartertrading.entities;
 
+import com.example.onlinebartertrading.lib.LocationProvider;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.Serializable;
