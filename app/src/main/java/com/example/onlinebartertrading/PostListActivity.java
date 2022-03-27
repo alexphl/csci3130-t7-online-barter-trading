@@ -3,9 +3,9 @@ package com.example.onlinebartertrading;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.widget.ListView;
 import android.app.SearchManager;
@@ -18,7 +18,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SearchView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.onlinebartertrading.entities.User;
+import com.example.onlinebartertrading.lib.LocationProvider;
+import com.example.onlinebartertrading.lib.PostListAdapter;
 import com.google.android.material.chip.Chip;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,6 +36,7 @@ import com.google.maps.android.SphericalUtil;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Objects;
 
@@ -38,7 +44,7 @@ import java.util.Objects;
  * This class represents the details activity
  * which appears when a user enters a product post
  **/
-public class PostListActivity extends AppCompatActivity implements View.OnClickListener{
+public class PostListActivity extends AppCompatActivity implements View.OnClickListener, TradeDialogFragment.NoticeDialogListener {
     ListView listGoods;
     /*
     These lists hold the posts that are needed to be displayed. These are passed to PostListAdapter.java to add the the ArrayAdaptor.
@@ -71,7 +77,7 @@ public class PostListActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+//        user = new User("x@email.com");
         user = (User) getIntent().getSerializableExtra("user");
         user.setLocationProvider(new LocationProvider(this));
 
@@ -82,6 +88,18 @@ public class PostListActivity extends AppCompatActivity implements View.OnClickL
         listGoods = findViewById(R.id.listView);
         listGoods.addFooterView(getLayoutInflater().inflate(R.layout.footer_view, null));
         listGoods.addHeaderView(getLayoutInflater().inflate(R.layout.header_view, null));
+        listGoods.setOnItemClickListener((adapterView, view, i, l) -> {
+            HashMap<String, TextView> post = (HashMap<String, TextView>) view.getTag();
+            try {
+                String email = (String) post.get("email").getText();
+                email = email.substring(10);
+                String post_title = (String) post.get("name").getText();
+                int post_value = Integer.parseInt(((String) post.get("value").getText()).substring(1));
+                createDialog(email, post_title, post_value);
+            } catch(NullPointerException e) {
+                Toast.makeText(getBaseContext(), "Cannot start trade for this post.", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         showButton = findViewById(R.id.btn);
         showButton.setOnClickListener(this);
@@ -101,6 +119,7 @@ public class PostListActivity extends AppCompatActivity implements View.OnClickL
         );
 
         position = user.getLocation();
+//        position = new LatLng(0.0, 0.0);
 
         reference = FirebaseDatabase.getInstance().getReference().child("posts");
 
@@ -121,7 +140,7 @@ public class PostListActivity extends AppCompatActivity implements View.OnClickL
                 if(user.getPreferences() == null) {
                     chip.setVisibility(View.GONE);
                 }
-
+//                position = new LatLng(0.0, 0.0);
                 position = user.getLocation();
             }
 
@@ -219,9 +238,8 @@ public class PostListActivity extends AppCompatActivity implements View.OnClickL
             //The upper limit of the price
             valueUpperLimit = user.getPreferences().getMaxValue();
             valueLowerLimit = user.getPreferences().getMinValue();
-            distance = user.getPreferences().getDistance() * 1000;
-
             //Upper limit of distance. This should be in meters
+            distance = user.getPreferences().getDistance() * 1000;
         }
         //This is the current location, this would be taken from the intent from the activity that detects location.
         LatLng current_position = position;
@@ -233,7 +251,6 @@ public class PostListActivity extends AppCompatActivity implements View.OnClickL
             LatLng post_position = new LatLng(post_lat, post_long);
 
             double distance_between = SphericalUtil.computeDistanceBetween(current_position, post_position);
-//            System.out.println(distance_between);
             //Refactor
             if ((value.child("title").getValue().toString().contains(searchKeyword) || value.child("desc").getValue().toString().contains(searchKeyword))) {
                 if(user.getPreferences() == null || ((categories.isEmpty() || categories.contains(value.child("category").getValue().toString()))  && distance_between <= distance && valueLowerLimit <= Integer.parseInt(value.child("value").getValue().toString()) && Integer.parseInt(value.child("value").getValue().toString()) <= valueUpperLimit)) {
@@ -300,6 +317,20 @@ public class PostListActivity extends AppCompatActivity implements View.OnClickL
         listGoods.setAdapter(postListAdapter);
     }
 
+    private void createDialog(String email, String title, int value) {
+        String post_details = "Title: " + title + "\nValue: $" + value + "\nProvider: " + email;
+        DialogFragment newFragment = new TradeDialogFragment();
+        newFragment.show(getSupportFragmentManager(), "Dialog");
+        Bundle bundle = new Bundle();
+        bundle.putString("email", email);
+        bundle.putString("title", title);
+        bundle.putInt("value", value);
+        newFragment.setArguments(bundle);
+        getSupportFragmentManager().executePendingTransactions();
+        TextView view = (TextView) newFragment.getDialog().findViewById(R.id.trade_post);
+        view.setText(post_details);
+    }
+
     /**
      * Behavior when the show more button is clicked.
      * @param view
@@ -309,4 +340,12 @@ public class PostListActivity extends AppCompatActivity implements View.OnClickL
         extractPosts();
     }
 
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+    }
 }

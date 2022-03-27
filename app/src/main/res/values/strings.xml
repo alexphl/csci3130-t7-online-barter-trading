@@ -34,4 +34,9 @@
     <string name="INVALID_MAXDISTANCE"></string>
 
     <string name="MIN_LESS_MAX">Minimum value should be larger than max</string>
+    <string name="estimated_value">Estimated value</string>
+    <string name="item_for_trade">Item for trade</string>
+    <string name="submit_trade">Submit</string>
+    <string name="cancel_trade">Cancel</string>
+    <string name="trade_request">Request Trade</string>
 </resources>
