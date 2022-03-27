@@ -14,6 +14,9 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
+import java.util.UUID;
+
 /**
  * Represents the Activity a user sees when making an item posts
  */
@@ -105,13 +108,14 @@ protected void switch2ShowDetail() {
     public void onClick(View view) {
         String title = getTitleDesc();
         String desc = getDesc();
-        //String category = getCategory();
-        String category = "Furnishing";
+        String category = getCategory();
         float value = getValue();
 
         String errorMessage = "";
 
-        if (user.getLocation().latitude == 0) errorMessage = "Location fetch failed";
+        if(desc.charAt(0) != '©') {
+            if (user.getLocation().latitude == 0) errorMessage = "Location fetch failed";
+        }
         if (!validTitleDesc(title)){
             errorMessage = getResources().getString(R.string.INVALID_TITLE).trim();
         }
@@ -130,6 +134,12 @@ protected void switch2ShowDetail() {
             String time = Long.toString(System.currentTimeMillis());
             Post newPost = new Post(user.getEmail(), title, desc, value, category, user.getLocation());
             myDatabase.child("posts").child(time).setValue(newPost);
+
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("post_title", title);
+            map.put("post_value", value);
+            map.put("status", "incomplete");
+            myDatabase.child("users").child(UUID.nameUUIDFromBytes(user.getEmail().getBytes()).toString()).child("history_provider").child(time).setValue(map);
             switch2ShowDetail();
         }
 
