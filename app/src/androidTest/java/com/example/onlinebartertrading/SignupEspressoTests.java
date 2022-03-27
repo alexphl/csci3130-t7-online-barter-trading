@@ -111,7 +111,7 @@ public class SignupEspressoTests {
     @Test
     public void checkIfFragSlide() {
         onView(withId(R.id.viewPager)).perform(swipeLeft());
-        onView(withId(R.id.emailField)).check(matches(withText("")));
-        onView(withId(R.id.passwordField)).check(matches(withText("")));
+        onView(withId(R.id.emailFieldL)).check(matches(withText("")));
+        onView(withId(R.id.passwordFieldL)).check(matches(withText("")));
     }
 }

@@ -27,8 +27,9 @@ public class preferenceEspressoTest {
 
     static Intent intent = new Intent(ApplicationProvider.getApplicationContext(), PreferenceActivity.class);
     static Bundle bundle = new Bundle();
+    static User user = new User("testuser1@email.com");
     static {
-        bundle.putString("userEmail", "testuser1@email.com");
+        bundle.putSerializable("user", user);
         intent.putExtras(bundle);
     }
     @Rule

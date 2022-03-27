@@ -8,6 +8,10 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.junit.Assert.assertEquals;
 
+import android.content.Intent;
+import android.os.Bundle;
+
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.runner.AndroidJUnit4;
 
 import androidx.test.espresso.intent.Intents;
@@ -28,9 +32,15 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 public class RoleEspressoTest {
 
+    static Intent intent = new Intent(ApplicationProvider.getApplicationContext(), RoleDecisionActivity.class);
+    static Bundle bundle = new Bundle();
+    static User user = new User("testuser1@email.com");
+    static {
+        bundle.putSerializable("user", user);
+        intent.putExtras(bundle);
+    }
     @Rule
-    public ActivityScenarioRule<RoleDecisionActivity> myRule = new ActivityScenarioRule<>(RoleDecisionActivity.class);
-    public IntentsTestRule<RoleDecisionActivity> myIntentRule = new IntentsTestRule<>(RoleDecisionActivity.class);
+    public ActivityScenarioRule<PreferenceActivity> activityScenarioRule = new ActivityScenarioRule<>(intent);
 
     @BeforeClass
     public static void setup() {
