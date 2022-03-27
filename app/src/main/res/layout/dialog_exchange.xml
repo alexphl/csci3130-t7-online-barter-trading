@@ -40,7 +40,6 @@
             android:hint="@string/item_for_trade" />
         <EditText
             android:id="@+id/receiver_value"
-            android:inputType="textPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
