@@ -3,6 +3,8 @@ package com.example.onlinebartertrading;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.Intents.intended;
@@ -38,8 +40,9 @@ public class makePostEspressoTest {
 
     static Intent intent = new Intent(ApplicationProvider.getApplicationContext(), MakePostActivity.class);
     static Bundle bundle = new Bundle();
+    static User user = new User("a");
     static {
-        bundle.putString("userEmail", "alex@email.com");
+        bundle.putSerializable("user", user);
         intent.putExtras(bundle);
     }
     @Rule
@@ -65,8 +68,8 @@ public class makePostEspressoTest {
     @Test
     public void checkIfPostIsEmpty() {
         onView(withId(R.id.postTitle)).perform(typeText(""));
-        onView(withId(R.id.postDesc)).perform(typeText("Test description"));
-        onView(withId(R.id.postValue)).perform(typeText("123"));
+        onView(withId(R.id.postDesc)).perform(replaceText("©Test description"));
+        onView(withId(R.id.postValue)).perform(typeText("123"), closeSoftKeyboard());
         onView(withId(R.id.makePostButton)).perform(click());
         onView(withId(R.id.statusLabel)).check(matches(withText(R.string.INVALID_TITLE)));
     }
@@ -78,25 +81,17 @@ public class makePostEspressoTest {
             longTitle+="1";
         }
         onView(withId(R.id.postTitle)).perform(typeText(longTitle));
-        onView(withId(R.id.postDesc)).perform(typeText("valid desc"));
-        onView(withId(R.id.postValue)).perform(typeText("123"));
+        onView(withId(R.id.postDesc)).perform(replaceText("©valid desc"));
+        onView(withId(R.id.postValue)).perform(typeText("123"), closeSoftKeyboard());
         onView(withId(R.id.makePostButton)).perform(click());
         onView(withId(R.id.statusLabel)).check(matches(withText(R.string.INVALID_TITLE)));
     }
 
     @Test
-    public void checkIfPostIsValid() {
-        onView(withId(R.id.postTitle)).perform(typeText("This is a valid title"));
-        onView(withId(R.id.postDesc)).perform(typeText("Test description"));
-        onView(withId(R.id.postValue)).perform(typeText("123"));
-        onView(withId(R.id.makePostButton)).perform(click());
-    }
-
-    @Test
     public void checkIfValueIsZero(){
         onView(withId(R.id.postTitle)).perform(typeText("valid title"));
-        onView(withId(R.id.postDesc)).perform(typeText("valid description"));
-        onView(withId(R.id.postValue)).perform(typeText("0"));
+        onView(withId(R.id.postDesc)).perform(replaceText("©valid description"));
+        onView(withId(R.id.postValue)).perform(typeText("0"), closeSoftKeyboard());
         onView(withId(R.id.makePostButton)).perform(click());
         onView(withId(R.id.statusLabel)).check(matches(withText(R.string.INVALID_VALUE)));
     }
@@ -104,8 +99,8 @@ public class makePostEspressoTest {
     @Test
     public void checkIfValueIsTooBig(){
         onView(withId(R.id.postTitle)).perform(typeText("valid title"));
-        onView(withId(R.id.postDesc)).perform(typeText("valid description"));
-        onView(withId(R.id.postValue)).perform(typeText(String.valueOf(maxValue+1)));
+        onView(withId(R.id.postDesc)).perform(replaceText("©valid description"));
+        onView(withId(R.id.postValue)).perform(typeText(String.valueOf(maxValue+1)), closeSoftKeyboard());
         onView(withId(R.id.makePostButton)).perform(click());
         onView(withId(R.id.statusLabel)).check(matches(withText(R.string.INVALID_VALUE)));
     }
