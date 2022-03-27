@@ -13,7 +13,24 @@ public class TradeDialogFragment extends DialogFragment {
 
     private String email;
     private String title;
+    private String postId;
     private int value;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public String getPostId() {
+        return postId;
+    }
 
     /* The activity that creates an instance of this dialog fragment must
      * implement this interface in order to receive event callbacks.
@@ -57,6 +74,11 @@ public class TradeDialogFragment extends DialogFragment {
                     // Send the negative button event back to the host activity
                     listener.onDialogNegativeClick(TradeDialogFragment.this);
                 });
+
+        this.email = getArguments().getString("email");
+        this.title = getArguments().getString("title");
+        this.value = getArguments().getInt("value");
+        this.postId = getArguments().getString("id");
         return builder.create();
     }
 

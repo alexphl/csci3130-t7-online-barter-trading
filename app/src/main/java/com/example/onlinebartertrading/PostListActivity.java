@@ -7,6 +7,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.app.SearchManager;
 import android.content.Context;
@@ -39,6 +40,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * This class represents the details activity
@@ -55,6 +57,7 @@ public class PostListActivity extends AppCompatActivity implements View.OnClickL
     ArrayList<String> category = new ArrayList<>();
     ArrayList<String> email = new ArrayList<>();
     ArrayList<String> distance = new ArrayList<>();
+    ArrayList<String> post = new ArrayList<>();
     Button showButton;
     PostListAdapter postListAdapter;
     Chip chip;
@@ -89,14 +92,16 @@ public class PostListActivity extends AppCompatActivity implements View.OnClickL
         listGoods.addFooterView(getLayoutInflater().inflate(R.layout.footer_view, null));
         listGoods.addHeaderView(getLayoutInflater().inflate(R.layout.header_view, null));
         listGoods.setOnItemClickListener((adapterView, view, i, l) -> {
-            HashMap<String, TextView> post = (HashMap<String, TextView>) view.getTag();
+            HashMap<String, TextView> post = (HashMap<String, TextView>) view.getTag(R.string.nameset);
+            String id = (String) view.getTag(R.string.postid);
             try {
                 String email = (String) post.get("email").getText();
-                email = email.substring(10);
+                email = email.substring(11);
                 String post_title = (String) post.get("name").getText();
                 int post_value = Integer.parseInt(((String) post.get("value").getText()).substring(1));
-                createDialog(email, post_title, post_value);
+                createDialog(id, email, post_title, post_value);
             } catch(NullPointerException e) {
+                System.out.println(e);
                 Toast.makeText(getBaseContext(), "Cannot start trade for this post.", Toast.LENGTH_SHORT).show();
             }
         });
@@ -121,9 +126,9 @@ public class PostListActivity extends AppCompatActivity implements View.OnClickL
         position = user.getLocation();
 //        position = new LatLng(0.0, 0.0);
 
-        reference = FirebaseDatabase.getInstance().getReference().child("posts");
+        reference = FirebaseDatabase.getInstance().getReference();
 
-        Query query = reference.orderByKey();
+        Query query = reference.child("posts").orderByKey();
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -295,6 +300,7 @@ public class PostListActivity extends AppCompatActivity implements View.OnClickL
                 value.add(val);
                 category.add(cat);
                 email.add(posterEmail);
+                post.add(snapshot.getKey());
                 this.distance.add(distVal);
             }
             if(batchCount == 5) break;
@@ -308,7 +314,7 @@ public class PostListActivity extends AppCompatActivity implements View.OnClickL
 
         //Send to adapter and make data in each layout
         if(postListAdapter == null) {
-            postListAdapter = new PostListAdapter(PostListActivity.this, name, detail, value, category, distance, email);
+            postListAdapter = new PostListAdapter(PostListActivity.this, post, name, detail, value, category, distance, email);
         }
         else {
             postListAdapter.notifyDataSetChanged();
@@ -317,7 +323,7 @@ public class PostListActivity extends AppCompatActivity implements View.OnClickL
         listGoods.setAdapter(postListAdapter);
     }
 
-    private void createDialog(String email, String title, int value) {
+    private void createDialog(String postId, String email, String title, int value) {
         String post_details = "Title: " + title + "\nValue: $" + value + "\nProvider: " + email;
         DialogFragment newFragment = new TradeDialogFragment();
         newFragment.show(getSupportFragmentManager(), "Dialog");
@@ -325,10 +331,32 @@ public class PostListActivity extends AppCompatActivity implements View.OnClickL
         bundle.putString("email", email);
         bundle.putString("title", title);
         bundle.putInt("value", value);
+        bundle.putString("id", postId);
         newFragment.setArguments(bundle);
         getSupportFragmentManager().executePendingTransactions();
         TextView view = (TextView) newFragment.getDialog().findViewById(R.id.trade_post);
         view.setText(post_details);
+        System.out.println(values);
+    }
+
+    private void createExchange(String email, String title, int value, String key, String receiver_item, String receiver_value) {
+        HashMap<String, Object> exchange = new HashMap<>();
+        exchange.put("offer_item", receiver_item);
+        exchange.put("offer_value", receiver_value);
+        exchange.put("post_title", title);
+        exchange.put("post_value", value);
+        exchange.put("provider_email", email);
+        exchange.put("status", "ongoing");
+
+        reference.child("exchange").child(key).setValue(exchange);
+    }
+
+    private void createReceiverHistory(String email, String postId, String key, String receiver_item, String receiver_value, String receiver_emailHash) {
+        HashMap<String, Object> receiver = new HashMap<>();
+        receiver.put("exchange", key);
+        receiver.put("item", receiver_item);
+        receiver.put("value", receiver_value);
+        reference.child("users").child(UUID.nameUUIDFromBytes(email.getBytes()).toString()).child("history_provider").child(postId).child("receivers").child(receiver_emailHash).setValue(receiver);
     }
 
     /**
@@ -342,7 +370,26 @@ public class PostListActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onDialogPositiveClick(DialogFragment dialog) {
+        TradeDialogFragment fragment = (TradeDialogFragment) dialog;
 
+        //Details of the providers post
+        String email = fragment.getEmail();
+        String title = fragment.getTitle();
+        int value = fragment.getValue();
+        String postId = fragment.getPostId();
+
+        //Details entered by the receiver
+        String receiver_item =  ((EditText)fragment.getDialog().findViewById(R.id.receiver_item)).getText().toString();
+        String receiver_value =  ((EditText)fragment.getDialog().findViewById(R.id.receiver_value)).getText().toString();
+
+        //Generate the exchange key
+        String receiver_emailHash = UUID.nameUUIDFromBytes(user.getEmail().getBytes()).toString();
+        String key = receiver_emailHash + postId;
+
+        createExchange(email, title, value, key, receiver_item, receiver_value);
+        createReceiverHistory(email, postId, key, receiver_item, receiver_value, receiver_emailHash);
+
+        Toast.makeText(getBaseContext(), "Successfully initialised trade.", Toast.LENGTH_SHORT).show();
     }
 
     @Override

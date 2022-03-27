@@ -25,6 +25,7 @@ public class PostListAdapter extends ArrayAdapter<String> {
     ArrayList<String> category;
     ArrayList<String> distance;
     ArrayList<String> email;
+    ArrayList<String> post;
 
     /**
      * @param context
@@ -33,9 +34,10 @@ public class PostListAdapter extends ArrayAdapter<String> {
      * @param value     User provided item valuation
      * @param category  User provided category
      */
-    public PostListAdapter(PostListActivity context, ArrayList<String> name, ArrayList<String> detail, ArrayList<String> value, ArrayList<String> category, ArrayList<String> distance, ArrayList<String> email) {
+    public PostListAdapter(PostListActivity context, ArrayList<String> post, ArrayList<String> name, ArrayList<String> detail, ArrayList<String> value, ArrayList<String> category, ArrayList<String> distance, ArrayList<String> email) {
         super(context, R.layout.activity_listview, R.id.itemDetail, name);
         this.context = context;
+        this.post = post;
         this.name = name;
         this.detail = detail;
         this.value = value;
@@ -69,7 +71,8 @@ public class PostListAdapter extends ArrayAdapter<String> {
             nameSet.put("distance", view.findViewById(R.id.itemDistance));
             nameSet.put("category", view.findViewById(R.id.itemCategory));
 
-            view.setTag(nameSet);
+            view.setTag(R.string.nameset, nameSet);
+            view.setTag(R.string.postid, post.get(position));
         }
 
         String title = name.get(position);

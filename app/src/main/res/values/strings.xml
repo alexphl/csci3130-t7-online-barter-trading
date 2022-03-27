@@ -39,4 +39,6 @@
     <string name="submit_trade">Submit</string>
     <string name="cancel_trade">Cancel</string>
     <string name="trade_request">Request Trade</string>
+    <string name="nameset">0</string>
+    <string name="postid">1</string>
 </resources>
