@@ -95,13 +95,15 @@ public class PostListActivity extends AppCompatActivity implements View.OnClickL
             HashMap<String, TextView> post = (HashMap<String, TextView>) view.getTag(R.string.nameset);
             String id = (String) view.getTag(R.string.postid);
             try {
+                //Get the information from the post to create the dialog
                 String email = (String) post.get("email").getText();
                 email = email.substring(11);
                 String post_title = (String) post.get("name").getText();
                 int post_value = Integer.parseInt(((String) post.get("value").getText()).substring(1));
+                //Create the dialog by passing this information
                 createDialog(id, email, post_title, post_value);
             } catch(NullPointerException e) {
-                System.out.println(e);
+                //Display error when some information was not found
                 Toast.makeText(getBaseContext(), "Cannot start trade for this post.", Toast.LENGTH_SHORT).show();
             }
         });
@@ -323,6 +325,13 @@ public class PostListActivity extends AppCompatActivity implements View.OnClickL
         listGoods.setAdapter(postListAdapter);
     }
 
+    /**
+     * Function to display the dialog fragment with parameters for that post
+     * @param postId The id for the post
+     * @param email The email of the provider
+     * @param title The title of post
+     * @param value The estimated value for the item
+     */
     private void createDialog(String postId, String email, String title, int value) {
         String post_details = "Title: " + title + "\nValue: $" + value + "\nProvider: " + email;
         DialogFragment newFragment = new TradeDialogFragment();
@@ -336,9 +345,17 @@ public class PostListActivity extends AppCompatActivity implements View.OnClickL
         getSupportFragmentManager().executePendingTransactions();
         TextView view = (TextView) newFragment.getDialog().findViewById(R.id.trade_post);
         view.setText(post_details);
-        System.out.println(values);
     }
 
+    /**
+     * Function to create an exchange record in the "exchange" reference
+     * @param email the email of the provider
+     * @param title title
+     * @param value value
+     * @param key the key for the exchange
+     * @param receiver_item the receiver's proposed item
+     * @param receiver_value the receiver's estimated value for the item
+     */
     private void createExchange(String email, String title, int value, String key, String receiver_item, String receiver_value) {
         HashMap<String, Object> exchange = new HashMap<>();
         exchange.put("offer_item", receiver_item);
@@ -351,6 +368,15 @@ public class PostListActivity extends AppCompatActivity implements View.OnClickL
         reference.child("exchange").child(key).setValue(exchange);
     }
 
+    /**
+     * Function to create a record in the provider's history for the proposed exchange
+     * @param email the email of the provider
+     * @param postId the id for the post
+     * @param key the key of the exchange
+     * @param receiver_item receiver's proposed item
+     * @param receiver_value receiver's estimated value for the item
+     * @param receiver_emailHash the hash for the receiver's email
+     */
     private void createReceiverHistory(String email, String postId, String key, String receiver_item, String receiver_value, String receiver_emailHash) {
         HashMap<String, Object> receiver = new HashMap<>();
         receiver.put("exchange", key);
@@ -368,6 +394,10 @@ public class PostListActivity extends AppCompatActivity implements View.OnClickL
         extractPosts();
     }
 
+    /**
+     * Method for defining behaviour when the submit button is clicked. Gets all the information from the dialog and the view and then calls the createExchange and createReceiverHistory methods to create the database records.
+     * @param dialog the current dialog.
+     */
     @Override
     public void onDialogPositiveClick(DialogFragment dialog) {
         TradeDialogFragment fragment = (TradeDialogFragment) dialog;
