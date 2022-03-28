@@ -80,7 +80,7 @@ public class PostListEspressoTest {
     /*** User Acceptance Test - I**/
     @Test
     public void checkIfFilterButtonWorks() {
-        onView(withId(R.id.setting)).perform(click());
+        onView(withId(R.id.filter)).perform(click());
         intended(hasComponent(PreferenceActivity.class.getName()));
     }
 

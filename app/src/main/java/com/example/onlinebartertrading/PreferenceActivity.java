@@ -2,7 +2,6 @@ package com.example.onlinebartertrading;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Build;
@@ -37,7 +36,7 @@ import java.util.stream.Collectors;
 /**
  * This class provides a way for users to select their preferences
  */
-public class PreferenceActivity extends AppCompatActivity implements View.OnClickListener {
+public class PreferenceActivity extends BaseActivity implements View.OnClickListener {
     private DatabaseReference userRef;
     User user;
     public static ArrayList<Integer> distanceChips;

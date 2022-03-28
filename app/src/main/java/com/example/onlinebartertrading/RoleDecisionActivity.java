@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.onlinebartertrading.entities.User;
 import com.example.onlinebartertrading.lib.LocationProvider;
@@ -15,7 +14,7 @@ import com.example.onlinebartertrading.lib.LocationProvider;
  * This is the Role Decision
  * class.
  */
-public class RoleDecisionActivity extends AppCompatActivity implements View.OnClickListener {
+public class RoleDecisionActivity extends BaseActivity implements View.OnClickListener {
     User user;
 
     /**

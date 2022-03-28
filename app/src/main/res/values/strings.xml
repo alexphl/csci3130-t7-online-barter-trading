@@ -41,4 +41,5 @@
     <string name="trade_request">Request Trade</string>
     <string name="nameset">0</string>
     <string name="postid">1</string>
+    <string name="empty_posts">No post found</string>
 </resources>

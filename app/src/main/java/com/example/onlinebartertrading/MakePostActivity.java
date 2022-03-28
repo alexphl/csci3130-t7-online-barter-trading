@@ -1,6 +1,5 @@
 package com.example.onlinebartertrading;
 
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,7 +22,7 @@ import java.util.UUID;
 /**
  * Represents the Activity a user sees when making an item posts
  */
-public class MakePostActivity extends AppCompatActivity implements View.OnClickListener {
+public class MakePostActivity extends BaseActivity implements View.OnClickListener {
 
     public static final int maxTitleLength = 50;
     public static final int maxDescLength = 180;

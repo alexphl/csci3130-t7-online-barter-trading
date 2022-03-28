@@ -2,7 +2,6 @@ package com.example.onlinebartertrading;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -46,7 +45,7 @@ import java.util.UUID;
  * This class represents the details activity
  * which appears when a user enters a product post
  **/
-public class PostListActivity extends AppCompatActivity implements View.OnClickListener, TradeDialogFragment.NoticeDialogListener {
+public class PostListActivity extends BaseActivity implements View.OnClickListener, TradeDialogFragment.NoticeDialogListener {
     ListView listGoods;
     /*
     These lists hold the posts that are needed to be displayed. These are passed to PostListAdapter.java to add the the ArrayAdaptor.
@@ -80,10 +79,14 @@ public class PostListActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        user = new User("x@email.com");
-        user = (User) getIntent().getSerializableExtra("user");
-        user.setLocationProvider(new LocationProvider(this));
 
+        if(getIntent().getSerializableExtra("user") == null) {
+            user = new User("x@email.com");
+        }
+        else {
+            user = (User) getIntent().getSerializableExtra("user");
+            user.setLocationProvider(new LocationProvider(this));
+        }
         searchKeyword = getSearchQuery(getIntent());
 
         //listview layout
@@ -116,7 +119,6 @@ public class PostListActivity extends AppCompatActivity implements View.OnClickL
         swipeRefreshLayout.setOnRefreshListener(
                 () -> {
                     finish();
-                    overridePendingTransition( 0, 0);
                     Intent intent = getIntent();
                     intent.putExtra("user", user);
                     startActivity(intent);
@@ -132,7 +134,7 @@ public class PostListActivity extends AppCompatActivity implements View.OnClickL
 
         Query query = reference.child("posts").orderByKey();
 
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
+        query.addValueEventListener(new ValueEventListener() {
 
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -176,20 +178,27 @@ public class PostListActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.options_menu, menu);
+        inflater.inflate(R.menu.options_menu_search, menu);
 
         SearchManager searchManager =
                 (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 
         MenuItem search = menu.findItem(R.id.search);
 
-        MenuItem filter = menu.findItem(R.id.setting);
+        MenuItem filter = menu.findItem(R.id.filter);
         //Behaviour for when filter button is clicked. The user will be taken to the preferences activity.
         filter.setOnMenuItemClickListener(item -> {
          Intent intent = new Intent(getBaseContext(), PreferenceActivity.class);
          intent.putExtra("user", user);
          startActivity(intent);
          return false;
+        });
+
+        MenuItem logout = menu.findItem(R.id.logout);
+        logout.setOnMenuItemClickListener(item -> {
+            Intent intent = new Intent(getBaseContext(), AuthActivity.class);
+            startActivity(intent);
+            return false;
         });
 
         SearchView searchView =
