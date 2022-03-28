@@ -4,7 +4,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.widget.TextView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
@@ -79,7 +81,27 @@ public class TradeDialogFragment extends DialogFragment {
         this.title = getArguments().getString("title");
         this.value = getArguments().getInt("value");
         this.postId = getArguments().getString("id");
-        return builder.create();
+
+        AlertDialog dialog = builder.create();
+        dialog.setOnShowListener(dialogInterface -> {
+            Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            button.setOnClickListener(view -> {
+                String item = ((EditText)dialog.findViewById(R.id.receiver_item)).getText().toString();
+                String value = ((EditText)dialog.findViewById(R.id.receiver_value)).getText().toString();
+                System.out.println(item + value);
+                if(item.isEmpty()) {
+                    Toast.makeText(getActivity().getBaseContext(), "Item cannot be empty.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(value.isEmpty()) {
+                    Toast.makeText(getActivity().getBaseContext(), "Value cannot be empty.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                dialog.dismiss();
+            });
+        });
+
+        return dialog;
     }
 
 }
