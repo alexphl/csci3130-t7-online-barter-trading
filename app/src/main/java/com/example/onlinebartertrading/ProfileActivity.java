@@ -17,7 +17,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.UUID;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends BaseActivity {
 
     User user;
     DatabaseReference userRef;
@@ -25,7 +25,7 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.activity_profilelistmain);
 
         user = (User) getIntent().getSerializableExtra("user");
         loadHistory();
@@ -50,7 +50,6 @@ public class ProfileActivity extends AppCompatActivity {
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String message;
                 if (snapshot.hasChild("history_provider")) {
                     // Load history
                 }
