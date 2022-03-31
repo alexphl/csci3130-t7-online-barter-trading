@@ -28,8 +28,8 @@ public class ProfileActivity extends BaseActivity {
     ArrayList<String> status;
 
     // Useful to display
-    int numPosts = 0;
-    int totalValue = 0;
+    private int numPosts = 0;
+    private int totalValue = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,7 +109,7 @@ public class ProfileActivity extends BaseActivity {
             values.add(value);
             status.add(stat);
 
-            totalValue += Integer.valueOf(value);
+            totalValue += Integer.parseInt(value);
             numPosts++;
         }
     }
