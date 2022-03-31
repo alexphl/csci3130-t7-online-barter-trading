@@ -16,12 +16,20 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class ProfileActivity extends BaseActivity {
 
     User user;
     DatabaseReference userRef;
+    ArrayList<String> titles;
+    ArrayList<String> values;
+    ArrayList<String> status;
+
+    // Useful to display
+    int numPosts = 0;
+    int totalValue = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +56,7 @@ public class ProfileActivity extends BaseActivity {
     }
 
     /**
-     * Sets the preferences of a user if they are stored in database
+     * Populates ArrayLists with users history to be able to display correctly
      */
     protected void loadHistory() {
 
@@ -58,10 +66,20 @@ public class ProfileActivity extends BaseActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.hasChild("history_provider")) {
-                    // Load history
-                }
-                else {
-                    // No history to load
+                    DataSnapshot history = snapshot.child("history_provider");
+
+                    for (DataSnapshot snap: history.getChildren()) {
+                        String title = snap.child("post_title").getValue(String.class);
+                        String value = snap.child("post_value").getValue(String.class);
+                        String stat = snap.child("status").getValue(String.class);
+
+                        titles.add(title);
+                        values.add(value);
+                        status.add(stat);
+
+                        totalValue += Integer.valueOf(value);
+                        numPosts++;
+                    }
                 }
             }
 
