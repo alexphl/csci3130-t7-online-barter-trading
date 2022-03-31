@@ -2,25 +2,27 @@ package com.example.onlinebartertrading;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.onlinebartertrading.configs.FirebaseConstants;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.auth.User;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ChatActivity extends AppCompatActivity {
@@ -35,18 +37,73 @@ public class ChatActivity extends AppCompatActivity {
     private String finalChatKey;
     String getUserKey = "";
 
-
     ImageView backButton;
-    ImageView sendButton;
+    FrameLayout sendButton;
 
     TextView fullName;
     EditText messageField;
 
-    User firebaseUser;
-    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl(FirebaseConstants.FIREBASE_URL);
+    FirebaseUser firebaseUser;
+    DatabaseReference databaseReference;
 
     Intent intent;
 
+    @Override
+    protected void onCreate(Bundle savedInnstanceState) {
+        super.onCreate(savedInnstanceState);
+        setContentView(R.layout.activity_chat);
+
+        backButton = findViewById(R.id.back);
+        sendButton = findViewById(R.id.send);
+        fullName = findViewById(R.id.fullName);
+        messageField = findViewById(R.id.chatInput);
+
+        intent = getIntent();
+        String userID = intent.getStringExtra("userid");
+
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                View message = messageField;
+
+                if (!message.equals("")) {
+                    textMessage(firebaseUser.getUid(), userID, message);
+                } else {
+                    Toast.makeText(ChatActivity.this, "This is an empty message", Toast.LENGTH_LONG).show();
+                }
+                messageField.setText("");
+            }
+        });
+
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl(FirebaseConstants.FIREBASE_URL);
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
+    }
+
+    private void textMessage(String sender, String receiver, View message) {
+
+        databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl(FirebaseConstants.FIREBASE_URL);
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("sender", sender);
+        hashMap.put("receiver", receiver);
+        hashMap.put("message", message);
+
+        databaseReference.child("Chats").push().setValue(hashMap);
+
+    }
+
+    /*
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -161,6 +218,7 @@ public class ChatActivity extends AppCompatActivity {
                                 */
                             }
 
+                            /*
                             @Override
                             public void onCancelled(@NonNull DatabaseError error) {
 
@@ -176,5 +234,5 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
     }
-
+    */
 }
