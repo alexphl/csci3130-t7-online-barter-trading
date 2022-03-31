@@ -47,6 +47,10 @@
             android:exported="true"
             android:windowSoftInputMode="adjustResize|adjustPan" />
         <activity
+            android:name=".ChatActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize|adjustPan" />
+        <activity
             android:name=".RoleDecisionActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize|adjustPan" />
