@@ -79,7 +79,14 @@ public class ProfileActivity extends BaseActivity {
 
                         totalValue += Integer.valueOf(value);
                         numPosts++;
+
+
                     }
+                    TextView totalValue = findViewById(R.id.totalValue);
+                    totalValue.setText("$"+totalValue);
+
+                    TextView totalPosts = findViewById(R.id.totalPosts);
+                    totalPosts.setText(numPosts+" posts");
                 }
             }
 
