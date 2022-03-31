@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.onlinebartertrading.configs.FirebaseConstants;
@@ -28,7 +29,13 @@ public class ProfileActivity extends BaseActivity {
         setContentView(R.layout.activity_profile);
 
         user = (User) getIntent().getSerializableExtra("user");
+        setEmail();
         loadHistory();
+    }
+
+    protected void setEmail() {
+        TextView emailLabel = findViewById(R.id.username);
+        emailLabel.setText(user.getEmail().trim());
     }
 
     protected void initializeUserDBRef() {
