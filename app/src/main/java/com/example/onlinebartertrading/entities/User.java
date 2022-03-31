@@ -18,6 +18,7 @@ public class User implements Serializable {
     private Preferences preferences;
     private double[] lastLocation;
     private double[] cacheLocation;
+    private boolean isProvider;
 
     public User(String email) {
         this.email = email;
@@ -72,4 +73,5 @@ public class User implements Serializable {
     public String getFirstName() {return firstName;}
     public String getLastName() {return lastName;}
     public Preferences getPreferences() {return preferences;}
+    public boolean isProvider() {return isProvider;}
 }

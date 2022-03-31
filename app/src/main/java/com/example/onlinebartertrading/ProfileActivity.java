@@ -46,6 +46,18 @@ public class ProfileActivity extends BaseActivity {
         emailLabel.setText(user.getEmail().trim());
     }
 
+    protected void setValue() {
+        TextView valueView = findViewById(R.id.totalValue);
+        String value = "$" + totalValue;
+        valueView.setText(value);
+    }
+
+    protected void setNumPosts() {
+        TextView numPostsView = findViewById(R.id.totalPosts);
+        String formattedPosts = numPosts + " posts";
+        numPostsView.setText(formattedPosts);
+    }
+
     protected void initializeUserDBRef() {
         DatabaseReference dbRef = FirebaseDatabase
                 .getInstance(FirebaseConstants.FIREBASE_URL)
@@ -65,29 +77,19 @@ public class ProfileActivity extends BaseActivity {
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.hasChild("history_provider")) {
+                if (user.isProvider() && snapshot.hasChild("history_provider")) {
                     DataSnapshot history = snapshot.child("history_provider");
 
-                    for (DataSnapshot snap: history.getChildren()) {
-                        String title = snap.child("post_title").getValue(String.class);
-                        String value = snap.child("post_value").getValue(String.class);
-                        String stat = snap.child("status").getValue(String.class);
-
-                        titles.add(title);
-                        values.add(value);
-                        status.add(stat);
-
-                        totalValue += Integer.valueOf(value);
-                        numPosts++;
-
-
-                    }
-                    TextView totalValue = findViewById(R.id.totalValue);
-                    totalValue.setText("$"+totalValue);
-
-                    TextView totalPosts = findViewById(R.id.totalPosts);
-                    totalPosts.setText(numPosts+" posts");
+                    saveToLists(history);
                 }
+                else if (!user.isProvider() && snapshot.hasChild("history_receiver")) {
+                    DataSnapshot history = snapshot.child("history_receiver");
+
+                    saveToLists(history);
+                }
+
+                setValue();
+                setNumPosts();
             }
 
             @Override
@@ -96,4 +98,20 @@ public class ProfileActivity extends BaseActivity {
             }
         });
     }
+
+    protected void saveToLists(DataSnapshot history) {
+        for (DataSnapshot snap: history.getChildren()) {
+            String title = snap.child("post_title").getValue(String.class);
+            String value = snap.child("post_value").getValue(String.class);
+            String stat = snap.child("status").getValue(String.class);
+
+            titles.add(title);
+            values.add(value);
+            status.add(stat);
+
+            totalValue += Integer.valueOf(value);
+            numPosts++;
+        }
+    }
+
 }
