@@ -4,12 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.onlinebartertrading.configs.FirebaseConstants;
 import com.example.onlinebartertrading.entities.Preferences;
 import com.example.onlinebartertrading.entities.User;
+import com.example.onlinebartertrading.lib.HistoryAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,6 +22,8 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 public class ProfileActivity extends BaseActivity {
+
+    ListView listGoods;
 
     User user;
     DatabaseReference userRef;
@@ -35,6 +39,7 @@ public class ProfileActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        listGoods = findViewById(R.id.listView);
 
         user = (User) getIntent().getSerializableExtra("user");
         setEmail();
@@ -90,6 +95,9 @@ public class ProfileActivity extends BaseActivity {
 
                 setValue();
                 setNumPosts();
+
+                HistoryAdapter historyListAdapter = new HistoryAdapter(ProfileActivity.this,titles,values);
+                listGoods.setAdapter(historyListAdapter);
             }
 
             @Override
