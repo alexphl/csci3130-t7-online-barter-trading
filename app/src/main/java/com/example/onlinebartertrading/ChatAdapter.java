@@ -1,77 +1,79 @@
 package com.example.onlinebartertrading;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import java.util.List;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> {
 
-    private List<ChatList> totalChatLists;
-    private final Context context;
+    public static final int left_message = 0;
+    public static final int right_message = 1;
 
-    public ChatAdapter(List<ChatList> totalChatLists, Context context) {
-        this.totalChatLists = totalChatLists;
+    private List<ChatList> chat;
+    private Context context;
+
+    FirebaseUser firebaseUser;
+
+    public ChatAdapter(List<ChatList> users, Context context) {
+        this.chat = users;
         this.context = context;
     }
 
     @NonNull
     @Override
     public ChatAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new MyViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_chat, null));
+        if (viewType == right_message) {
+            View view = LayoutInflater.from(context).inflate(R.layout.sent_message, parent, false);
+            return new ChatAdapter.MyViewHolder(view);
+        } else {
+            View view = LayoutInflater.from(context).inflate(R.layout.received_message, parent, false);
+            return new ChatAdapter.MyViewHolder(view);
+        }
     }
 
     @Override
     public void onBindViewHolder(@NonNull ChatAdapter.MyViewHolder holder, int position) {
 
-        ChatList list2 = totalChatLists.get(position);
+        ChatList currentChat = chat.get(position);
 
-        holder.firstName.setText(list2.getFirstName());
-        holder.lastName.setText(list2.getLastName());
+        holder.message.setText(currentChat.getMessage());
 
-        holder.linearLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, ChatActivity.class);
-                intent.putExtra("first_name", list2.getFirstName());
-                intent.putExtra("last_name", list2.getLastName());
-                intent.putExtra("chat_key", list2.getChatKey());
-                intent.putExtra("user_key", list2.getUserKey());
-
-                context.startActivity(intent);
-            }
-        });
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return chat.size();
     }
 
-    static class MyViewHolder extends RecyclerView.ViewHolder {
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView firstName;
-        private TextView lastName;
-        private TextView email;
-        private LinearLayout linearLayout;
+        public TextView message;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            linearLayout = itemView.findViewById(R.id.background);
+            message = itemView.findViewById(R.id.message);
         }
     }
 
-    public void updateData(List<ChatList> totalChatLists) {
-        this.totalChatLists = totalChatLists;
-        notifyDataSetChanged();
+    @Override
+    public int getItemViewType(int position) {
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (chat.get(position).getSender().equals(firebaseUser.getUid())) {
+            return right_message;
+        } else {
+            return left_message;
+        }
     }
 }

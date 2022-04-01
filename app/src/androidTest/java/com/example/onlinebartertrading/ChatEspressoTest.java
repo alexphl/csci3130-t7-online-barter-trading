@@ -50,6 +50,4 @@ public class ChatEspressoTest {
     public static void tearDown() {
         System.gc();
     }
-
-
 }

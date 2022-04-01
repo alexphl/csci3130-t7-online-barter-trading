@@ -2,43 +2,37 @@ package com.example.onlinebartertrading;
 
 public class ChatList {
 
-    private String firstName;
-    private String lastName;
-    private int chatKey;
-    private int userKey;
-    private String date;
-    private String time;
+    private String sender;
+    private String receiver;
+    private String message;
 
-    public ChatList(String firstName, String lastName, int chatKey, int userKey, String date, String time) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.chatKey = chatKey;
-        this.userKey = userKey;
-        this.date = date;
-        this.time = time;
+    public ChatList(String firstName, String lastName, String chatKey, int userKey, String date, String time) {
+        this.sender = firstName;
+        this.receiver = lastName;
+        this.message = chatKey;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getSender() {
+        return sender;
     }
 
-    public String getLastName() {
-        return lastName;
+    public void setSender(String sender) {
+        this.sender = sender;
     }
 
-    public int getChatKey() {
-        return chatKey;
+    public String getReceiver() {
+        return receiver;
     }
 
-    public String getDate() {
-        return date;
+    public void setReceiver(String receiver) {
+        this.sender = sender;
     }
 
-    public String getTime() {
-        return time;
+    public String getMessage() {
+        return message;
     }
 
-    public int getUserKey() {
-        return userKey;
+    public void setMessage(String message) {
+        this.sender = sender;
     }
 }
