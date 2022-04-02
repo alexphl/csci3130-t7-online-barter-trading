@@ -10,7 +10,6 @@ import java.io.Serializable;
  */
 public class User implements Serializable {
 
-    private String uuid;
     private String email;
     private String firstName;
     private String lastName;
@@ -18,7 +17,7 @@ public class User implements Serializable {
     private Preferences preferences;
     private double[] lastLocation;
     private double[] cacheLocation;
-    private boolean isProvider;
+    private Boolean isProvider;
 
     public User(String email) {
         this.email = email;
@@ -36,6 +35,10 @@ public class User implements Serializable {
     public void setLocationProvider(LocationProvider locationProvider) {
         this.locationProvider = locationProvider;
         updateLastLocation();
+    }
+
+    public void setIsProvider(Boolean provider) {
+        isProvider = provider;
     }
 
     /**
@@ -68,10 +71,9 @@ public class User implements Serializable {
     /**
      * Basic getters
      */
-    public String getUuid() {return uuid;}
     public String getEmail() {return email;}
     public String getFirstName() {return firstName;}
     public String getLastName() {return lastName;}
     public Preferences getPreferences() {return preferences;}
-    public boolean isProvider() {return isProvider;}
+    public Boolean getIsProvider() {return isProvider;}
 }

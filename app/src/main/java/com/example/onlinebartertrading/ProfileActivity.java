@@ -81,12 +81,12 @@ public class ProfileActivity extends BaseActivity {
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (user.isProvider() && snapshot.hasChild("history_provider")) {
+                if (user.getIsProvider() && snapshot.hasChild("history_provider")) {
                     DataSnapshot history = snapshot.child("history_provider");
 
                     saveToLists(history);
                 }
-                else if (!user.isProvider() && snapshot.hasChild("history_receiver")) {
+                else if (!user.getIsProvider() && snapshot.hasChild("history_receiver")) {
                     DataSnapshot history = snapshot.child("history_receiver");
 
                     saveToLists(history);
