@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -18,9 +19,7 @@ import android.widget.Toast;
 
 import com.example.onlinebartertrading.configs.FirebaseConstants;
 import com.example.onlinebartertrading.entities.User;
-import com.example.onlinebartertrading.lib.DBHandler;
 import com.example.onlinebartertrading.lib.LocationProvider;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,15 +35,15 @@ public class ChatActivity extends AppCompatActivity {
 
     List<ChatList> chats;
 
-    ImageButton backButton;
-    ImageButton sendButton;
+    Button backButton;
+    Button sendButton;
 
     TextView fullName;
     EditText messageField;
 
     ChatAdapter chatAdapter;
 
-    User firebaseUser;
+    User user;
     DatabaseReference databaseReference;
 
     RecyclerView recyclerView;
@@ -61,22 +60,14 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         if(getIntent().getSerializableExtra("user") == null) {
-            firebaseUser = new User("x@email.com");
+            user = new User("x@email.com");
         }
         else {
-            firebaseUser = (User) getIntent().getSerializableExtra("user");
-            firebaseUser.setLocationProvider(new LocationProvider(this));
+            user = (User) getIntent().getSerializableExtra("user");
+            user.setLocationProvider(new LocationProvider(this));
         }
 
         setContentView(R.layout.activity_chat);
-
-        toolBar = findViewById(R.id.toolBar);
-        setSupportActionBar(toolBar);
-        getSupportActionBar().setTitle("");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolBar.setNavigationOnClickListener((view -> {
-            finish();
-        }));
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -88,11 +79,11 @@ public class ChatActivity extends AppCompatActivity {
         sendButton = findViewById(R.id.sendButton);
         messageField = findViewById(R.id.messageField);
 
-        myFName = firebaseUser.getFirstName();
+        myFName = user.getFirstName();
         otherID = getIntent().getStringExtra("users");
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Users");
-        final String fName = String.valueOf(databaseReference.child("user/first_name"));
+        final String fName = user.getFirstName();
 
         intent = getIntent();
 
@@ -100,7 +91,7 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
-                readMessages(myFName, fName);
+                readMessages(user.getFirstName(), fName);
             }
 
             @Override
@@ -177,7 +168,7 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
-    private void readMessages(String myID, String userId) {
+    private void readMessages(String myName, String userName) {
         chats = new ArrayList<>();
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Chats");
@@ -188,7 +179,7 @@ public class ChatActivity extends AppCompatActivity {
                 chats.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     ChatList chat = dataSnapshot.getValue(ChatList.class);
-                    boolean result = chat.getReceiver().equals(myID) && chat.getSender().equals(userId) || chat.getReceiver().equals(userId) && chat.getSender().equals(myID);
+                    boolean result = chat.getReceiver().equals(myName) && chat.getSender().equals(userName) || chat.getReceiver().equals(userName) && chat.getSender().equals(myName);
 
                     if (result) {
                         chats.add(chat);
