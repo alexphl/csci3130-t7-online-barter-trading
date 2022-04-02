@@ -8,12 +8,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:487307491612:android:d61c2dbb75c75a21c8a2d9",
+        "mobilesdk_app_id": "1:487307491612:android:3c4f9e3f15e8fb36c8a2d9",
         "android_client_info": {
           "package_name": "com.example.onlinebartertrading"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "487307491612-klfklvmujfq74nali786mt46mpgc8toa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.onlinebartertrading",
+            "certificate_hash": "938c7bfd1c0f7da8eccfdb5ce4e11e840f04001d"
+          }
+        },
         {
           "client_id": "487307491612-4otolr3q3je4oftf0u52a6nucs19iap6.apps.googleusercontent.com",
           "client_type": 3
