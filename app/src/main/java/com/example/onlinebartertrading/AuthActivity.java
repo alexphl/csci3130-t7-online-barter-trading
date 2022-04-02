@@ -12,9 +12,15 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
 import android.telephony.SignalStrength;
+import android.util.Log;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 /**
  * Authentication activity
@@ -23,6 +29,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 public class AuthActivity extends AppCompatActivity {
 
     TabLayout panes;
+    FirebaseAuth auth;
 
     /**
      * View setup
@@ -32,6 +39,7 @@ public class AuthActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
+        auth = FirebaseAuth.getInstance();
 
         panes = findViewById(R.id.authTabs);
 
@@ -47,6 +55,21 @@ public class AuthActivity extends AppCompatActivity {
                 tab.setText("Log In");
             }
         }).attach();
+
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        Toast.makeText(AuthActivity.this, "Token is missing", Toast.LENGTH_SHORT).show();
+                        if (!task.isSuccessful()) {
+                            return;
+                        }
+
+                        // Get new FCM registration token
+                        String token = task.getResult();
+
+                    }
+                });
     }
 
     /**
