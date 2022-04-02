@@ -40,8 +40,7 @@ public class ProfileActivity extends BaseActivity {
         setContentView(R.layout.activity_profile);
         listGoods = findViewById(R.id.listView);
 
-        //user = (User) getIntent().getSerializableExtra("user");
-        user = new User("alex@email.com");
+        user = (User) getIntent().getSerializableExtra("user");
         setEmail();
         loadHistory();
     }
