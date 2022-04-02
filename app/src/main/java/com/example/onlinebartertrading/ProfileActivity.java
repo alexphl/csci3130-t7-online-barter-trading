@@ -95,7 +95,7 @@ public class ProfileActivity extends BaseActivity {
                 setValue();
                 setNumPosts();
 
-                HistoryAdapter historyListAdapter = new HistoryAdapter(ProfileActivity.this,titles,values);
+                HistoryAdapter historyListAdapter = new HistoryAdapter(ProfileActivity.this,titles,values,status);
                 listGoods.setAdapter(historyListAdapter);
             }
 
