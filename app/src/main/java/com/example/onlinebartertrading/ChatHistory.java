@@ -1,16 +1,23 @@
 package com.example.onlinebartertrading;
 
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.onlinebartertrading.entities.Post;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.UUID;
 
 
 public class ChatHistory extends RecyclerView.Adapter<ChatHistory.MyViewHolder>{
@@ -29,13 +36,14 @@ public class ChatHistory extends RecyclerView.Adapter<ChatHistory.MyViewHolder>{
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(context).inflate(R.layout.user,parent,false);
-        return new MyViewHolder(v);
+        return new MyViewHolder(v, context);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         ChatUser user = list.get(position);
-        holder.name.setText(user.getName());
+        holder.first_name.setText(user.getFirst_name());
+
     }
 
     @Override
@@ -45,13 +53,27 @@ public class ChatHistory extends RecyclerView.Adapter<ChatHistory.MyViewHolder>{
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
-        TextView name;
+        TextView first_name;
+        Button button;
 
-        public MyViewHolder(@NonNull View itemView) {
+
+        public MyViewHolder(@NonNull View itemView, Context c) {
             super(itemView);
+            first_name = itemView.findViewById(R.id.name);
+            button = itemView.findViewById(R.id.button2);
 
-            name = itemView.findViewById(R.id.name);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(c, ChatActivity.class);
+                    c.startActivity(intent);
+                }
+            });
+
+
         }
     }
+
+
 
 }
