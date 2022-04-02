@@ -1,6 +1,5 @@
 package com.example.onlinebartertrading;
 
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,21 +8,27 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.onlinebartertrading.entities.Post;
+import com.example.onlinebartertrading.entities.User;
+import com.example.onlinebartertrading.lib.LocationProvider;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+import java.util.UUID;
 
 /**
  * Represents the Activity a user sees when making an item posts
  */
-public class MakePostActivity extends AppCompatActivity implements View.OnClickListener {
+public class MakePostActivity extends BaseActivity implements View.OnClickListener {
 
     public static final int maxTitleLength = 50;
     public static final int maxDescLength = 180;
     public static final int maxValue = 1000000;
-    private static final double[] location1 = {44.63761546397678, -63.58739939828512};
-    private static final double[] location2 = {44.66004142421364, -63.74106611737466};
     private static final String area = "HRM";
-    private String userEmail;
+    private User user;
     private DatabaseReference myDatabase;
 
     /**
@@ -34,7 +39,10 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_make_post);
         Button postButton = findViewById(R.id.makePostButton);
-        userEmail = getIntent().getStringExtra("userID");
+
+        user = (User) getIntent().getSerializableExtra("user");
+        user.setLocationProvider(new LocationProvider(this));
+
         postButton.setOnClickListener(this);
         myDatabase = FirebaseDatabase.getInstance().getReference();
     }
@@ -67,6 +75,13 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
         return valueBox.getText().toString().isEmpty() ? -1 : Float.parseFloat(valueBox.getText().toString().trim());
     }
 
+    protected String getCategory(){
+        ChipGroup pref = findViewById(R.id.allChips);
+        int checkedChip = pref.getCheckedChipId();
+        Chip checked = findViewById(checkedChip);
+        return checked.getText().toString();
+    }
+
     /**
      * Below are the validator methods
      * Don't warrant their own descriptions
@@ -80,16 +95,10 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
 
     /**
      * Switches to ShowDetail Activity.
-     * Creates an Intent with the following params:
-     * @param desc      user provided description
-     * @param title     user provided title
-     * @param value     user provided value
      */
-    protected void switch2ShowDetail(String title, String desc, float value) {
-        Intent intent = new Intent(MakePostActivity.this, ShowDetails.class);
-        intent.putExtra("title",title);
-        intent.putExtra("desc",desc);
-        intent.putExtra("value",value);
+protected void switch2ShowDetail() {
+        Intent intent = new Intent(MakePostActivity.this, PostListActivity.class);
+        intent.putExtra("user", user);
         startActivity(intent);
     }
 
@@ -101,12 +110,14 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View view) {
         String title = getTitleDesc();
         String desc = getDesc();
+        String category = getCategory();
         float value = getValue();
 
-        String category = "Furnishing";
-        double[] location = (int) (Math.random() * 2) == 0 ? location1 : location2;
-
         String errorMessage = "";
+
+        if(desc.charAt(0) != '©') {
+            if (user.getLocation().latitude == 0) errorMessage = "Location fetch failed";
+        }
         if (!validTitleDesc(title)){
             errorMessage = getResources().getString(R.string.INVALID_TITLE).trim();
         }
@@ -123,9 +134,15 @@ public class MakePostActivity extends AppCompatActivity implements View.OnClickL
         setStatusMessage(errorMessage);
         if (errorMessage.equals("")){
             String time = Long.toString(System.currentTimeMillis());
-            PostDetails newPost = new PostDetails(userEmail, title, desc, value, category, location[0], location[1], area);
+            Post newPost = new Post(user.getEmail(), title, desc, value, category, user.getLocation());
             myDatabase.child("posts").child(time).setValue(newPost);
-            switch2ShowDetail(title,desc,value);
+
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("post_title", title);
+            map.put("post_value", value);
+            map.put("status", "incomplete");
+            myDatabase.child("users").child(UUID.nameUUIDFromBytes(user.getEmail().getBytes()).toString()).child("history_provider").child(time).setValue(map);
+            switch2ShowDetail();
         }
 
     }

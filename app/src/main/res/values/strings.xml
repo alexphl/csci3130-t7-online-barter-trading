@@ -20,6 +20,7 @@
     <string name="INVALID_EMAIL">Email not Successful</string>
     <string name="INVALID_PASSWORD">Password not Successful</string>
     <string name="EMPTY_EMAIL">Email Field is empty</string>
+    <string name="EMPTY_MESSAGE">Email Message is empty</string>
     <string name="EMPTY_PASSWORD">Password Field is empty</string>
     <string name="DO_NOTHING">Successful so do nothing</string>
 
@@ -28,4 +29,18 @@
     <string name="EMPTY_DESC">ERROR: Please enter a description</string>
     <string name="LONG_DESC">ERROR: Description is too long</string>
     <string name="INVALID_VALUE">ERROR: Enter a proper value</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="INVALID_MAXDISTANCE"></string>
+
+    <string name="MIN_LESS_MAX">Minimum value should be larger than max</string>
+    <string name="estimated_value">Estimated value</string>
+    <string name="item_for_trade">Item for trade</string>
+    <string name="submit_trade">Submit</string>
+    <string name="cancel_trade">Cancel</string>
+    <string name="trade_request">Request Trade</string>
+    <string name="nameset">0</string>
+    <string name="postid">1</string>
+    <string name="empty_posts">No post found</string>
 </resources>

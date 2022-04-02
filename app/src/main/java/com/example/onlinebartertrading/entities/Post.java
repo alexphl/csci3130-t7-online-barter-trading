@@ -1,33 +1,32 @@
-package com.example.onlinebartertrading;
+package com.example.onlinebartertrading.entities;
+
+import com.google.android.gms.maps.model.LatLng;
 
 /**
  * Class to represent post details
  */
-public class PostDetails {
+public class Post {
 
     private String posterEmail;
     private String title;
     private String desc;
-    private double latitude;
-    private double longitude;
     private String category;
     private String localArea;
     private double monetaryValue;
+    LatLng coordinates;
 
     /**
      * @param givenTitle    user provided title
      * @param givenDesc     user provided description
      * @param givenValue    user provided valuation of product
      */
-    public PostDetails (String email, String givenTitle, String givenDesc, double givenValue, String category, double latitude, double longitude, String localArea) {
+    public Post (String email, String givenTitle, String givenDesc, double givenValue, String category, LatLng coordinates) {
         this.posterEmail = email;
         this.title = givenTitle;
         this.desc = givenDesc;
         this.monetaryValue = givenValue;
         this.category = category;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.localArea = localArea;
+        this.coordinates = coordinates;
     }
 
     /**
@@ -43,18 +42,15 @@ public class PostDetails {
         return title;
     }
     public double getLatitude() {
-        return latitude;
+        return coordinates.latitude;
     }
     public String getCategory() {
         return category;
-    }
-    public String getArea() {
-        return localArea;
     }
     public double getValue() {
         return monetaryValue;
     }
     public double getLongitude() {
-        return longitude;
+        return coordinates.longitude;
     }
 }

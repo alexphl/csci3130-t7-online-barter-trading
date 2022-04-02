@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.example.onlinebartertrading.lib.DBHandler;
+
 /**
  * This is the signup form Fragment
  * that is included as part of AuthActivity.

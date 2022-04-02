@@ -1,4 +1,4 @@
-package com.example.onlinebartertrading;
+package com.example.onlinebartertrading.configs;
 
 /**
  * Includes constants with references to reusable Firebase strings
