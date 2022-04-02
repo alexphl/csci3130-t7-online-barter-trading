@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OnlineBarterTrading">
         <service
-            android:name=".BackgroundService"
+            android:name=".FCMService"
             android:enabled="true"
             android:exported="true"></service>
 
