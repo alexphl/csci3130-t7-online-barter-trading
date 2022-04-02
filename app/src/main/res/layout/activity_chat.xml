@@ -27,6 +27,13 @@
                 android:background="@drawable/ic_back"/>
 
             <TextView
+                android:id="@+id/messageStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="290dp"
+                android:text=""/>
+
+            <TextView
                 android:id="@+id/fullName"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
@@ -39,13 +46,13 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-        <com.google.android.material.tabs.TabLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/design_default_color_primary_dark"
-            app:tabSelectedTextColor="#fff"
-            app:tabIndicatorColor="#fff"
-            app:tabTextColor="#fff"/>
+    <com.google.android.material.tabs.TabLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/design_default_color_primary_dark"
+        app:tabIndicatorColor="#fff"
+        app:tabSelectedTextColor="#fff"
+        app:tabTextColor="#fff" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"

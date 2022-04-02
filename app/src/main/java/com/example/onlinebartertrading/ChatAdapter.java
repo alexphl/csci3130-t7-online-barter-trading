@@ -31,13 +31,15 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
 
     @NonNull
     @Override
-    public ChatAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         if (viewType == right_message) {
             View view = LayoutInflater.from(context).inflate(R.layout.sent_message, parent, false);
-            return new ChatAdapter.MyViewHolder(view);
-        } else {
+            return new MyViewHolder(view);
+        }
+        else {
             View view = LayoutInflater.from(context).inflate(R.layout.received_message, parent, false);
-            return new ChatAdapter.MyViewHolder(view);
+            return new MyViewHolder(view);
         }
     }
 
@@ -47,7 +49,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
         ChatList currentChat = chat.get(position);
 
         holder.message.setText(currentChat.getMessage());
-
     }
 
     @Override

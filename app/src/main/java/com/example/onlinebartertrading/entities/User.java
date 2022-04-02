@@ -19,6 +19,9 @@ public class User implements Serializable {
     private double[] lastLocation;
     private double[] cacheLocation;
 
+    public User(){
+    }
+
     public User(String email) {
         this.email = email;
     }

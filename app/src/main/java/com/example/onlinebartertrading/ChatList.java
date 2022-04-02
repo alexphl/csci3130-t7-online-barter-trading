@@ -6,6 +6,7 @@ public class ChatList {
     private String receiver;
     private String message;
 
+
     public ChatList(String firstName, String lastName, String chatKey, int userKey, String date, String time) {
         this.sender = firstName;
         this.receiver = lastName;

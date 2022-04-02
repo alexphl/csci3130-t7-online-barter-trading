@@ -15,6 +15,7 @@ import org.junit.runner.RunWith;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.swipeLeft;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
@@ -39,7 +40,7 @@ public class ChatEspressoTest {
     }
 
     @Rule
-    public ActivityScenarioRule<AuthActivity> myRule = new ActivityScenarioRule<>(AuthActivity.class);
+    public ActivityScenarioRule<ChatActivity> myRule = new ActivityScenarioRule<>(ChatActivity.class);
 
     @BeforeClass
     public static void setup() {
@@ -49,5 +50,14 @@ public class ChatEspressoTest {
     @AfterClass
     public static void tearDown() {
         System.gc();
+    }
+
+    /*** User Acceptance Test - I**/
+    @Test
+    public void checkIfMessageFieldIsEmpty() {
+        onView(withId(R.id.messageField)).perform(typeText(""));
+        onView(withId(R.id.messageField)).perform(closeSoftKeyboard());
+        onView(withId(R.id.sendButton)).perform(click());
+        onView(withId(R.id.messageStatus)).check(matches(withText(R.string.EMPTY_MESSAGE)));
     }
 }
