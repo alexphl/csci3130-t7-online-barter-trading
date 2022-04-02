@@ -2,9 +2,15 @@ package com.example.onlinebartertrading;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -69,9 +75,21 @@ public class PostListActivity extends BaseActivity implements View.OnClickListen
     String searchKeyword = "";
     User user;
 
+
+
     // Necessary for location provider
     private LocationProvider locationProvider;
     int numPosts = 0;
+
+    //Alert
+    Button btnAlert;
+    NotificationManagerCompat notificationManagerCompat;
+    Notification notification;
+    int count = 2;
+    DatabaseReference alertReference;
+   
+
+
 
     /**
      * View setup and value listeners
@@ -111,9 +129,51 @@ public class PostListActivity extends BaseActivity implements View.OnClickListen
             }
         });
 
+
         showButton = findViewById(R.id.btn);
         showButton.setOnClickListener(this);
 
+
+//        Alert and notification for new items
+
+        alertReference = FirebaseDatabase.getInstance().getReference();
+        Query alertQuery = alertReference.child("posts").orderByKey();
+        alertQuery.addValueEventListener(new ValueEventListener() {
+
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //get data from firebase
+                Iterator<DataSnapshot> snapshots = snapshot.getChildren().iterator();
+                ArrayList<DataSnapshot> list = new ArrayList<>();
+                //Get all values from iterator
+                snapshots.forEachRemaining(list::add);
+
+                if(list.size() > count) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        NotificationChannel channel = new NotificationChannel("notificationChannel", "My Channel", NotificationManager.IMPORTANCE_DEFAULT);
+                        NotificationManager manager = getSystemService(NotificationManager.class);
+                        manager.createNotificationChannel(channel);
+                    }
+
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(PostListActivity.this, "notificationChannel")
+                            .setSmallIcon(android.R.drawable.sym_def_app_icon)
+                            .setContentTitle("Notification for new items")
+                            .setContentText("Some new goods you may interested! Refresh the page!");
+                    notification = builder.build();
+                    notificationManagerCompat = NotificationManagerCompat.from(PostListActivity.this);
+                    notificationManagerCompat.notify(1, notification);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                System.out.println("This not correct!!!");
+            }
+        });
+
+
+
+        
         //Swipe down to refresh lets the user automatically show any new posts that are made by other users.
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swiperefresh);
         swipeRefreshLayout.setOnRefreshListener(
@@ -144,6 +204,7 @@ public class PostListActivity extends BaseActivity implements View.OnClickListen
                 ArrayList<DataSnapshot> list = new ArrayList<>();
                 //Get all values from iterator
                 snapshots.forEachRemaining(list::add);
+              
                 values = applyFilters(list);
                 extractPosts();
                 if(user.getPreferences() == null) {
@@ -169,6 +230,11 @@ public class PostListActivity extends BaseActivity implements View.OnClickListen
             startActivity(intent);
         });
     }
+
+
+
+
+
 
     /**
      * Specify the settings of the options menu
