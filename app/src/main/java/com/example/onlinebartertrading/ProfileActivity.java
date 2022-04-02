@@ -1,15 +1,13 @@
 package com.example.onlinebartertrading;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.onlinebartertrading.configs.FirebaseConstants;
-import com.example.onlinebartertrading.entities.Preferences;
 import com.example.onlinebartertrading.entities.User;
 import com.example.onlinebartertrading.lib.HistoryAdapter;
 import com.google.firebase.database.DataSnapshot;
@@ -19,6 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.UUID;
 
 public class ProfileActivity extends BaseActivity {
@@ -27,9 +26,9 @@ public class ProfileActivity extends BaseActivity {
 
     User user;
     DatabaseReference userRef;
-    ArrayList<String> titles;
-    ArrayList<String> values;
-    ArrayList<String> status;
+    ArrayList<String> titles = new ArrayList<>();
+    ArrayList<String> values = new ArrayList<>();
+    ArrayList<String> status = new ArrayList<>();
 
     // Useful to display
     private int numPosts = 0;
@@ -41,7 +40,8 @@ public class ProfileActivity extends BaseActivity {
         setContentView(R.layout.activity_profile);
         listGoods = findViewById(R.id.listView);
 
-        user = (User) getIntent().getSerializableExtra("user");
+        //user = (User) getIntent().getSerializableExtra("user");
+        user = new User("alex@email.com");
         setEmail();
         loadHistory();
     }
@@ -52,15 +52,15 @@ public class ProfileActivity extends BaseActivity {
     }
 
     protected void setValue() {
-        TextView valueView = findViewById(R.id.totalValue);
+        TextView valueView = findViewById(R.id.valueBox);
         String value = "$" + totalValue;
-        valueView.setText(value);
+        valueView.setText(value.trim());
     }
 
     protected void setNumPosts() {
-        TextView numPostsView = findViewById(R.id.totalPosts);
+        TextView numPostsView = findViewById(R.id.postBox);
         String formattedPosts = numPosts + " posts";
-        numPostsView.setText(formattedPosts);
+        numPostsView.setText(formattedPosts.trim());
     }
 
     protected void initializeUserDBRef() {
@@ -79,7 +79,7 @@ public class ProfileActivity extends BaseActivity {
 
         initializeUserDBRef();
 
-        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (user.isProvider() && snapshot.hasChild("history_provider")) {
@@ -110,14 +110,14 @@ public class ProfileActivity extends BaseActivity {
     protected void saveToLists(DataSnapshot history) {
         for (DataSnapshot snap: history.getChildren()) {
             String title = snap.child("post_title").getValue(String.class);
-            String value = snap.child("post_value").getValue(String.class);
+            int value = snap.child("post_value").getValue(Integer.class);
             String stat = snap.child("status").getValue(String.class);
 
             titles.add(title);
-            values.add(value);
+            values.add(Integer.toString(value));
             status.add(stat);
 
-            totalValue += Integer.parseInt(value);
+            totalValue += value;
             numPosts++;
         }
     }

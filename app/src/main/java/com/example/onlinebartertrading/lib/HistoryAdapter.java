@@ -29,7 +29,7 @@ public class HistoryAdapter extends ArrayAdapter<String> {
      * @param value     User provided item valuation
      */
     public HistoryAdapter(ProfileActivity context, ArrayList<String> name, ArrayList<String> value) {
-        super(context, R.layout.activity_listview, R.id.itemDetail, name);
+        super(context, R.layout.activity_historypost, R.id.itemName, name);
         this.context = context;
         this.name = name;
         this.value = value;
@@ -48,7 +48,7 @@ public class HistoryAdapter extends ArrayAdapter<String> {
         } else {
             //The LayoutInflater takes layout XML-files and creates different View-objects from its contents.
             LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = layoutInflater.inflate(R.layout.activity_listview, parent, false);
+            view = layoutInflater.inflate(R.layout.activity_historypost, parent, false);
             nameSet = new HashMap<>();
 
             // Set up hash map
