@@ -3,10 +3,8 @@ package com.example.onlinebartertrading;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Intent;
 import android.os.Build;
-import android.os.IBinder;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -44,7 +42,7 @@ public class FCMService extends FirebaseMessagingService {
 
         // Create a notification that will be displayed in the notification tray.
         NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(this, "JOBS")
+                new NotificationCompat.Builder(this, "ITEMS")
                         .setContentTitle(title)
                         .setContentText(body)
                         .setSmallIcon(com.google.firebase.messaging.R.drawable.gcm_icon);
@@ -58,7 +56,7 @@ public class FCMService extends FirebaseMessagingService {
 
         // If the build version is greater than, put the notification in a channel.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel("JOBS", "JOBS", NotificationManager.IMPORTANCE_HIGH);
+            NotificationChannel channel = new NotificationChannel("ITEMS", "ITEMS", NotificationManager.IMPORTANCE_HIGH);
             manager.createNotificationChannel(channel);
         }
 
