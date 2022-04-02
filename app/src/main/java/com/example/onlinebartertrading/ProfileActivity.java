@@ -106,6 +106,10 @@ public class ProfileActivity extends BaseActivity {
         });
     }
 
+    /**
+     * Saves data from database to ArrayLists to be displayed in UI
+     * @param history snapshot to take data from
+     */
     protected void saveToLists(DataSnapshot history) {
         for (DataSnapshot snap: history.getChildren()) {
             String title = snap.child("post_title").getValue(String.class);
