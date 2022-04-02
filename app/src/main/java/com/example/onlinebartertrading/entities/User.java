@@ -2,6 +2,7 @@ package com.example.onlinebartertrading.entities;
 
 import com.example.onlinebartertrading.lib.LocationProvider;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.Serializable;
 
@@ -42,7 +43,15 @@ public class User implements Serializable {
      * @param preferences user's post filter preferences
      */
     public void setPreferences(Preferences preferences) {
+        for (String category :getPreferences().getCategories()) {
+            FirebaseMessaging.getInstance().unsubscribeFromTopic(category);
+        }
+
         this.preferences = preferences;
+
+        for (String category : getPreferences().getCategories()) {
+            FirebaseMessaging.getInstance().subscribeToTopic(category);
+        }
     }
 
     /**
