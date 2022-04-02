@@ -7,7 +7,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.onlinebartertrading.entities.Post;
 import com.example.onlinebartertrading.entities.User;
 import com.example.onlinebartertrading.lib.LocationProvider;
@@ -16,7 +20,11 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -30,6 +38,7 @@ public class MakePostActivity extends BaseActivity implements View.OnClickListen
     private static final String area = "HRM";
     private User user;
     private DatabaseReference myDatabase;
+    private RequestQueue requestQueue;
 
     /**
      * Preliminary setup
@@ -142,9 +151,54 @@ protected void switch2ShowDetail() {
             map.put("post_value", value);
             map.put("status", "incomplete");
             myDatabase.child("users").child(UUID.nameUUIDFromBytes(user.getEmail().getBytes()).toString()).child("history_provider").child(time).setValue(map);
+
+            sendNotification(title, desc, category);
+
             switch2ShowDetail();
         }
 
+    }
+
+    private void sendNotification(String title, String desc, String cat) {
+        try {
+            final JSONObject notificationJSONBody = new JSONObject();
+            notificationJSONBody.put("title", "New Items Added!");
+            notificationJSONBody.put("body", "New goods have arrived, take a look!");
+
+            final JSONObject dataJSONBody = new JSONObject();
+            dataJSONBody.put("title", title);
+            dataJSONBody.put("description", desc);
+            dataJSONBody.put("category", cat);
+
+            String topicPath = "/topic/" + cat;
+
+            final JSONObject pushNotificationJSONBody = new JSONObject();
+            pushNotificationJSONBody.put("to", topicPath);
+            pushNotificationJSONBody.put("notification", notificationJSONBody);
+            pushNotificationJSONBody.put("data", dataJSONBody);
+
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
+                    "https://fcm.googleapis.com/fcm/send",
+                    pushNotificationJSONBody,
+                    response ->
+                            Toast.makeText(MakePostActivity.this,
+                                    "Push notification sent.",
+                                    Toast.LENGTH_SHORT).show(),
+                    Throwable::printStackTrace) {
+                @Override
+                public Map<String, String> getHeaders() {
+                    final Map<String, String> headers = new HashMap<>();
+                    headers.put("content-type", "application/json");
+                    headers.put("authorization", "key=" + BuildConfig.FIREBASE_SERVER_KEY);
+                    return headers;
+                }
+            };
+
+            requestQueue.add(request);
+        } catch (JSONException e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
     }
 }
 
