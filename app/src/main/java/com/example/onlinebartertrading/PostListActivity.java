@@ -148,7 +148,9 @@ public class PostListActivity extends BaseActivity implements View.OnClickListen
                 //Get all values from iterator
                 snapshots.forEachRemaining(list::add);
 
-                if(list.size() > count) {
+                if(list.size() % 2 != 0) {
+
+                    //Notification function
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         NotificationChannel channel = new NotificationChannel("notificationChannel", "My Channel", NotificationManager.IMPORTANCE_DEFAULT);
                         NotificationManager manager = getSystemService(NotificationManager.class);
@@ -158,7 +160,7 @@ public class PostListActivity extends BaseActivity implements View.OnClickListen
                     NotificationCompat.Builder builder = new NotificationCompat.Builder(PostListActivity.this, "notificationChannel")
                             .setSmallIcon(android.R.drawable.sym_def_app_icon)
                             .setContentTitle("Notification for new items")
-                            .setContentText("Some new goods you may interested! Refresh the page!");
+                            .setContentText("Some new goods you may interested! Take a look!");
                     notification = builder.build();
                     notificationManagerCompat = NotificationManagerCompat.from(PostListActivity.this);
                     notificationManagerCompat.notify(1, notification);
