@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.onlinebartertrading.entities.Post;
 import com.example.onlinebartertrading.entities.User;
 import com.example.onlinebartertrading.lib.LocationProvider;
@@ -51,6 +52,8 @@ public class MakePostActivity extends BaseActivity implements View.OnClickListen
 
         user = (User) getIntent().getSerializableExtra("user");
         user.setLocationProvider(new LocationProvider(this));
+
+        requestQueue = Volley.newRequestQueue(this);
 
         postButton.setOnClickListener(this);
         myDatabase = FirebaseDatabase.getInstance().getReference();
