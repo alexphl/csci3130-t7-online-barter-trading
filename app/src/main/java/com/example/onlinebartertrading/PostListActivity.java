@@ -38,6 +38,7 @@ import com.google.maps.android.SphericalUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -394,6 +395,15 @@ public class PostListActivity extends BaseActivity implements View.OnClickListen
         reference.child("users").child(UUID.nameUUIDFromBytes(email.getBytes()).toString()).child("history_provider").child(postId).child("receivers").child(receiver_emailHash).setValue(receiver);
     }
 
+    private void createHistoryReceiver(String email, String title, int value) {
+        Map<String, Object> content = new HashMap<>();
+        content.put("post_title", title);
+        content.put("post_value", value);
+        content.put("status", "ongoing");
+
+        reference.child("users").child(UUID.nameUUIDFromBytes(email.getBytes()).toString()).child("history_receiver").child(title).setValue(content);
+    }
+
     /**
      * Behavior when the show more button is clicked.
      * @param view
@@ -427,6 +437,7 @@ public class PostListActivity extends BaseActivity implements View.OnClickListen
 
         createExchange(email, title, value, key, receiver_item, receiver_value);
         createReceiverHistory(email, postId, key, receiver_item, receiver_value, receiver_emailHash);
+        createHistoryReceiver(email, title, value);
 
         Toast.makeText(getBaseContext(), "Successfully initialised trade.", Toast.LENGTH_SHORT).show();
     }
