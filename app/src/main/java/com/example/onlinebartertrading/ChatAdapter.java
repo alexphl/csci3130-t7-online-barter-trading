@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.onlinebartertrading.entities.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -22,7 +23,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
     private List<ChatList> chat;
     private Context context;
 
-    FirebaseUser firebaseUser;
+    User firebaseUser;
 
     public ChatAdapter(List<ChatList> users, Context context) {
         this.chat = users;
@@ -69,9 +70,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
 
     @Override
     public int getItemViewType(int position) {
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        if (chat.get(position).getSender().equals(firebaseUser.getUid())) {
+        if (chat.get(position).getSender().equals(firebaseUser.getUuid())) {
             return right_message;
         } else {
             return left_message;

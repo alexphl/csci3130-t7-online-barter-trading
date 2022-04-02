@@ -21,7 +21,6 @@ import com.example.onlinebartertrading.entities.User;
 import com.example.onlinebartertrading.lib.DBHandler;
 import com.example.onlinebartertrading.lib.LocationProvider;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,10 +30,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 public class ChatActivity extends AppCompatActivity {
-
-    public DBHandler DB_HANDLER;
 
     List<ChatList> chats;
 
@@ -46,7 +44,7 @@ public class ChatActivity extends AppCompatActivity {
 
     ChatAdapter chatAdapter;
 
-    FirebaseUser firebaseUser;
+    User firebaseUser;
     DatabaseReference databaseReference;
 
     RecyclerView recyclerView;
@@ -54,13 +52,22 @@ public class ChatActivity extends AppCompatActivity {
     Intent intent;
     Toolbar toolBar;
     String currFName;
-    String myID;
+    String myFName;
     String otherID;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(getIntent().getSerializableExtra("user") == null) {
+            firebaseUser = new User("x@email.com");
+        }
+        else {
+            firebaseUser = (User) getIntent().getSerializableExtra("user");
+            firebaseUser.setLocationProvider(new LocationProvider(this));
+        }
+
         setContentView(R.layout.activity_chat);
 
         toolBar = findViewById(R.id.toolBar);
@@ -79,18 +86,13 @@ public class ChatActivity extends AppCompatActivity {
 
         backButton = findViewById(R.id.backButton);
         sendButton = findViewById(R.id.sendButton);
-        fullName = findViewById(R.id.fullName);
         messageField = findViewById(R.id.messageField);
 
-
-        myID = firebaseUser.getUid();
-        otherID = getIntent().getStringExtra("otherID");
-
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        myFName = firebaseUser.getFirstName();
+        otherID = getIntent().getStringExtra("users");
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Users");
         final String fName = String.valueOf(databaseReference.child("user/first_name"));
-        FirebaseAuth auth = FirebaseAuth.getInstance();
 
         intent = getIntent();
 
@@ -98,9 +100,7 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
-                String temp = user.getFirstName() + " " + user.getLastName();
-                fullName.setText(temp);
-                readMessages(myID, otherID);
+                readMessages(myFName, fName);
             }
 
             @Override
@@ -140,19 +140,16 @@ public class ChatActivity extends AppCompatActivity {
                 String message = messageField.getText().toString();
 
                 if (!message.equals("")) {
-                    textMessage(firebaseUser.getFirstName(), fName, message);
+                    textMessage(myFName, fName, message);
                 } else {
                     Toast.makeText(ChatActivity.this, "This is an empty message", Toast.LENGTH_LONG).show();
                 }
                 messageField.setText(" ");
             }
         });
-
-        readMessages();
-
     }
 
-    private void textMessage(String sender, String receiver, String message) {
+    private void textMessage(String senderID, String receiverID, String message) {
 
         databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl(FirebaseConstants.FIREBASE_URL);
 
@@ -160,11 +157,17 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 HashMap<String, Object> hashMap = new HashMap<>();
-                hashMap.put("sender", sender);
-                hashMap.put("receiver", receiver);
+                hashMap.put("sender", senderID);
+                hashMap.put("receiver", receiverID);
                 hashMap.put("message", message);
 
-                databaseReference.child("Chats").push().setValue(hashMap);
+                String key = chatExists(snapshot, senderID, receiverID);
+
+                if (key == null) {
+                    key = UUID.randomUUID().toString();
+                }
+
+                databaseReference.child("Chats").child(key).push().setValue(hashMap);
             }
 
             @Override
@@ -174,7 +177,7 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
-    private void readMessages(String id, String userId) {
+    private void readMessages(String myID, String userId) {
         chats = new ArrayList<>();
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Chats");
@@ -185,7 +188,7 @@ public class ChatActivity extends AppCompatActivity {
                 chats.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     ChatList chat = dataSnapshot.getValue(ChatList.class);
-                    boolean result = chat.getReceiver().equals(id) && chat.getSender().equals(userId) || chat.getReceiver().equals(userId) && chat.getSender().equals(id);
+                    boolean result = chat.getReceiver().equals(myID) && chat.getSender().equals(userId) || chat.getReceiver().equals(userId) && chat.getSender().equals(myID);
 
                     if (result) {
                         chats.add(chat);
@@ -203,21 +206,24 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
+    private String chatExists(DataSnapshot snapshot, String senderID, String receiverID) {
+
+        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+            boolean receiverCond;
+            boolean senderCond = dataSnapshot.child("receiver").equals(receiverID) || dataSnapshot.child("sender").equals(senderID);
+
+            if (senderCond) {
+                receiverCond = dataSnapshot.child("receiver").equals(receiverID) || dataSnapshot.child("sender").equals(senderID);
+
+                if (receiverCond) {
+                    return dataSnapshot.getKey();
+                }
+            }
+        }
+        return null;
+    }
+
     public void setSupportActionBar(Toolbar supportActionBar) {
         this.toolBar = supportActionBar;
-    }
-
-    private void sendUserToRegisterActivity() {
-        Intent intent = new Intent(ChatActivity.this, AuthActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
-    }
-
-    private void sendUserToLoginActivity() {
-        Intent intent = new Intent(ChatActivity.this, AuthActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
     }
 }

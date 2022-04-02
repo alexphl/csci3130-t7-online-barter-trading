@@ -6,11 +6,13 @@ public class ChatList {
     private String receiver;
     private String message;
 
+    public ChatList(){
+    }
 
-    public ChatList(String firstName, String lastName, String chatKey, int userKey, String date, String time) {
-        this.sender = firstName;
-        this.receiver = lastName;
-        this.message = chatKey;
+    public ChatList(String sender, String receiver, String message) {
+        this.sender = sender;
+        this.receiver = receiver;
+        this.message = message;
     }
 
     public String getSender() {
