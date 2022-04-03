@@ -44,6 +44,7 @@ import com.google.maps.android.SphericalUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -211,6 +212,14 @@ public class PostListActivity extends BaseActivity implements View.OnClickListen
          intent.putExtra("user", user);
          startActivity(intent);
          return false;
+        });
+
+        MenuItem profile = menu.findItem(R.id.profile);
+        profile.setOnMenuItemClickListener(item -> {
+            Intent intent = new Intent(getBaseContext(), ProfileActivity.class);
+            intent.putExtra("user", user);
+            startActivity(intent);
+            return false;
         });
 
         MenuItem logout = menu.findItem(R.id.logout);
@@ -413,6 +422,15 @@ public class PostListActivity extends BaseActivity implements View.OnClickListen
         reference.child("users").child(UUID.nameUUIDFromBytes(email.getBytes()).toString()).child("history_provider").child(postId).child("receivers").child(receiver_emailHash).setValue(receiver);
     }
 
+    private void createHistoryReceiver(String email, String title, int value) {
+        Map<String, Object> content = new HashMap<>();
+        content.put("post_title", title);
+        content.put("post_value", value);
+        content.put("status", "ongoing");
+
+        reference.child("users").child(UUID.nameUUIDFromBytes(email.getBytes()).toString()).child("history_receiver").child(title).setValue(content);
+    }
+
     /**
      * Behavior when the show more button is clicked.
      * @param view
@@ -446,6 +464,7 @@ public class PostListActivity extends BaseActivity implements View.OnClickListen
 
         createExchange(email, title, value, key, receiver_item, receiver_value);
         createReceiverHistory(email, postId, key, receiver_item, receiver_value, receiver_emailHash);
+        createHistoryReceiver(email, title, value);
 
         Toast.makeText(getBaseContext(), "Successfully initialised trade.", Toast.LENGTH_SHORT).show();
     }

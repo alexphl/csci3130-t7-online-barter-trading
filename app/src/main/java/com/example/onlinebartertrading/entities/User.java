@@ -21,6 +21,7 @@ public class User implements Serializable {
     private Preferences preferences;
     private double[] lastLocation;
     private double[] cacheLocation;
+    private Boolean isProvider;
 
 
 
@@ -40,6 +41,10 @@ public class User implements Serializable {
     public void setLocationProvider(LocationProvider locationProvider) {
         this.locationProvider = locationProvider;
         updateLastLocation();
+    }
+
+    public void setIsProvider(Boolean provider) {
+        isProvider = provider;
     }
 
     /**
@@ -100,4 +105,5 @@ public class User implements Serializable {
     public void setEmail(String email) {this.email = email;}
     public void setFirstName(String firstName) {this.firstName = firstName;}
     public void setLastName(String lastName) {this.lastName = lastName;}
+    public Boolean getIsProvider() {return isProvider;}
 }
