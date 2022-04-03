@@ -41,6 +41,9 @@ public class MakePostActivity extends BaseActivity implements View.OnClickListen
     private DatabaseReference myDatabase;
     private RequestQueue requestQueue;
 
+    NotificationManagerCompat notificationManagerCompat;
+    Notification notification;
+
     /**
      * Preliminary setup
      */
@@ -148,6 +151,21 @@ protected void switch2ShowDetail() {
             String time = Long.toString(System.currentTimeMillis());
             Post newPost = new Post(user.getEmail(), title, desc, value, category, user.getLocation());
             myDatabase.child("posts").child(time).setValue(newPost);
+
+             //     Alert and notification for new items
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel channel = new NotificationChannel("notificationChannel", "My Channel", NotificationManager.IMPORTANCE_DEFAULT);
+                NotificationManager manager = getSystemService(NotificationManager.class);
+                manager.createNotificationChannel(channel);
+            }
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(MakePostActivity.this, "notificationChannel")
+                    .setSmallIcon(android.R.drawable.sym_def_app_icon)
+                    .setContentTitle("Notification for new items")
+                    .setContentText("Some new goods just been posted recently, Take a look!");
+            notification = builder.build();
+            notificationManagerCompat = NotificationManagerCompat.from(MakePostActivity.this);
+            notificationManagerCompat.notify(1, notification);
 
             HashMap<String, Object> map = new HashMap<>();
             map.put("post_title", title);
