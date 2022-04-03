@@ -7,7 +7,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.example.onlinebartertrading.entities.User;
+
 public class BaseActivity extends AppCompatActivity {
+
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +28,14 @@ public class BaseActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.options_menu, menu);
+
+        MenuItem profile = menu.findItem(R.id.profile);
+        profile.setOnMenuItemClickListener(item -> {
+            Intent intent = new Intent(getBaseContext(), ProfileActivity.class);
+            intent.putExtra("user", user);
+            startActivity(intent);
+            return false;
+        });
 
         MenuItem logout = menu.findItem(R.id.logout);
         logout.setOnMenuItemClickListener(item -> {
