@@ -2,8 +2,10 @@ package com.example.onlinebartertrading;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.junit.Assert.assertEquals;
@@ -56,8 +58,9 @@ public class RoleEspressoTest {
     /*** User Acceptance Test - I**/
     @Test
     public void checkIfProviderButtonWorks() {
+
         onView(withId(R.id.ProviderButton)).perform(click());
-        intended(hasComponent(MakePostActivity.class.getName()));
+        onView(withId(R.id.ReceiverButton)).check(matches(isDisplayed()));
     }
 
     /*** User Acceptance Test - I**/

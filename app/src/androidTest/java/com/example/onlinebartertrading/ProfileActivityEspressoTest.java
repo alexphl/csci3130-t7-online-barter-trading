@@ -30,6 +30,7 @@ public class ProfileActivityEspressoTest {
     static Bundle bundle = new Bundle();
     static User user = new User("alex@email.com");
     static {
+        user.setIsProvider(true);
         bundle.putSerializable("user", user);
         intent.putExtras(bundle);
     }
@@ -53,11 +54,11 @@ public class ProfileActivityEspressoTest {
 
     @Test
     public void setValue() {
-        onView(withId(R.id.valueBox)).check(matches(withText("$1501")));
+        onView(withId(R.id.valueBox)).check(matches(withText("$1804")));
     }
 
     @Test
     public void setNumPosts() {
-        onView(withId(R.id.postBox)).check(matches(withText("2 posts")));
+        onView(withId(R.id.postBox)).check(matches(withText("34 posts")));
     }
 }

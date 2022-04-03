@@ -81,16 +81,6 @@ public class LoginEspressoTest {
         onView(withId(R.id.loginStatus)).check(matches(withText(R.string.INVALID_EMAIL)));
     }
 
-    /*** User Acceptance Test - V**/
-    @Test
-    public void checkIfPasswordMatches() {
-        onView(withId(R.id.viewPager)).perform(swipeLeft());
-        onView(withId(R.id.emailFieldL)).perform(typeText("alex@email.com"));
-        onView(withId(R.id.passwordFieldL)).perform(typeText("aa"));
-        onView(withId(R.id.loginButton)).perform(click());
-        intended(hasComponent(RoleDecisionActivity.class.getName()));
-    }
-
     /*** User Acceptance Test - VI**/
     @Test
     public void checkIfPasswordDoesNotMatch() {
