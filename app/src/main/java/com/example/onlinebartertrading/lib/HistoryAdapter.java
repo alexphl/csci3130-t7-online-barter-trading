@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.example.onlinebartertrading.PostListActivity;
 import com.example.onlinebartertrading.ProfileActivity;
 import com.example.onlinebartertrading.R;
 
