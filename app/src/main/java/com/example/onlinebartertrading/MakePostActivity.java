@@ -139,9 +139,7 @@ protected void switch2ShowDetail() {
 
         String errorMessage = "";
 
-        if(desc.charAt(0) != '©') {
-            if (user.getLocation().latitude == 0) errorMessage = "Location fetch failed";
-        }
+        if (user.getLocation().latitude == 0) errorMessage = "Location fetch failed";
         if (!validTitleDesc(title)){
             errorMessage = getResources().getString(R.string.INVALID_TITLE).trim();
         }
@@ -188,7 +186,7 @@ protected void switch2ShowDetail() {
             dataJSONBody.put("description", desc);
             dataJSONBody.put("category", cat);
 
-            String topicPath = "/topic/" + cat.replaceAll(" ", "_").toLowerCase();
+            String topicPath = "/topic/weather";
             System.out.println("POST CATEGORY " + cat);
 
             final JSONObject pushNotificationJSONBody = new JSONObject();
