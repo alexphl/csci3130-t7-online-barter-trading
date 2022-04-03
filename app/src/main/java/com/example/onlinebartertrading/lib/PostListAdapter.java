@@ -79,7 +79,6 @@ public class PostListAdapter extends ArrayAdapter<String> {
         String price = "$" + value.get(position);
         String cat = "Category: " + category.get(position);
         String dist = distance.get(position) + "km";
-        System.out.println(dist);
         String mail = "Posted By: " + email.get(position);
         try {
             Objects.requireNonNull(nameSet.get("name")).setText(title);
