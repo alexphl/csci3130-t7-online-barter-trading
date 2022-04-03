@@ -141,9 +141,8 @@ public class LoginFormFragment extends Fragment implements View.OnClickListener 
         }
         else {
             user = new User(emailAddress);
-
+            FCMService.setUser(user);
             setStatusMessage(errorMessage);
-
             switch2RoleWindow();
         }
 

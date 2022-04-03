@@ -119,6 +119,7 @@ public class MakePostActivity extends BaseActivity implements View.OnClickListen
 protected void switch2ShowDetail() {
         Intent intent = new Intent(MakePostActivity.this, PostListActivity.class);
         intent.putExtra("user", user);
+        FCMService.setUser(user);
         startActivity(intent);
     }
 
@@ -153,13 +154,13 @@ protected void switch2ShowDetail() {
         if (errorMessage.equals("")){
             String time = Long.toString(System.currentTimeMillis());
             Post newPost = new Post(user.getEmail(), title, desc, value, category, user.getLocation());
-            //myDatabase.child("posts").child(time).setValue(newPost);
+            myDatabase.child("posts").child(time).setValue(newPost);
 
             HashMap<String, Object> map = new HashMap<>();
             map.put("post_title", title);
             map.put("post_value", value);
             map.put("status", "incomplete");
-            //myDatabase.child("users").child(UUID.nameUUIDFromBytes(user.getEmail().getBytes()).toString()).child("history_provider").child(time).setValue(map);
+            myDatabase.child("users").child(UUID.nameUUIDFromBytes(user.getEmail().getBytes()).toString()).child("history_provider").child(time).setValue(map);
 
             sendNotification(category);
 

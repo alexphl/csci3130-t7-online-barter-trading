@@ -128,6 +128,7 @@ public class PostListActivity extends BaseActivity implements View.OnClickListen
                     finish();
                     Intent intent = getIntent();
                     intent.putExtra("user", user);
+                    FCMService.setUser(user);
                     startActivity(intent);
                     overridePendingTransition( 0, 0);
                     swipeRefreshLayout.setRefreshing(false);
@@ -174,6 +175,7 @@ public class PostListActivity extends BaseActivity implements View.OnClickListen
             intent.putExtra(SearchManager.QUERY, "");
             intent.putExtra("user", user);
             intent.putExtra("query", "");
+            FCMService.setUser(user);
             startActivity(intent);
         });
     }
@@ -203,6 +205,7 @@ public class PostListActivity extends BaseActivity implements View.OnClickListen
         filter.setOnMenuItemClickListener(item -> {
          Intent intent = new Intent(getBaseContext(), PreferenceActivity.class);
          intent.putExtra("user", user);
+         FCMService.setUser(user);
          startActivity(intent);
          return false;
         });
@@ -211,6 +214,7 @@ public class PostListActivity extends BaseActivity implements View.OnClickListen
         profile.setOnMenuItemClickListener(item -> {
             Intent intent = new Intent(getBaseContext(), ProfileActivity.class);
             intent.putExtra("user", user);
+            FCMService.setUser(user);
             startActivity(intent);
             return false;
         });
@@ -235,6 +239,7 @@ public class PostListActivity extends BaseActivity implements View.OnClickListen
                 Intent intent = new Intent(getBaseContext(), PostListActivity.class);
                 intent.putExtra("query", query);
                 intent.putExtra("user", user);
+                FCMService.setUser(user);
                 startActivity(intent);
                 return false;
             }

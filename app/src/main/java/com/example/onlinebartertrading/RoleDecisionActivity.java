@@ -78,6 +78,7 @@ public class RoleDecisionActivity extends BaseActivity implements View.OnClickLi
     protected void switch2Activity(Class target) {
         Intent switchListActivity = new Intent(this, target);
         switchListActivity.putExtra("user", user);
+        FCMService.setUser(user);
         startActivity(switchListActivity);
     }
 

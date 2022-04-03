@@ -302,6 +302,7 @@ public class PreferenceActivity extends BaseActivity implements View.OnClickList
             // switch to new activity
             Intent intent = new Intent(getBaseContext(), PostListActivity.class);
             intent.putExtra("user", user);
+            FCMService.setUser(user);
             startActivity(intent);
 
         }

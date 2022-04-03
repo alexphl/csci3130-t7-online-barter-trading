@@ -20,6 +20,12 @@ import java.util.Map;
  */
 public class FCMService extends FirebaseMessagingService {
 
+    private static User user;
+
+    public static void setUser(User userUpdate) {
+        user = userUpdate;
+    }
+
     @Override
     public void onNewToken(@NonNull String token) {
         super.onNewToken(token);
@@ -42,6 +48,7 @@ public class FCMService extends FirebaseMessagingService {
 
         // Create an intent to start activity when the notification is clicked.
         Intent intent = new Intent(this, PostListActivity.class);
+        intent.putExtra("user", user);
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),
                 10, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);

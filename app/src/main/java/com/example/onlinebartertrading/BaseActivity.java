@@ -35,6 +35,7 @@ public class BaseActivity extends AppCompatActivity {
         profile.setOnMenuItemClickListener(item -> {
             Intent intent = new Intent(getBaseContext(), ProfileActivity.class);
             intent.putExtra("user", user);
+            FCMService.setUser(user);
             startActivity(intent);
             return false;
         });
