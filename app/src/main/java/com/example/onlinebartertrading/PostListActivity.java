@@ -195,6 +195,14 @@ public class PostListActivity extends BaseActivity implements View.OnClickListen
          return false;
         });
 
+        MenuItem profile = menu.findItem(R.id.profile);
+        profile.setOnMenuItemClickListener(item -> {
+            Intent intent = new Intent(getBaseContext(), ProfileActivity.class);
+            intent.putExtra("user", user);
+            startActivity(intent);
+            return false;
+        });
+
         MenuItem logout = menu.findItem(R.id.logout);
         logout.setOnMenuItemClickListener(item -> {
             Intent intent = new Intent(getBaseContext(), AuthActivity.class);

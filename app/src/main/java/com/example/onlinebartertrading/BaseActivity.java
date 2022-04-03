@@ -11,7 +11,7 @@ import com.example.onlinebartertrading.entities.User;
 
 public class BaseActivity extends AppCompatActivity {
 
-    User user;
+    protected User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
