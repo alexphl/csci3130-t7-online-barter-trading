@@ -43,6 +43,8 @@ public class BaseActivity extends AppCompatActivity {
         MenuItem logout = menu.findItem(R.id.logout);
         logout.setOnMenuItemClickListener(item -> {
             Intent intent = new Intent(getBaseContext(), AuthActivity.class);
+            user.setPreferences(null);
+            FCMService.setUser(null);
             startActivity(intent);
             return false;
         });
