@@ -19,7 +19,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 /**
@@ -29,7 +28,6 @@ import com.google.firebase.messaging.FirebaseMessaging;
 public class AuthActivity extends AppCompatActivity {
 
     TabLayout panes;
-    FirebaseAuth auth;
 
     /**
      * View setup
@@ -39,7 +37,6 @@ public class AuthActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
-        auth = FirebaseAuth.getInstance();
 
         panes = findViewById(R.id.authTabs);
 
