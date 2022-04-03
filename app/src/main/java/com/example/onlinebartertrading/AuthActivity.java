@@ -57,8 +57,8 @@ public class AuthActivity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<String>() {
                     @Override
                     public void onComplete(@NonNull Task<String> task) {
-                        Toast.makeText(AuthActivity.this, "Token is missing", Toast.LENGTH_SHORT).show();
                         if (!task.isSuccessful()) {
+                            Toast.makeText(AuthActivity.this, "FCM token is missing", Toast.LENGTH_SHORT).show();
                             return;
                         }
 
