@@ -1,11 +1,10 @@
 package com.example.onlinebartertrading;
 
-import androidx.annotation.NonNull;
-
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.example.onlinebartertrading.configs.FirebaseConstants;
 import com.example.onlinebartertrading.entities.User;
@@ -17,7 +16,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.UUID;
 
 public class ProfileActivity extends BaseActivity {

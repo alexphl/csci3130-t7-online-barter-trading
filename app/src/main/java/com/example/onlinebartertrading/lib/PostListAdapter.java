@@ -79,14 +79,15 @@ public class PostListAdapter extends ArrayAdapter<String> {
         String price = "$" + value.get(position);
         String cat = "Category: " + category.get(position);
         String dist = distance.get(position) + "km";
-        System.out.println(dist);
         String mail = "Posted By: " + email.get(position);
-        Objects.requireNonNull(nameSet.get("name")).setText(title);
-        Objects.requireNonNull(nameSet.get("detail")).setText(description);
-        Objects.requireNonNull(nameSet.get("value")).setText(price);
-        Objects.requireNonNull(nameSet.get("email")).setText(mail);
-        Objects.requireNonNull(nameSet.get("distance")).setText(dist);
-        Objects.requireNonNull(nameSet.get("category")).setText(cat);
+        try {
+            Objects.requireNonNull(nameSet.get("name")).setText(title);
+            Objects.requireNonNull(nameSet.get("detail")).setText(description);
+            Objects.requireNonNull(nameSet.get("value")).setText(price);
+            Objects.requireNonNull(nameSet.get("email")).setText(mail);
+            Objects.requireNonNull(nameSet.get("distance")).setText(dist);
+            Objects.requireNonNull(nameSet.get("category")).setText(cat);
+        } catch (NullPointerException ignored) { }
 
         return view;
     }
