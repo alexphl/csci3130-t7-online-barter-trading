@@ -13,7 +13,6 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,7 +50,7 @@ public class ChatActivity extends AppCompatActivity {
     Intent intent;
     Toolbar toolBar;
     String currFName;
-    String myFName;
+    String myEmail;
     String otherID;
 
 
@@ -79,11 +78,10 @@ public class ChatActivity extends AppCompatActivity {
         sendButton = findViewById(R.id.sendButton);
         messageField = findViewById(R.id.messageField);
 
-        myFName = user.getFirstName();
+        myEmail = user.getEmail();
         otherID = getIntent().getStringExtra("users");
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Users");
-        final String fName = user.getFirstName();
 
         intent = getIntent();
 
@@ -91,7 +89,7 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
-                readMessages(user.getFirstName(), fName);
+                readMessages(user.getEmail(), chatAdapter.getReceiver());
             }
 
             @Override
@@ -131,7 +129,7 @@ public class ChatActivity extends AppCompatActivity {
                 String message = messageField.getText().toString();
 
                 if (!message.equals("")) {
-                    textMessage(myFName, fName, message);
+                    textMessage(myEmail, chatAdapter.getReceiver(), message);
                 } else {
                     Toast.makeText(ChatActivity.this, "This is an empty message", Toast.LENGTH_LONG).show();
                 }
@@ -140,7 +138,7 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
-    private void textMessage(String senderID, String receiverID, String message) {
+    private void textMessage(String senderEmail, String receiverEmail, String message) {
 
         databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl(FirebaseConstants.FIREBASE_URL);
 
@@ -148,11 +146,11 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 HashMap<String, Object> hashMap = new HashMap<>();
-                hashMap.put("sender", senderID);
-                hashMap.put("receiver", receiverID);
+                hashMap.put("sender", senderEmail);
+                hashMap.put("receiver", receiverEmail);
                 hashMap.put("message", message);
 
-                String key = chatExists(snapshot, senderID, receiverID);
+                String key = chatExists(snapshot, senderEmail, receiverEmail);
 
                 if (key == null) {
                     key = UUID.randomUUID().toString();
@@ -168,7 +166,7 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
-    private void readMessages(String myName, String userName) {
+    private void readMessages(String myEmail, String otherEmail) {
         chats = new ArrayList<>();
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Chats");
@@ -179,7 +177,7 @@ public class ChatActivity extends AppCompatActivity {
                 chats.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     ChatList chat = dataSnapshot.getValue(ChatList.class);
-                    boolean result = chat.getReceiver().equals(myName) && chat.getSender().equals(userName) || chat.getReceiver().equals(userName) && chat.getSender().equals(myName);
+                    boolean result = chat.getReceiver().equals(myEmail) && chat.getSender().equals(otherEmail) || chat.getReceiver().equals(otherEmail) && chat.getSender().equals(myEmail);
 
                     if (result) {
                         chats.add(chat);
@@ -197,14 +195,14 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
-    private String chatExists(DataSnapshot snapshot, String senderID, String receiverID) {
+    private String chatExists(DataSnapshot snapshot, String senderEmail, String receiverID) {
 
         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
             boolean receiverCond;
-            boolean senderCond = dataSnapshot.child("receiver").equals(receiverID) || dataSnapshot.child("sender").equals(senderID);
+            boolean senderCond = dataSnapshot.child("receiver").equals(receiverID) || dataSnapshot.child("sender").equals(senderEmail);
 
             if (senderCond) {
-                receiverCond = dataSnapshot.child("receiver").equals(receiverID) || dataSnapshot.child("sender").equals(senderID);
+                receiverCond = dataSnapshot.child("receiver").equals(receiverID) || dataSnapshot.child("sender").equals(senderEmail);
 
                 if (receiverCond) {
                     return dataSnapshot.getKey();

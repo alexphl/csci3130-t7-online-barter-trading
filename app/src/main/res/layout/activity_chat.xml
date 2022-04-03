@@ -7,59 +7,18 @@
     android:background="#fff"
     tools:context=".ChatActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/barLayout"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolBar"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:background="@color/purple_600"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-            <ImageButton
-                android:id="@+id/backButton"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="14dp"
-                android:background="@drawable/ic_back"/>
-
-            <TextView
-                android:id="@+id/messageStatus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="290dp"
-                android:text=""/>
-
-            <TextView
-                android:id="@+id/fullName"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:textSize="18sp"
-                android:textColor="#fff"
-                android:textStyle="bold"
-                android:layout_marginStart="140dp"/>
-
-        </androidx.appcompat.widget.Toolbar>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <com.google.android.material.tabs.TabLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/design_default_color_primary_dark"
-        app:tabIndicatorColor="#fff"
-        app:tabSelectedTextColor="#fff"
-        app:tabTextColor="#fff" />
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="14dp"
+        android:background="@drawable/ic_back"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/bottom"
-        android:layout_below="@id/barLayout"
         android:visibility="gone"/>
 
     <RelativeLayout
@@ -79,13 +38,13 @@
             android:background="@android:color/transparent"
             android:hint="Type a message..." />
 
-        <ImageButton
+        <Button
             android:id="@+id/sendButton"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:background="@drawable/ic_send"/>
+            android:background="@drawable/ic_send" />
     </RelativeLayout>
 
 </RelativeLayout>

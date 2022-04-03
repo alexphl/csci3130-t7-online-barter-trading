@@ -22,6 +22,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
 
     private List<ChatList> chat;
     private Context context;
+    private String receiver;
 
     User firebaseUser;
 
@@ -48,7 +49,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
     public void onBindViewHolder(@NonNull ChatAdapter.MyViewHolder holder, int position) {
 
         ChatList currentChat = chat.get(position);
-
+        receiver = currentChat.getReceiver();
         holder.message.setText(currentChat.getMessage());
     }
 
@@ -76,5 +77,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
         } else {
             return left_message;
         }
+    }
+
+    public String getReceiver() {
+        return receiver;
     }
 }
