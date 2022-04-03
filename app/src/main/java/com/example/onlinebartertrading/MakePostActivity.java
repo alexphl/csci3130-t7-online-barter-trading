@@ -161,21 +161,6 @@ protected void switch2ShowDetail() {
             Post newPost = new Post(user.getEmail(), title, desc, value, category, user.getLocation());
             myDatabase.child("posts").child(time).setValue(newPost);
 
-             //     Alert and notification for new items
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                NotificationChannel channel = new NotificationChannel("notificationChannel", "My Channel", NotificationManager.IMPORTANCE_DEFAULT);
-                NotificationManager manager = getSystemService(NotificationManager.class);
-                manager.createNotificationChannel(channel);
-            }
-
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(MakePostActivity.this, "notificationChannel")
-                    .setSmallIcon(android.R.drawable.sym_def_app_icon)
-                    .setContentTitle("Notification for new items")
-                    .setContentText("Some new goods just been posted recently, Take a look!");
-            notification = builder.build();
-            notificationManagerCompat = NotificationManagerCompat.from(MakePostActivity.this);
-            notificationManagerCompat.notify(1, notification);
-
             HashMap<String, Object> map = new HashMap<>();
             map.put("post_title", title);
             map.put("post_value", value);
@@ -203,7 +188,8 @@ protected void switch2ShowDetail() {
             dataJSONBody.put("description", desc);
             dataJSONBody.put("category", cat);
 
-            String topicPath = "/topic/" + cat;
+            String topicPath = "/topic/" + cat.replaceAll(" ", "_").toLowerCase();
+            System.out.println("POST CATEGORY " + cat);
 
             final JSONObject pushNotificationJSONBody = new JSONObject();
             pushNotificationJSONBody.put("to", topicPath);
@@ -215,7 +201,7 @@ protected void switch2ShowDetail() {
                     pushNotificationJSONBody,
                     response ->
                             Toast.makeText(MakePostActivity.this,
-                                    "Push notification sent.",
+                                    "Your item has been posted!",
                                     Toast.LENGTH_SHORT).show(),
                     Throwable::printStackTrace) {
                 @Override

@@ -49,15 +49,17 @@ public class User implements Serializable {
         // unsubscribe from old FCM categories
         if (getPreferences() != null) {
             for (String category : getPreferences().getCategories()) {
-                FirebaseMessaging.getInstance().unsubscribeFromTopic(category);
+                FirebaseMessaging.getInstance().unsubscribeFromTopic(category.replaceAll(" ", "_").toLowerCase());
             }
         }
 
         this.preferences = preferences;
 
         // subscribe to new FCM categories
-        for (String category : getPreferences().getCategories()) {
-            FirebaseMessaging.getInstance().subscribeToTopic(category);
+        if (getPreferences() != null) {
+            for (String category : getPreferences().getCategories()) {
+                FirebaseMessaging.getInstance().subscribeToTopic(category.replaceAll(" ", "_").toLowerCase());
+            }
         }
     }
 
