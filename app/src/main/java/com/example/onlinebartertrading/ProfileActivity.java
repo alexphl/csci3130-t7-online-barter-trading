@@ -81,16 +81,15 @@ public class ProfileActivity extends BaseActivity {
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                DataSnapshot history = null;
                 if (user.getIsProvider() && snapshot.hasChild("history_provider")) {
-                    DataSnapshot history = snapshot.child("history_provider");
-
-                    saveToLists(history);
+                    history = snapshot.child("history_provider");
                 }
                 else if (!user.getIsProvider() && snapshot.hasChild("history_receiver")) {
-                    DataSnapshot history = snapshot.child("history_receiver");
-
-                    saveToLists(history);
+                    history = snapshot.child("history_receiver");
                 }
+
+                saveToLists(history);
 
                 setValue();
                 setNumPosts();
@@ -111,6 +110,8 @@ public class ProfileActivity extends BaseActivity {
      * @param history snapshot to take data from
      */
     protected void saveToLists(DataSnapshot history) {
+        if (history == null) { return; }
+
         for (DataSnapshot snap: history.getChildren()) {
             String title = snap.child("post_title").getValue(String.class);
             int value = snap.child("post_value").getValue(Integer.class);
