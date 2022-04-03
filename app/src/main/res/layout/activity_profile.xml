@@ -37,7 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
-            android:text="Total posts made"
+            android:text="Total posts"
             android:textSize="30sp" />
         <TextView
             android:id="@+id/postBox"
