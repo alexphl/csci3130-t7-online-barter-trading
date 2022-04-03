@@ -2,10 +2,7 @@ package com.example.onlinebartertrading;
 
 
 import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,7 +10,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.android.volley.Request;
@@ -28,7 +24,6 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.messaging.RemoteMessage;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -186,8 +181,7 @@ protected void switch2ShowDetail() {
             dataJSONBody.put("description", desc);
             dataJSONBody.put("category", cat);
 
-            String topicPath = "/topic/weather";
-            System.out.println("POST CATEGORY " + cat);
+            String topicPath = "/topic/" + cat.replaceAll(" ", "_").toLowerCase();
 
             final JSONObject pushNotificationJSONBody = new JSONObject();
             pushNotificationJSONBody.put("to", topicPath);

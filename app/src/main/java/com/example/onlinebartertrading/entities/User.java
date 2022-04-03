@@ -1,7 +1,5 @@
 package com.example.onlinebartertrading.entities;
 
-import androidx.annotation.NonNull;
-
 import com.example.onlinebartertrading.lib.LocationProvider;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.messaging.FirebaseMessaging;
