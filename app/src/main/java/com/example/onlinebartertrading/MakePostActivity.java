@@ -44,6 +44,7 @@ public class MakePostActivity extends BaseActivity implements View.OnClickListen
     private User user;
     private DatabaseReference myDatabase;
     private RequestQueue requestQueue;
+    private static final String PUSH_NOTIFICATION_ENDPOINT = "https://fcm.googleapis.com/fcm/send";
 
     NotificationManagerCompat notificationManagerCompat;
     Notification notification;
@@ -152,15 +153,15 @@ protected void switch2ShowDetail() {
         if (errorMessage.equals("")){
             String time = Long.toString(System.currentTimeMillis());
             Post newPost = new Post(user.getEmail(), title, desc, value, category, user.getLocation());
-            myDatabase.child("posts").child(time).setValue(newPost);
+            //myDatabase.child("posts").child(time).setValue(newPost);
 
             HashMap<String, Object> map = new HashMap<>();
             map.put("post_title", title);
             map.put("post_value", value);
             map.put("status", "incomplete");
-            myDatabase.child("users").child(UUID.nameUUIDFromBytes(user.getEmail().getBytes()).toString()).child("history_provider").child(time).setValue(map);
+            //myDatabase.child("users").child(UUID.nameUUIDFromBytes(user.getEmail().getBytes()).toString()).child("history_provider").child(time).setValue(map);
 
-            sendNotification(title, desc, category);
+            sendNotification(category);
 
             switch2ShowDetail();
         }
@@ -170,30 +171,25 @@ protected void switch2ShowDetail() {
     /**
      * Sends an FCM notification to users who subscribed to the post's category
      */
-    private void sendNotification(String title, String desc, String cat) {
+    private void sendNotification(String category) {
         try {
             final JSONObject notificationJSONBody = new JSONObject();
-            notificationJSONBody.put("title", "New Items Added!");
-            notificationJSONBody.put("body", "New goods have arrived, take a look!");
+            notificationJSONBody.put("title", "New " + category + " just arrived!");
+            notificationJSONBody.put("body", "Take a look!");
 
             final JSONObject dataJSONBody = new JSONObject();
-            dataJSONBody.put("title", title);
-            dataJSONBody.put("description", desc);
-            dataJSONBody.put("category", cat);
-
-            String topicPath = "/topic/" + cat.replaceAll(" ", "_").toLowerCase();
 
             final JSONObject pushNotificationJSONBody = new JSONObject();
-            pushNotificationJSONBody.put("to", topicPath);
+            pushNotificationJSONBody.put("to", "/topics/" + category.replaceAll(" ", "_").toLowerCase());
             pushNotificationJSONBody.put("notification", notificationJSONBody);
             pushNotificationJSONBody.put("data", dataJSONBody);
 
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
-                    "https://fcm.googleapis.com/fcm/send",
+                    PUSH_NOTIFICATION_ENDPOINT,
                     pushNotificationJSONBody,
                     response ->
                             Toast.makeText(MakePostActivity.this,
-                                    "Your item has been posted!",
+                                    "Your post has been published!",
                                     Toast.LENGTH_SHORT).show(),
                     Throwable::printStackTrace) {
                 @Override

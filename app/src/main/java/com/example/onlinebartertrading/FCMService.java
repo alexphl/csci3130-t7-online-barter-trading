@@ -9,6 +9,7 @@ import android.os.Build;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
+import com.example.onlinebartertrading.entities.User;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -29,7 +30,9 @@ public class FCMService extends FirebaseMessagingService {
         super.onMessageReceived(message);
 
         // If the notification message received is null, return.
-        if (message.getNotification() == null) return;
+        if (message.getNotification() == null) {
+            return;
+        }
 
         // Extract fields from the notification message.
         final String title = message.getNotification().getTitle();
@@ -45,7 +48,7 @@ public class FCMService extends FirebaseMessagingService {
 
         // Create a notification that will be displayed in the notification tray.
         NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(this, "ITEMS")
+                new NotificationCompat.Builder(this, "myappposts")
                         .setContentTitle(title)
                         .setContentText(body)
                         .setSmallIcon(com.google.firebase.messaging.R.drawable.gcm_icon);
@@ -59,7 +62,7 @@ public class FCMService extends FirebaseMessagingService {
 
         // If the build version is greater than, put the notification in a channel.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel("ITEMS", "ITEMS", NotificationManager.IMPORTANCE_HIGH);
+            NotificationChannel channel = new NotificationChannel("myappposts", "myappposts", NotificationManager.IMPORTANCE_HIGH);
             manager.createNotificationChannel(channel);
         }
 
