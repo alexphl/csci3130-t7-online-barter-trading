@@ -42,9 +42,11 @@ public class User implements Serializable {
 
     /**
      * Assigns Preferences to a user.
+     * Also subscribes user to FCM categories based on preferences.
      * @param preferences user's post filter preferences
      */
     public void setPreferences(Preferences preferences) {
+        // unsubscribe from old FCM categories
         if (getPreferences() != null) {
             for (String category : getPreferences().getCategories()) {
                 FirebaseMessaging.getInstance().unsubscribeFromTopic(category);
@@ -53,6 +55,7 @@ public class User implements Serializable {
 
         this.preferences = preferences;
 
+        // subscribe to new FCM categories
         for (String category : getPreferences().getCategories()) {
             FirebaseMessaging.getInstance().subscribeToTopic(category);
         }

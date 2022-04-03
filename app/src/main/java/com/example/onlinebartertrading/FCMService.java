@@ -14,6 +14,9 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Map;
 
+/**
+ * Handles Firebase Cloud Messaging
+ */
 public class FCMService extends FirebaseMessagingService {
 
     @Override

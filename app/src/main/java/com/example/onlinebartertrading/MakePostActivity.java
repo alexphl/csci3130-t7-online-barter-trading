@@ -189,6 +189,9 @@ protected void switch2ShowDetail() {
 
     }
 
+    /**
+     * Sends an FCM notification to users who subscribed to the post's category
+     */
     private void sendNotification(String title, String desc, String cat) {
         try {
             final JSONObject notificationJSONBody = new JSONObject();

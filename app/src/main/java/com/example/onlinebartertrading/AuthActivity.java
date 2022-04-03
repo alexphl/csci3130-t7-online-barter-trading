@@ -53,6 +53,7 @@ public class AuthActivity extends AppCompatActivity {
             }
         }).attach();
 
+        // Debug toast to check for Cloud Messaging errors
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
                     @Override
