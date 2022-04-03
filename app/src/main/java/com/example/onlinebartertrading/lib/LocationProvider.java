@@ -70,7 +70,6 @@ public class LocationProvider extends Thread{
         locationManager.requestSingleUpdate(locationMode, new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                System.out.println("Location requested/n" + location.getLatitude() + "; " + location.getLongitude());
                 coordinates[0] = location.getLatitude();
                 coordinates[1] = location.getLongitude();
             }

@@ -44,7 +44,6 @@ public class PostListAdapter extends ArrayAdapter<String> {
         this.category = category;
         this.distance = distance;
         this.email = email;
-        System.out.println(distance);
     }
 
     /**
