@@ -18,21 +18,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OnlineBarterTrading">
 
-        <receiver
-            android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
-            android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND" >
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-            </intent-filter>
-        </receiver>
-
         <service
             android:name=".FCMService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
 
@@ -42,28 +32,14 @@
         <meta-data
             android:name="firebase_analytics_collection_enabled"
             android:value="true" />
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="YOUR_API_KEY" />
-<!--        <meta-data-->
-<!--            android:name="com.google.firebase.messaging.default_notification_channel_id"-->
-<!--            android:value="@string/default_notification_channel_id" />-->
 
         <activity
             android:name=".BaseActivity"
             android:exported="false" />
-        <!--
-             TODO: Before you run your application, you need a Google Maps API key.
-             To get one, follow the directions here:
-                https://developers.google.com/maps/documentation/android-sdk/get-api-key
-             Once you have your API key (it starts with "AIza"), define a new property in your
-             project's local.properties file (e.g. MAPS_API_KEY=Aiza...), and replace the
-             "YOUR_API_KEY" string in this file with "${MAPS_API_KEY}".
-        -->
-
         <activity
             android:name=".PreferenceActivity"
             android:exported="false" />
+
         <activity
             android:name=".AuthActivity"
             android:exported="true"
@@ -74,6 +50,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".MakePostActivity"
             android:exported="true"
@@ -82,6 +59,7 @@
             android:name=".RoleDecisionActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize|adjustPan" />
+        
         <activity
             android:name=".PostListActivity"
             android:exported="true"
