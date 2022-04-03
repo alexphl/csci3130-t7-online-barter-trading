@@ -20,6 +20,7 @@
     <string name="INVALID_EMAIL">Email not Successful</string>
     <string name="INVALID_PASSWORD">Password not Successful</string>
     <string name="EMPTY_EMAIL">Email Field is empty</string>
+    <string name="EMPTY_MESSAGE">Email Message is empty</string>
     <string name="EMPTY_PASSWORD">Password Field is empty</string>
     <string name="DO_NOTHING">Successful so do nothing</string>
 
