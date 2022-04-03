@@ -1,5 +1,6 @@
 package com.example.onlinebartertrading;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -32,6 +33,12 @@ public class AuthActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
+
+        if (FCMService.getUser() != null) {
+            Intent intent = new Intent(this, RoleDecisionActivity.class);
+            intent.putExtra("user", FCMService.getUser());
+            startActivity(intent);
+        }
 
         panes = findViewById(R.id.authTabs);
 

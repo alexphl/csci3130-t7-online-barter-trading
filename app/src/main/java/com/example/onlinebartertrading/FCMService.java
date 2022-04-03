@@ -25,6 +25,7 @@ public class FCMService extends FirebaseMessagingService {
     public static void setUser(User userUpdate) {
         user = userUpdate;
     }
+    public static User getUser() { return user; }
 
     @Override
     public void onNewToken(@NonNull String token) {
@@ -36,7 +37,7 @@ public class FCMService extends FirebaseMessagingService {
         super.onMessageReceived(message);
 
         // If the notification message received is null, return.
-        if (message.getNotification() == null) {
+        if (user == null || message.getNotification() == null) {
             return;
         }
 
