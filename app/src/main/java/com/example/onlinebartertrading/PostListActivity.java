@@ -135,8 +135,8 @@ public class PostListActivity extends BaseActivity implements View.OnClickListen
                 }
         );
 
-        position = user.getLocation();
-//        position = new LatLng(0.0, 0.0);
+//        position = user.getLocation();
+        position = new LatLng(0.0, 0.0);
 
         reference = FirebaseDatabase.getInstance().getReference();
 
@@ -158,8 +158,8 @@ public class PostListActivity extends BaseActivity implements View.OnClickListen
                 if(user.getPreferences() == null) {
                     chip.setVisibility(View.GONE);
                 }
-//                position = new LatLng(0.0, 0.0);
-                position = user.getLocation();
+                position = new LatLng(0.0, 0.0);
+//                position = user.getLocation();
             }
 
             @Override
@@ -383,36 +383,15 @@ public class PostListActivity extends BaseActivity implements View.OnClickListen
     }
 
     /**
-     * Function to create an exchange record in the "exchange" reference
-     * @param email the email of the provider
-     * @param title title
-     * @param value value
-     * @param key the key for the exchange
-     * @param receiver_item the receiver's proposed item
-     * @param receiver_value the receiver's estimated value for the item
-     */
-    private void createExchange(String email, String title, int value, String key, String receiver_item, String receiver_value) {
-        HashMap<String, Object> exchange = new HashMap<>();
-        exchange.put("offer_item", receiver_item);
-        exchange.put("offer_value", receiver_value);
-        exchange.put("post_title", title);
-        exchange.put("post_value", value);
-        exchange.put("provider_email", email);
-        exchange.put("status", "ongoing");
-
-        reference.child("exchange").child(key).setValue(exchange);
-    }
-
-    /**
      * Function to create a record in the provider's history for the proposed exchange
      * @param email the email of the provider
      * @param postId the id for the post
-     * @param key the key of the exchange
      * @param receiver_item receiver's proposed item
      * @param receiver_value receiver's estimated value for the item
-     * @param receiver_emailHash the hash for the receiver's email
      */
-    private void createReceiverHistory(String email, String postId, String key, String receiver_item, String receiver_value, String receiver_emailHash) {
+    public void createHistoryProvider(String email, String postId, String receiver_item, String receiver_value) {
+        String receiver_emailHash = UUID.nameUUIDFromBytes(user.getEmail().getBytes()).toString();
+        String key = receiver_emailHash + postId;
         HashMap<String, Object> receiver = new HashMap<>();
         receiver.put("exchange", key);
         receiver.put("item", receiver_item);
@@ -420,13 +399,18 @@ public class PostListActivity extends BaseActivity implements View.OnClickListen
         reference.child("users").child(UUID.nameUUIDFromBytes(email.getBytes()).toString()).child("history_provider").child(postId).child("receivers").child(receiver_emailHash).setValue(receiver);
     }
 
-    private void createHistoryReceiver(String email, String title, int value) {
+    /**
+     * Function to create an exchange record in the "exchange" reference
+     * @param title title
+     * @param value value
+     */
+    public void createHistoryReceiver(String title, int value) {
         Map<String, Object> content = new HashMap<>();
         content.put("post_title", title);
         content.put("post_value", value);
         content.put("status", "ongoing");
 
-        reference.child("users").child(UUID.nameUUIDFromBytes(email.getBytes()).toString()).child("history_receiver").child(title).setValue(content);
+        reference.child("users").child(UUID.nameUUIDFromBytes(user.getEmail().getBytes()).toString()).child("history_receiver").child(title).setValue(content);
     }
 
     /**
@@ -438,36 +422,13 @@ public class PostListActivity extends BaseActivity implements View.OnClickListen
         extractPosts();
     }
 
-    /**
-     * Method for defining behaviour when the submit button is clicked. Gets all the information from the dialog and the view and then calls the createExchange and createReceiverHistory methods to create the database records.
-     * @param dialog the current dialog.
-     */
     @Override
     public void onDialogPositiveClick(DialogFragment dialog) {
-        TradeDialogFragment fragment = (TradeDialogFragment) dialog;
 
-        //Details of the providers post
-        String email = fragment.getEmail();
-        String title = fragment.getTitle();
-        int value = fragment.getValue();
-        String postId = fragment.getPostId();
-
-        //Details entered by the receiver
-        String receiver_item =  ((EditText)fragment.getDialog().findViewById(R.id.receiver_item)).getText().toString();
-        String receiver_value =  ((EditText)fragment.getDialog().findViewById(R.id.receiver_value)).getText().toString();
-
-        //Generate the exchange key
-        String receiver_emailHash = UUID.nameUUIDFromBytes(user.getEmail().getBytes()).toString();
-        String key = receiver_emailHash + postId;
-
-        createExchange(email, title, value, key, receiver_item, receiver_value);
-        createReceiverHistory(email, postId, key, receiver_item, receiver_value, receiver_emailHash);
-        createHistoryReceiver(email, title, value);
-
-        Toast.makeText(getBaseContext(), "Successfully initialised trade.", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onDialogNegativeClick(DialogFragment dialog) {
+
     }
 }

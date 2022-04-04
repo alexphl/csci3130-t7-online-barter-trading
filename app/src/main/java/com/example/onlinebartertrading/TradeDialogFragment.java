@@ -11,6 +11,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.onlinebartertrading.entities.Post;
+
+import java.util.UUID;
+
 public class TradeDialogFragment extends DialogFragment {
 
     private String email;
@@ -87,16 +91,31 @@ public class TradeDialogFragment extends DialogFragment {
             Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
             button.setOnClickListener(view -> {
                 String item = ((EditText)dialog.findViewById(R.id.receiver_item)).getText().toString();
-                String value = ((EditText)dialog.findViewById(R.id.receiver_value)).getText().toString();
+                String value1 = ((EditText)dialog.findViewById(R.id.receiver_value)).getText().toString();
                 System.out.println(item + value);
                 if(item.isEmpty()) {
                     Toast.makeText(getActivity().getBaseContext(), "Item cannot be empty.", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(value.isEmpty()) {
+                if(value1.isEmpty()) {
                     Toast.makeText(getActivity().getBaseContext(), "Value cannot be empty.", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                String email = this.getEmail();
+                String title = this.getTitle();
+                int value = this.getValue();
+                String postId = this.getPostId();
+
+                //Details entered by the receiver
+                String receiver_item =  ((EditText)this.getDialog().findViewById(R.id.receiver_item)).getText().toString();
+                String receiver_value =  ((EditText)this.getDialog().findViewById(R.id.receiver_value)).getText().toString();
+
+                //Generate the exchange key
+
+                ((PostListActivity)getActivity()).createHistoryProvider(email, postId, receiver_item, receiver_value);
+                ((PostListActivity)getActivity()).createHistoryReceiver(title, value);
+
+                Toast.makeText(getActivity().getBaseContext(), "Successfully initialised trade.", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             });
         });
