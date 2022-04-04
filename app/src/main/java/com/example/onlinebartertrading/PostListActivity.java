@@ -135,8 +135,8 @@ public class PostListActivity extends BaseActivity implements View.OnClickListen
                 }
         );
 
-//        position = user.getLocation();
-        position = new LatLng(0.0, 0.0);
+        position = user.getLocation();
+//        position = new LatLng(0.0, 0.0);
 
         reference = FirebaseDatabase.getInstance().getReference();
 
@@ -158,8 +158,8 @@ public class PostListActivity extends BaseActivity implements View.OnClickListen
                 if(user.getPreferences() == null) {
                     chip.setVisibility(View.GONE);
                 }
-                position = new LatLng(0.0, 0.0);
-//                position = user.getLocation();
+                //position = new LatLng(0.0, 0.0);
+                position = user.getLocation();
             }
 
             @Override
@@ -404,13 +404,13 @@ public class PostListActivity extends BaseActivity implements View.OnClickListen
      * @param title title
      * @param value value
      */
-    public void createHistoryReceiver(String title, int value) {
-        Map<String, Object> content = new HashMap<>();
+    public void createHistoryReceiver(String title, String id, int value) {
+        HashMap<String, Object> content = new HashMap<>();
         content.put("post_title", title);
         content.put("post_value", value);
-        content.put("status", "ongoing");
+        content.put("status", "incomplete");
 
-        reference.child("users").child(UUID.nameUUIDFromBytes(user.getEmail().getBytes()).toString()).child("history_receiver").child(title).setValue(content);
+        reference.child("users").child(UUID.nameUUIDFromBytes(user.getEmail().getBytes()).toString()).child("history_receiver").child(id).setValue(content);
     }
 
     /**

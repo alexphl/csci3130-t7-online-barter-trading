@@ -113,7 +113,7 @@ public class TradeDialogFragment extends DialogFragment {
                 //Generate the exchange key
 
                 ((PostListActivity)getActivity()).createHistoryProvider(email, postId, receiver_item, receiver_value);
-                ((PostListActivity)getActivity()).createHistoryReceiver(title, value);
+                ((PostListActivity)getActivity()).createHistoryReceiver(title, postId, value);
 
                 Toast.makeText(getActivity().getBaseContext(), "Successfully initialised trade.", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
